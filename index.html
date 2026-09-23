@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Carnage Live — Free Fire ID Unban</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif; 
+  color: #e2e8f0;
+  background: 
+    radial-gradient(circle at 15% 0%, rgba(255, 64, 64, 0.15), transparent 35%),
+    radial-gradient(circle at 85% 100%, rgba(0, 174, 255, 0.12), transparent 35%),
+    #050507;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+
+/* NANO TECH GLOW ANIMATION */
+@keyframes nanoGlow {
+  0% { box-shadow: 0 0 25px rgba(255, 74, 74, 0.6), inset 0 0 10px rgba(255, 74, 74, 0.2); border-color: rgba(255, 74, 74, 0.8); }
+  33% { box-shadow: 0 0 25px rgba(0, 174, 255, 0.6), inset 0 0 10px rgba(0, 174, 255, 0.2); border-color: rgba(0, 174, 255, 0.8); }
+  66% { box-shadow: 0 0 25px rgba(255, 138, 74, 0.6), inset 0 0 10px rgba(255, 138, 74, 0.2); border-color: rgba(255, 138, 74, 0.8); }
+  100% { box-shadow: 0 0 25px rgba(138, 43, 226, 0.6), inset 0 0 10px rgba(138, 43, 226, 0.2); border-color: rgba(138, 43, 226, 0.8); }
+}
+
+.card {
+  width: min(520px, 100%);
+  padding: 35px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: rgba(16, 18, 27, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: nanoGlow 4s infinite alternate ease-in-out;
+}
+
+.logo {
+  font-weight: 800; letter-spacing: 3px; color: #ff4a4a;
+  font-size: 12px; text-transform: uppercase; margin-bottom: 5px; display: block;
+}
+
+h1 { 
+  font-size: clamp(32px, 8vw, 48px); 
+  font-weight: 800; line-height: 1.1; margin: 10px 0 5px; color: #ffffff; 
+}
+
+h1 span { 
+  background: linear-gradient(90deg, #ff4a4a, #ff8a4a); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+}
+
+.step-one {
+  font-weight: 800; font-size: 14px; color: #ff4a4a; letter-spacing: 2px;
+  margin-bottom: 12px; text-transform: uppercase;
+}
+
+.subtitle { color: #94a3b8; line-height: 1.6; margin-bottom: 28px; font-size: 15px; font-weight: 400; }
+
+label { 
+  display: block; font-size: 13px; font-weight: 700; color: #cbd5e1; 
+  margin: 16px 0 8px; letter-spacing: 0.5px; text-align: left;
+}
+
+input {
+  width: 100%; padding: 16px; border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.3); color: #fff;
+  outline: none; font-size: 15px; font-family: inherit; transition: all 0.3s ease;
+}
+
+input:focus {
+  border-color: #ff4a4a;
+  background: rgba(255, 74, 74, 0.03);
+  box-shadow: 0 0 0 4px rgba(255, 74, 74, 0.1);
+}
+
+/* FILE UPLOAD BUTTON STYLE */
+input[type="file"] { padding: 10px; }
+input[type="file"]::file-selector-button {
+  background: linear-gradient(90deg, #ff4a4a, #ff8a4a); border: none; padding: 10px 18px;
+  border-radius: 10px; color: #fff; font-weight: 800; cursor: pointer; margin-right: 15px;
+  font-family: inherit; transition: all 0.3s ease;
+}
+input[type="file"]::file-selector-button:hover { box-shadow: 0 0 15px rgba(255, 74, 74, 0.5); transform: scale(1.02); }
+
+button[type="submit"], #confirmBtn, #doneBtn {
+  width: 100%; margin-top: 28px; padding: 16px; border: 0; border-radius: 14px;
+  background: linear-gradient(135deg, #ff3333 0%, #ff6b3d 100%);
+  color: #fff; font-weight: 700; cursor: pointer; font-size: 16px; letter-spacing: 0.5px;
+  box-shadow: 0 12px 24px rgba(255, 51, 51, 0.25); transition: all 0.3s ease; font-family: inherit;
+}
+
+#confirmBtn:disabled {
+  background: #334155;
+  box-shadow: none;
+  cursor: not-allowed;
+  color: #94a3b8;
+}
+
+#doneBtn {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  box-shadow: 0 12px 24px rgba(34, 197, 94, 0.25);
+}
+
+button[type="submit"]:hover, #confirmBtn:not(:disabled):hover, #doneBtn:hover { 
+  transform: translateY(-2px); 
+}
+
+.progress-wrap { display: none; margin-top: 25px; }
+.progress-top { display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; margin-bottom: 9px; font-weight: 600; }
+.bar { height: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
+.fill { height: 100%; width: 0; background: linear-gradient(90deg, #ff3333, #ff9a3d); transition: width 0.6s ease; box-shadow: 0 0 10px rgba(255, 51, 51, 0.5); }
+.status { font-size: 13px; color: #94a3b8; margin-top: 9px; font-weight: 600; }
+
+.note { font-size: 12px; color: #64748b; margin-top: 20px; text-align: center; font-weight: 600; }
+
+.modal-bg {
+  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); 
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  align-items: center; justify-content: center; padding: 20px; z-index: 5;
+}
+
+.modal {
+  width: min(430px, 100%); background: #0f111a; 
+  border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px;
+  padding: 30px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8); text-align: center;
+}
+
+.modal h2 { font-size: 24px; margin-bottom: 12px; font-weight: 800; color: #fff; }
+.modal p { color: #94a3b8; line-height: 1.6; font-size: 14px; margin-bottom: 24px; }
+
+.socials { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+.socials a {
+  text-decoration: none; color: #fff; padding: 15px; border-radius: 14px; 
+  font-weight: 700; display: block; font-size: 15px; transition: transform 0.2s ease;
+}
+.socials a:hover { transform: scale(1.02); }
+
+.tg { background: linear-gradient(135deg, #168dcc, #28a5e8); box-shadow: 0 8px 16px rgba(22, 141, 204, 0.2); }
+.ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2); }
+
+.ss-upload {
+  background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.15);
+  margin-top: -5px; padding: 10px; border-radius: 12px; margin-bottom: 5px;
+}
+</style>
+</head>
+<body>
+
+<main class="card">
+  <div class="logo">Apex Carnage Live</div>
+  <h1>Free Fire <span>ID Unban</span></h1>
+  <div class="step-one">STEP 1</div>
+  <p class="subtitle">Due to high server traffic, your account's <b>unban process</b> is currently in progress and may take a few days. Please be patient. Thank you for staying connected with the <b>Apex channel</b>!</p>
+
+  <form id="unbanForm">
+    <label for="uid">Free Fire UID</label>
+    <input id="uid" name="uid" type="text" inputmode="numeric" maxlength="11" minlength="11" placeholder="Enter exactly 11 digit UID" required>
+
+    <label for="banDate">Account banned date</label>
+    <input id="banDate" name="banDate" type="date" required>
+
+    <label for="banScreenshot">Upload banned ID screenshot</label>
+    <input id="banScreenshot" name="banScreenshot" type="file" accept="image/*" required>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <section class="progress-wrap" id="progressWrap">
+    <div class="progress-top"><span id="progressLabel">Checking request…</span><b id="percent">0%</b></div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="status">Please keep this page open.</div>
+  </section>
+
+  <div class="note">🔒 Secure Interface • We will never ask for your Garena password or login credentials. Your privacy is 100% protected.</div>
+</main>
+
+<!-- SOCIAL VERIFICATION MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h2>Step 2: Complete Community Step</h2>
+    <p>Follow the official channels below, then upload the screenshots to confirm.</p>
+    
+    <div class="socials">
+      <a class="tg" href="https://t.me/+GJ738f9FKc5mOWRl" target="_blank" rel="noopener">Follow on Telegram</a>
+      <div class="ss-upload">
+        <label style="margin: 0 0 8px; font-size: 12px; color: #168dcc;">Upload Telegram Join Screenshot</label>
+        <input type="file" id="tgScreenshot" accept="image/*" style="padding: 8px;">
+      </div>
+
+      <a class="ig" href="https://www.instagram.com/apex.carnage.live?stkn=MWZtM3RxdXMwbTR2eg==" target="_blank" rel="noopener">Follow on Instagram</a>
+      <div class="ss-upload">
+        <label style="margin: 0 0 8px; font-size: 12px; color: #e6683c;">Upload Instagram Subscribe Screenshot</label>
+        <input type="file" id="igScreenshot" accept="image/*" style="padding: 8px;">
+      </div>
+    </div>
+    
+    <button id="confirmBtn" disabled>I've followed — Continue</button>
+  </div>
+</div>
+
+<!-- SUCCESS MESSAGE MODAL -->
+<div class="modal-bg" id="successModalBg">
+  <div class="modal" style="border: 2px solid rgba(34, 197, 94, 0.4); box-shadow: 0 20px 60px rgba(34, 197, 94, 0.25);">
+    <p style="color: #94a3b8; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px;">Complete your verification</p>
+    <div style="font-size: 55px; margin-bottom: 10px;">✅</div>
+    <h2 style="color: #22c55e;">Request Received</h2>
+    <p style="color: #e2e8f0;">Thanks for joining Apex Carnage Unban Official!<br><br>You will receive an update regarding your ID unban within 7 days.</p>
+    <button id="doneBtn">Done</button>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById('unbanForm');
+const wrap = document.getElementById('progressWrap');
+const fill = document.getElementById('fill');
+const percent = document.getElementById('percent');
+const label = document.getElementById('progressLabel');
+const modal = document.getElementById('modalBg');
+const successModal = document.getElementById('successModalBg');
+
+const tgScreenshot = document.getElementById('tgScreenshot');
+const igScreenshot = document.getElementById('igScreenshot');
+const confirmBtn = document.getElementById('confirmBtn');
+
+function setProgress(value,text){
+  fill.style.width=value+'%';
+  percent.textContent=value+'%';
+  label.textContent=text;
+}
+
+// SCREENSHOT VERIFICATION LOGIC
+function checkScreenshots() {
+  if (tgScreenshot.files.length > 0 && igScreenshot.files.length > 0) {
+    confirmBtn.disabled = false;
+  } else {
+    confirmBtn.disabled = true;
+  }
+}
+
+tgScreenshot.addEventListener('change', checkScreenshots);
+igScreenshot.addEventListener('change', checkScreenshots);
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  
+  const uidInput = document.getElementById('uid').value.trim();
+  const uidRegex = /^\d{11}$/; 
+  
+  if (!uidRegex.test(uidInput)) {
+    alert("❌ Wrong UID! Please enter exactly 11 digits (numbers only).");
+    return; 
+  }
+
+  wrap.style.display='block';
+  setProgress(10,'Validating request…');
+
+  setTimeout(()=>setProgress(30,'Checking submitted details…'),700);
+  setTimeout(()=>setProgress(50,'Community verification required…'),1400);
+  setTimeout(()=>modal.style.display='flex',1700);
+});
+
+confirmBtn.addEventListener('click', () => {
+  modal.style.display='none';
+  setProgress(70,'Continuing request…');
+  setTimeout(()=>setProgress(90,'Finalizing status…'),700);
+  setTimeout(()=>{
+    setProgress(100,'Request completed');
+    successModal.style.display='flex'; 
+  },1400);
+});
+
+document.getElementById('doneBtn').addEventListener('click', () => {
+    successModal.style.display='none';
+    window.location.reload(); 
+});
+</script>
+</body>
+</html>
