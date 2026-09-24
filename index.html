@@ -5,36 +5,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Apex Carnage Live — Free Fire ID Unban</title>
 <style>
+/* =========================================
+   1. GLOBAL STYLES & RESET
+   ========================================= */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   min-height: 100vh;
   font-family: 'Plus Jakarta Sans', Arial, sans-serif; 
   color: #e2e8f0;
+  background-color: #050507;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #050507; }
+::-webkit-scrollbar-thumb { background: #ff4a4a; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #ff8a4a; }
+
+#canvas-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -1;
   background: 
     radial-gradient(circle at 15% 0%, rgba(255, 64, 64, 0.15), transparent 35%),
-    radial-gradient(circle at 85% 100%, rgba(0, 174, 255, 0.12), transparent 35%),
-    #050507;
-  display: flex; align-items: center; justify-content: center; padding: 24px;
+    radial-gradient(circle at 85% 100%, rgba(0, 174, 255, 0.12), transparent 35%);
 }
 
-/* NANO TECH GLOW ANIMATION */
+.main-wrapper {
+  display: flex; flex-direction: column; align-items: center; 
+  padding: 40px 24px; min-height: 100vh; z-index: 1;
+}
+
+/* =========================================
+   2. ANIMATIONS
+   ========================================= */
 @keyframes nanoGlow {
-  0% { box-shadow: 0 0 25px rgba(255, 74, 74, 0.6), inset 0 0 10px rgba(255, 74, 74, 0.2); border-color: rgba(255, 74, 74, 0.8); }
-  33% { box-shadow: 0 0 25px rgba(0, 174, 255, 0.6), inset 0 0 10px rgba(0, 174, 255, 0.2); border-color: rgba(0, 174, 255, 0.8); }
-  66% { box-shadow: 0 0 25px rgba(255, 138, 74, 0.6), inset 0 0 10px rgba(255, 138, 74, 0.2); border-color: rgba(255, 138, 74, 0.8); }
-  100% { box-shadow: 0 0 25px rgba(138, 43, 226, 0.6), inset 0 0 10px rgba(138, 43, 226, 0.2); border-color: rgba(138, 43, 226, 0.8); }
+  0% { box-shadow: 0 0 25px rgba(255, 74, 74, 0.5), inset 0 0 10px rgba(255, 74, 74, 0.1); border-color: rgba(255, 74, 74, 0.5); }
+  50% { box-shadow: 0 0 35px rgba(0, 174, 255, 0.5), inset 0 0 15px rgba(0, 174, 255, 0.2); border-color: rgba(0, 174, 255, 0.6); }
+  100% { box-shadow: 0 0 25px rgba(138, 43, 226, 0.5), inset 0 0 10px rgba(138, 43, 226, 0.1); border-color: rgba(138, 43, 226, 0.5); }
 }
 
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   3. CARD & TYPOGRAPHY
+   ========================================= */
 .card {
-  width: min(520px, 100%);
-  padding: 35px;
-  border: 2px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  background: rgba(16, 18, 27, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  animation: nanoGlow 4s infinite alternate ease-in-out;
+  width: min(520px, 100%); padding: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+  background: rgba(16, 18, 27, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  animation: nanoGlow 4s infinite alternate ease-in-out, fadeInUp 0.8s ease-out;
+  margin-bottom: 40px;
 }
 
 .logo {
@@ -42,160 +67,191 @@ body {
   font-size: 12px; text-transform: uppercase; margin-bottom: 5px; display: block;
 }
 
-h1 { 
-  font-size: clamp(32px, 8vw, 48px); 
-  font-weight: 800; line-height: 1.1; margin: 10px 0 5px; color: #ffffff; 
-}
+h1 { font-size: clamp(32px, 8vw, 48px); font-weight: 800; line-height: 1.1; margin: 10px 0 5px; color: #ffffff; }
+h1 span { background: linear-gradient(90deg, #ff4a4a, #ff8a4a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-h1 span { 
-  background: linear-gradient(90deg, #ff4a4a, #ff8a4a); 
-  -webkit-background-clip: text; 
-  -webkit-text-fill-color: transparent; 
-}
-
-.step-one {
-  font-weight: 800; font-size: 14px; color: #ff4a4a; letter-spacing: 2px;
-  margin-bottom: 12px; text-transform: uppercase;
-}
-
+.step-one { font-weight: 800; font-size: 14px; color: #ff4a4a; letter-spacing: 2px; margin-bottom: 12px; text-transform: uppercase; }
 .subtitle { color: #94a3b8; line-height: 1.6; margin-bottom: 28px; font-size: 15px; font-weight: 400; }
 
-label { 
-  display: block; font-size: 13px; font-weight: 700; color: #cbd5e1; 
-  margin: 16px 0 8px; letter-spacing: 0.5px; text-align: left;
-}
+/* =========================================
+   4. FORM ELEMENTS
+   ========================================= */
+label { display: block; font-size: 13px; font-weight: 700; color: #cbd5e1; margin: 16px 0 8px; letter-spacing: 0.5px; text-align: left; }
 
 input {
-  width: 100%; padding: 16px; border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.3); color: #fff;
-  outline: none; font-size: 15px; font-family: inherit; transition: all 0.3s ease;
+  width: 100%; padding: 16px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.4); color: #fff; outline: none; font-size: 15px; transition: all 0.3s ease;
 }
+input:focus { border-color: #ff4a4a; background: rgba(255, 74, 74, 0.03); box-shadow: 0 0 0 4px rgba(255, 74, 74, 0.1); }
 
-input:focus {
-  border-color: #ff4a4a;
-  background: rgba(255, 74, 74, 0.03);
-  box-shadow: 0 0 0 4px rgba(255, 74, 74, 0.1);
-}
+.error-msg { color: #ff4a4a; font-size: 12px; margin-top: 5px; display: none; font-weight: 600; }
+.input-error { border-color: #ff4a4a !important; }
+.input-success { border-color: #22c55e !important; }
 
-/* FILE UPLOAD BUTTON STYLE */
 input[type="file"] { padding: 10px; }
 input[type="file"]::file-selector-button {
   background: linear-gradient(90deg, #ff4a4a, #ff8a4a); border: none; padding: 10px 18px;
-  border-radius: 10px; color: #fff; font-weight: 800; cursor: pointer; margin-right: 15px;
-  font-family: inherit; transition: all 0.3s ease;
+  border-radius: 10px; color: #fff; font-weight: 800; cursor: pointer; margin-right: 15px; transition: all 0.3s ease;
 }
-input[type="file"]::file-selector-button:hover { box-shadow: 0 0 15px rgba(255, 74, 74, 0.5); transform: scale(1.02); }
+input[type="file"]:disabled::file-selector-button {
+  background: #334155; cursor: not-allowed; color: #94a3b8;
+}
 
-button[type="submit"], #confirmBtn, #doneBtn {
+button {
   width: 100%; margin-top: 28px; padding: 16px; border: 0; border-radius: 14px;
   background: linear-gradient(135deg, #ff3333 0%, #ff6b3d 100%);
   color: #fff; font-weight: 700; cursor: pointer; font-size: 16px; letter-spacing: 0.5px;
-  box-shadow: 0 12px 24px rgba(255, 51, 51, 0.25); transition: all 0.3s ease; font-family: inherit;
+  box-shadow: 0 12px 24px rgba(255, 51, 51, 0.25); transition: all 0.3s ease;
 }
+button:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(255, 51, 51, 0.4); }
+button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; color: #94a3b8; transform: none; }
 
-#confirmBtn:disabled {
-  background: #334155;
-  box-shadow: none;
-  cursor: not-allowed;
-  color: #94a3b8;
-}
-
-#doneBtn {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  box-shadow: 0 12px 24px rgba(34, 197, 94, 0.25);
-}
-
-button[type="submit"]:hover, #confirmBtn:not(:disabled):hover, #doneBtn:hover { 
-  transform: translateY(-2px); 
-}
-
+/* =========================================
+   5. PROGRESS BAR & MODALS
+   ========================================= */
 .progress-wrap { display: none; margin-top: 25px; }
 .progress-top { display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; margin-bottom: 9px; font-weight: 600; }
 .bar { height: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
 .fill { height: 100%; width: 0; background: linear-gradient(90deg, #ff3333, #ff9a3d); transition: width 0.6s ease; box-shadow: 0 0 10px rgba(255, 51, 51, 0.5); }
-.status { font-size: 13px; color: #94a3b8; margin-top: 9px; font-weight: 600; }
-
-.note { font-size: 12px; color: #64748b; margin-top: 20px; text-align: center; font-weight: 600; }
 
 .modal-bg {
   display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); 
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  align-items: center; justify-content: center; padding: 20px; z-index: 5;
+  align-items: center; justify-content: center; padding: 20px; z-index: 100; opacity: 0; transition: opacity 0.3s ease;
 }
-
 .modal {
-  width: min(430px, 100%); background: #0f111a; 
-  border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px;
-  padding: 30px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8); text-align: center;
+  width: min(430px, 100%); background: #0f111a; border: 1px solid rgba(255, 255, 255, 0.08); 
+  border-radius: 24px; padding: 30px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8); text-align: center;
+  transform: scale(0.9); transition: transform 0.3s ease;
 }
-
+.modal.show { transform: scale(1); }
 .modal h2 { font-size: 24px; margin-bottom: 12px; font-weight: 800; color: #fff; }
 .modal p { color: #94a3b8; line-height: 1.6; font-size: 14px; margin-bottom: 24px; }
 
 .socials { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
-.socials a {
-  text-decoration: none; color: #fff; padding: 15px; border-radius: 14px; 
-  font-weight: 700; display: block; font-size: 15px; transition: transform 0.2s ease;
-}
+.socials a { text-decoration: none; color: #fff; padding: 15px; border-radius: 14px; font-weight: 700; display: block; font-size: 15px; transition: transform 0.2s ease; cursor: pointer; }
 .socials a:hover { transform: scale(1.02); }
-
 .tg { background: linear-gradient(135deg, #168dcc, #28a5e8); box-shadow: 0 8px 16px rgba(22, 141, 204, 0.2); }
 .ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2); }
 
-.ss-upload {
-  background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.15);
-  margin-top: -5px; padding: 10px; border-radius: 12px; margin-bottom: 5px;
+.ss-upload { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.15); margin-top: -5px; padding: 10px; border-radius: 12px; margin-bottom: 5px; transition: opacity 0.3s ease; }
+
+/* =========================================
+   6. FAQ SECTION & FOOTER
+   ========================================= */
+.faq-section { width: min(520px, 100%); margin-bottom: 40px; animation: fadeInUp 1s ease-out; }
+.faq-section h3 { color: #fff; font-size: 20px; margin-bottom: 15px; font-weight: 700; text-align: center; }
+.faq-item {
+  background: rgba(16, 18, 27, 0.6); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px; margin-bottom: 10px; padding: 15px; cursor: pointer; transition: all 0.3s;
+}
+.faq-item:hover { background: rgba(255, 255, 255, 0.05); }
+.faq-question { font-size: 14px; font-weight: 700; color: #e2e8f0; display: flex; justify-content: space-between; }
+.faq-answer { font-size: 13px; color: #94a3b8; margin-top: 10px; display: none; line-height: 1.5; }
+
+footer { text-align: center; color: #64748b; font-size: 12px; padding-bottom: 20px; }
+footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
+
+/* =========================================
+   7. DASHBOARD (PERSONAL TIMER ONLY)
+   ========================================= */
+.dashboard-container {
+  display: none; width: min(550px, 100%); 
+  animation: fadeInUp 0.8s ease-out;
+}
+.dash-card {
+  background: rgba(16, 18, 27, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 35px;
+  box-shadow: 0 0 25px rgba(0, 174, 255, 0.2); text-align: center;
+}
+.live-timer-header {
+  background: rgba(0, 0, 0, 0.4); padding: 30px 20px; border-radius: 14px;
+  border: 1px dashed #eccc68;
 }
 </style>
 </head>
 <body>
 
-<main class="card">
-  <div class="logo">Apex Carnage Live</div>
-  <h1>Free Fire <span>ID Unban</span></h1>
-  <div class="step-one">STEP 1</div>
-  <p class="subtitle">Due to high server traffic, your account's <b>unban process</b> is currently in progress and may take a few days. Please be patient. Thank you for staying connected with the <b>Apex channel</b>!</p>
+<canvas id="canvas-bg"></canvas>
 
-  <form id="unbanForm">
-    <label for="uid">Free Fire UID</label>
-    <input id="uid" name="uid" type="text" inputmode="numeric" maxlength="11" minlength="11" placeholder="Enter exactly 11 digit UID" required>
+<div class="main-wrapper">
+  <!-- MAIN FORM CARD -->
+  <main class="card" id="mainFormCard">
+    <div class="logo">Apex Carnage Live</div>
+    <h1>Free Fire <span>ID Unban</span></h1>
+    <div class="step-one">STEP 1</div>
+    <p class="subtitle">Due to high server traffic, your account's <b>unban process</b> is currently in progress. Please fill details correctly.</p>
 
-    <label for="banDate">Account banned date</label>
-    <input id="banDate" name="banDate" type="date" required>
+    <form id="unbanForm">
+      <label for="uid">Free Fire UID</label>
+      <input id="uid" name="uid" type="text" inputmode="numeric" maxlength="11" placeholder="Enter exactly 11 digit UID" required>
+      <div id="uidError" class="error-msg">UID must be exactly 11 digits.</div>
 
-    <label for="banScreenshot">Upload banned ID screenshot</label>
-    <input id="banScreenshot" name="banScreenshot" type="file" accept="image/*" required>
+      <label for="banDate">Account banned date</label>
+      <input id="banDate" name="banDate" type="date" required>
 
-    <button type="submit">Submit</button>
-  </form>
+      <label for="banScreenshot">Upload banned ID screenshot (Mockup)</label>
+      <input id="banScreenshot" name="banScreenshot" type="file" accept="image/*" required>
 
-  <section class="progress-wrap" id="progressWrap">
-    <div class="progress-top"><span id="progressLabel">Checking request…</span><b id="percent">0%</b></div>
-    <div class="bar"><div class="fill" id="fill"></div></div>
-    <div class="status">Please keep this page open.</div>
-  </section>
+      <button type="submit" id="submitBtn">Submit Request</button>
+    </form>
 
-  <div class="note">🔒 Secure Interface • We will never ask for your Garena password or login credentials. Your privacy is 100% protected.</div>
-</main>
+    <section class="progress-wrap" id="progressWrap">
+      <div class="progress-top"><span id="progressLabel">Initializing…</span><b id="percent">0%</b></div>
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="status">Please keep this page open.</div>
+    </section>
+  </main>
+
+  <div class="faq-section" id="faqSection">
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">How long does the unban take? <span>+</span></div>
+      <div class="faq-answer">Usually, it takes about 3 to 7 working days for the system to process the verification and appeal to Garena servers.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Is my account safe? <span>+</span></div>
+      <div class="faq-answer">Yes! We never ask for your password. The entire process is done via your UID and standard community verification.</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD (ONLY TIMER SHOWS HERE) -->
+  <div class="dashboard-container" id="dashboardContainer">
+    <div class="dash-card">
+      <h2 style="color: #fff; margin-bottom: 25px;">Live Unban Database</h2>
+      
+      <div class="live-timer-header">
+          <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 16px;">Your ban UID: <br><strong id="myUid" style="color: #fff; font-family: monospace; font-size: 22px; display: inline-block; margin-top: 5px;"></strong></p>
+          <div id="myLiveTimer" style="color: #eccc68; font-size: 26px; font-weight: bold; letter-spacing: 1px;">Calculating...</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Apex Carnage Live. All Rights Reserved.</p>
+    <p style="margin-top: 5px;">Secured by Firebase • <a href="#" onclick="alert('Privacy Policy: We do not share your data with 3rd parties.')">Privacy Policy</a></p>
+  </footer>
+</div>
 
 <!-- SOCIAL VERIFICATION MODAL -->
 <div class="modal-bg" id="modalBg">
-  <div class="modal">
-    <h2>Step 2: Complete Community Step</h2>
-    <p>Follow the official channels below, then upload the screenshots to confirm.</p>
+  <div class="modal" id="modalBox">
+    <h2>Step 2: Community Verification</h2>
+    <p>Follow the official channels below to prove you are human, then upload the screenshots.</p>
     
     <div class="socials">
-      <a class="tg" href="https://t.me/+GJ738f9FKc5mOWRl" target="_blank" rel="noopener">Follow on Telegram</a>
-      <div class="ss-upload">
-        <label style="margin: 0 0 8px; font-size: 12px; color: #168dcc;">Upload Telegram Join Screenshot</label>
-        <input type="file" id="tgScreenshot" accept="image/*" style="padding: 8px;">
+      <!-- Telegram Section -->
+      <a class="tg" id="tgLink" href="https://t.me/+GJ738f9FKc5mOWRl" target="_blank" rel="noopener">1. Follow on Telegram</a>
+      <div class="ss-upload" id="tgUploadWrapper" style="opacity: 0.5; pointer-events: none;">
+        <label style="margin: 0 0 8px; font-size: 12px; color: #168dcc;">Upload Telegram Screenshot</label>
+        <input type="file" id="tgScreenshot" accept="image/*" disabled>
       </div>
 
-      <a class="ig" href="https://www.instagram.com/apex.carnage.live?stkn=MWZtM3RxdXMwbTR2eg==" target="_blank" rel="noopener">Follow on Instagram</a>
-      <div class="ss-upload">
-        <label style="margin: 0 0 8px; font-size: 12px; color: #e6683c;">Upload Instagram Subscribe Screenshot</label>
-        <input type="file" id="igScreenshot" accept="image/*" style="padding: 8px;">
+      <!-- Instagram Section -->
+      <a class="ig" id="igLink" href="https://www.instagram.com/apex.carnage.live?stkn=MWZtM3RxdXMwbTR2eg==" target="_blank" rel="noopener">2. Follow on Instagram</a>
+      <div class="ss-upload" id="igUploadWrapper" style="opacity: 0.5; pointer-events: none;">
+        <label style="margin: 0 0 8px; font-size: 12px; color: #e6683c;">Upload Instagram Screenshot</label>
+        <input type="file" id="igScreenshot" accept="image/*" disabled>
       </div>
     </div>
     
@@ -205,101 +261,296 @@ button[type="submit"]:hover, #confirmBtn:not(:disabled):hover, #doneBtn:hover {
 
 <!-- SUCCESS MESSAGE MODAL -->
 <div class="modal-bg" id="successModalBg">
-  <div class="modal" style="border: 2px solid rgba(34, 197, 94, 0.4); box-shadow: 0 20px 60px rgba(34, 197, 94, 0.25);">
-    <p style="color: #94a3b8; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px;">Complete your verification</p>
+  <div class="modal" id="successBox" style="border: 2px solid rgba(34, 197, 94, 0.4); box-shadow: 0 20px 60px rgba(34, 197, 94, 0.25);">
+    <p style="color: #94a3b8; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 15px;">Verification Complete</p>
     <div style="font-size: 55px; margin-bottom: 10px;">✅</div>
     <h2 style="color: #22c55e;">Request Received</h2>
-    <p style="color: #e2e8f0;">Thanks for joining Apex Carnage Unban Official!<br><br>You will receive an update regarding your ID unban within 7 days.</p>
-    <button id="doneBtn">Done</button>
+    <p style="color: #e2e8f0;">Thanks for joining Apex Carnage Unban Official!<br><br>Your data has been securely saved to the database. You will receive an update soon.</p>
+    <button id="doneBtn" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">Done</button>
   </div>
 </div>
 
-<script>
-  // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+<!-- FIREBASE SDKS -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBIYNfbFbnUPf_xFu3v-v7AXJyYIjXHxQM",
-  authDomain: "jixmod9.firebaseapp.com",
-  databaseURL: "https://jixmod9-default-rtdb.firebaseio.com",
-  projectId: "jixmod9",
-  storageBucket: "jixmod9.firebasestorage.app",
-  messagingSenderId: "74000393733",
-  appId: "1:74000393733:web:39c5518359a4a957335e6c",
-  measurementId: "G-YL8W15HTGZ"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyBIYNfbFbnUPf_xFu3v-v7AXJyYIjXHxQM",
+    authDomain: "jixmod9.firebaseapp.com",
+    databaseURL: "https://jixmod9-default-rtdb.firebaseio.com",
+    projectId: "jixmod9",
+    storageBucket: "jixmod9.firebasestorage.app",
+    messagingSenderId: "74000393733",
+    appId: "1:74000393733:web:39c5518359a4a957335e6c"
+  };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const form = document.getElementById('unbanForm');
-const wrap = document.getElementById('progressWrap');
-const fill = document.getElementById('fill');
-const percent = document.getElementById('percent');
-const label = document.getElementById('progressLabel');
-const modal = document.getElementById('modalBg');
-const successModal = document.getElementById('successModalBg');
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-const tgScreenshot = document.getElementById('tgScreenshot');
-const igScreenshot = document.getElementById('igScreenshot');
-const confirmBtn = document.getElementById('confirmBtn');
+  // DOM Elements
+  const form = document.getElementById('unbanForm');
+  const uidInput = document.getElementById('uid');
+  const uidError = document.getElementById('uidError');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  const wrap = document.getElementById('progressWrap');
+  const fill = document.getElementById('fill');
+  const percent = document.getElementById('percent');
+  const label = document.getElementById('progressLabel');
+  
+  const modal = document.getElementById('modalBg');
+  const modalBox = document.getElementById('modalBox');
+  const successModal = document.getElementById('successModalBg');
+  const successBox = document.getElementById('successBox');
 
-function setProgress(value,text){
-  fill.style.width=value+'%';
-  percent.textContent=value+'%';
-  label.textContent=text;
-}
+  const tgScreenshot = document.getElementById('tgScreenshot');
+  const igScreenshot = document.getElementById('igScreenshot');
+  const confirmBtn = document.getElementById('confirmBtn');
+  
+  // Link Clicks Enabler Logic
+  document.getElementById('tgLink').addEventListener('click', () => {
+    document.getElementById('tgUploadWrapper').style.opacity = '1';
+    document.getElementById('tgUploadWrapper').style.pointerEvents = 'auto';
+    tgScreenshot.disabled = false;
+  });
 
-// SCREENSHOT VERIFICATION LOGIC
-function checkScreenshots() {
-  if (tgScreenshot.files.length > 0 && igScreenshot.files.length > 0) {
-    confirmBtn.disabled = false;
-  } else {
+  document.getElementById('igLink').addEventListener('click', () => {
+    document.getElementById('igUploadWrapper').style.opacity = '1';
+    document.getElementById('igUploadWrapper').style.pointerEvents = 'auto';
+    igScreenshot.disabled = false;
+  });
+
+  // Dashboard Variables
+  let currentUserData = null;
+  let mainTimerInterval = null;
+
+  uidInput.addEventListener('input', () => {
+    const regex = /^\d{0,11}$/;
+    if (!regex.test(uidInput.value)) {
+      uidInput.value = uidInput.value.replace(/\D/g, ''); 
+    }
+    if (uidInput.value.length === 11) {
+      uidInput.classList.add('input-success');
+      uidInput.classList.remove('input-error');
+      uidError.style.display = 'none';
+    } else {
+      uidInput.classList.remove('input-success');
+    }
+  });
+
+  function setProgress(value, text) {
+    fill.style.width = value + '%';
+    percent.textContent = value + '%';
+    label.textContent = text;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (uidInput.value.length !== 11) {
+      uidInput.classList.add('input-error');
+      uidError.style.display = 'block';
+      return;
+    }
+    
+    submitBtn.style.display = 'none';
+    wrap.style.display = 'block';
+    
+    setProgress(15, 'Encrypting data…');
+    setTimeout(() => setProgress(45, 'Connecting to servers…'), 800);
+    setTimeout(() => {
+      setProgress(75, 'Awaiting social verification…');
+      openModal(modal, modalBox);
+    }, 1800);
+  });
+
+  function checkScreenshots() {
+    if (tgScreenshot.files.length > 0 && igScreenshot.files.length > 0) {
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = "Verify & Submit";
+    } else {
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = "I've followed — Continue";
+    }
+  }
+  tgScreenshot.addEventListener('change', checkScreenshots);
+  igScreenshot.addEventListener('change', checkScreenshots);
+
+  /* --- TIMER LOGIC --- */
+  function calculateDays(subNo) {
+      let extra = Math.floor((subNo - 501) / 100);
+      return 7 + (extra > 0 ? extra : 0);
+  }
+
+  function maskUID(uid) {
+      return (uid && uid.length > 3) ? uid.slice(0, -3) + "***" : uid;
+  }
+
+  function startMyTimer(data) {
+      const myLiveTimer = document.getElementById('myLiveTimer');
+      const totalDays = calculateDays(data.subNo);
+      const unbanDate = data.timestampMs + (totalDays * 24 * 60 * 60 * 1000);
+
+      if(mainTimerInterval) clearInterval(mainTimerInterval);
+
+      mainTimerInterval = setInterval(() => {
+          const now = new Date().getTime();
+          const distance = unbanDate - now;
+
+          if (distance < 0) {
+              clearInterval(mainTimerInterval);
+              myLiveTimer.innerHTML = "STATUS: UNBANNED! ✅";
+          } else {
+              const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+              const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              const s = Math.floor((distance % (1000 * 60)) / 1000);
+              myLiveTimer.innerHTML = `${d} Days ${h} Hrs ${m} Min ${s} Sec`;
+          }
+      }, 1000);
+  }
+  
+  // Submit to Firestore
+  confirmBtn.addEventListener('click', async () => {
     confirmBtn.disabled = true;
+    confirmBtn.textContent = "Uploading to Database...";
+    const uidVal = uidInput.value;
+
+    try {
+      const unbanRef = collection(db, "unban");
+      const qExist = query(unbanRef, where("UID", "==", uidVal));
+      const existSnap = await getDocs(qExist);
+
+      if (!existSnap.empty) {
+          currentUserData = existSnap.docs[0].data();
+      } else {
+          const allSnap = await getDocs(query(unbanRef, orderBy("subNo", "desc")));
+          let maxSubNo = 500;
+          if (!allSnap.empty && allSnap.docs[0].data().subNo) {
+              maxSubNo = allSnap.docs[0].data().subNo;
+          }
+
+          const newSubNo = maxSubNo + 1;
+          const nowMs = new Date().getTime();
+
+          const newData = {
+            UID: uidVal,
+            BanDate: document.getElementById('banDate').value,
+            TelegramJoinScreenshot: tgScreenshot.files[0] ? tgScreenshot.files[0].name : "No file",
+            InstagramSubscribeScreenshot: igScreenshot.files[0] ? igScreenshot.files[0].name : "No file",
+            Timestamp: serverTimestamp(),
+            timestampMs: nowMs,
+            subNo: newSubNo
+          };
+
+          await addDoc(unbanRef, newData);
+          currentUserData = newData;
+      }
+
+      closeModal(modal);
+      setProgress(100, 'Data Saved Successfully!');
+      setTimeout(() => openModal(successModal, successBox), 800);
+
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("Database error! Check console.");
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = "Verify & Submit";
+    }
+  });
+
+  // Reveal Personal Timer Dashboard
+  document.getElementById('doneBtn').addEventListener('click', () => {
+    closeModal(successModal);
+    
+    document.getElementById('mainFormCard').style.display = 'none';
+    document.getElementById('faqSection').style.display = 'none';
+    document.getElementById('dashboardContainer').style.display = 'block';
+    
+    document.getElementById('myUid').innerText = maskUID(currentUserData.UID);
+    startMyTimer(currentUserData);
+  });
+
+  function openModal(bg, box) {
+    bg.style.display = 'flex';
+    setTimeout(() => { bg.style.opacity = '1'; box.classList.add('show'); }, 10);
   }
-}
+  function closeModal(bg) {
+    bg.style.opacity = '0';
+    setTimeout(() => { bg.style.display = 'none'; }, 300);
+  }
+</script>
 
-tgScreenshot.addEventListener('change', checkScreenshots);
-igScreenshot.addEventListener('change', checkScreenshots);
-
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  
-  const uidInput = document.getElementById('uid').value.trim();
-  const uidRegex = /^\d{11}$/; 
-  
-  if (!uidRegex.test(uidInput)) {
-    alert("❌ Wrong UID! Please enter exactly 11 digits (numbers only).");
-    return; 
+<script>
+  function toggleFaq(element) {
+    const answer = element.querySelector('.faq-answer');
+    const symbol = element.querySelector('.faq-question span');
+    if (answer.style.display === 'block') {
+      answer.style.display = 'none';
+      symbol.textContent = '+';
+    } else {
+      answer.style.display = 'block';
+      symbol.textContent = '-';
+    }
   }
 
-  wrap.style.display='block';
-  setProgress(10,'Validating request…');
+  const canvas = document.getElementById('canvas-bg');
+  const ctx = canvas.getContext('2d');
+  let particlesArray;
 
-  setTimeout(()=>setProgress(30,'Checking submitted details…'),700);
-  setTimeout(()=>setProgress(50,'Community verification required…'),1400);
-  setTimeout(()=>modal.style.display='flex',1700);
-});
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
-confirmBtn.addEventListener('click', () => {
-  modal.style.display='none';
-  setProgress(70,'Continuing request…');
-  setTimeout(()=>setProgress(90,'Finalizing status…'),700);
-  setTimeout(()=>{
-    setProgress(100,'Request completed');
-    successModal.style.display='flex'; 
-  },1400);
-});
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init();
+  });
 
-document.getElementById('doneBtn').addEventListener('click', () => {
-    successModal.style.display='none';
-    window.location.reload(); 
-});
+  class Particle {
+    constructor(x, y, directionX, directionY, size, color) {
+      this.x = x; this.y = y;
+      this.directionX = directionX; this.directionY = directionY;
+      this.size = size; this.color = color;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+    update() {
+      if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
+      if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
+      this.x += this.directionX;
+      this.y += this.directionY;
+      this.draw();
+    }
+  }
+
+  function init() {
+    particlesArray = [];
+    let numberOfParticles = (canvas.height * canvas.width) / 12000;
+    for (let i = 0; i < numberOfParticles; i++) {
+      let size = (Math.random() * 2) + 0.5;
+      let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+      let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+      let directionX = (Math.random() * 1) - 0.5;
+      let directionY = (Math.random() * 1) - 0.5;
+      let color = 'rgba(255, 74, 74, 0.4)'; 
+      particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+    }
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = 0; i < particlesArray.length; i++) {
+      particlesArray[i].update();
+    }
+  }
+  init();
+  animate();
 </script>
 </body>
 </html>
