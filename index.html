@@ -225,12 +225,20 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/apexsongnew%20.wav" type="audio/wav">
 </audio>
 
+<!-- ERROR & END VOICE SMS -->
+<audio id="errorAudio" preload="auto">
+  <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/errorsms.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="endAudio" preload="auto">
+  <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/endsms.mp3" type="audio/mpeg">
+</audio>
+
 <canvas id="canvas-bg"></canvas>
 
 <div class="main-wrapper" id="mainWrapper">
   <!-- MAIN FORM CARD -->
   <main class="card" id="mainFormCard">
-    <!-- LOGO WITH WAVE RIPPLES -->
     <div class="profile-logo-wrap">
       <div class="wave-ring"></div>
       <div class="wave-ring"></div>
@@ -275,7 +283,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     </div>
   </div>
 
-  <!-- DASHBOARD (ONLY TIMER SHOWS HERE) -->
+  <!-- DASHBOARD -->
   <div class="dashboard-container" id="dashboardContainer">
     <div class="dash-card">
       <h2 style="color: #fff; margin-bottom: 25px;">Live Unban Database</h2>
@@ -364,7 +372,22 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   const tgScreenshot = document.getElementById('tgScreenshot');
   const igScreenshot = document.getElementById('igScreenshot');
   const confirmBtn = document.getElementById('confirmBtn');
-  
+
+  // AUDIO REFERENCES
+  const bgSongAudio = document.getElementById('bgSongAudio');
+  const errorAudio = document.getElementById('errorAudio');
+  const endAudio = document.getElementById('endAudio');
+  const welcomeAudio = document.getElementById('welcomeAudio');
+
+  // Helper to safely stop other sounds
+  function silenceAllExcept(keepAudio) {
+    [welcomeAudio, bgSongAudio, errorAudio, endAudio].forEach(audio => {
+      if (audio !== keepAudio && !audio.paused) {
+        audio.pause();
+      }
+    });
+  }
+
   document.getElementById('tgLink').addEventListener('click', () => {
     document.getElementById('tgUploadWrapper').style.opacity = '1';
     document.getElementById('tgUploadWrapper').style.pointerEvents = 'auto';
@@ -410,15 +433,44 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     startMyTimer(data);
   }
 
-  // Form Submit: Direct timer redirect if UID already exists
+  // FORM SUBMISSION & AUDIO TOGGLING
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // 1. INVALID UID: PLAY ERROR SMS & COMPLETELY PAUSE BGM
     if (uidInput.value.length !== 11) {
       uidInput.classList.add('input-error');
       uidError.style.display = 'block';
+
+      // Silence everything else completely
+      silenceAllExcept(errorAudio);
+
+      // Play Error SMS
+      errorAudio.currentTime = 0;
+      errorAudio.play().catch(e => console.log('Error audio blocked:', e));
+
+      // Error SMS bolna khatam hone ke baad 2 second wait karke gaana fir shuru se chalega
+      errorAudio.onended = () => {
+        setTimeout(() => {
+          bgSongAudio.currentTime = 0;
+          bgSongAudio.volume = 0.6;
+          bgSongAudio.play().catch(e => console.log('BGM resume blocked:', e));
+        }, 2000);
+      };
       return;
     }
     
+    // 2. VALID UID: STOP BGM, PLAY END SMS
+    silenceAllExcept(endAudio);
+    endAudio.currentTime = 0;
+    endAudio.play().catch(e => console.log('End audio blocked:', e));
+
+    // End voice khatam hote hi BGM resume
+    endAudio.onended = () => {
+      bgSongAudio.volume = 0.6;
+      bgSongAudio.play().catch(e => console.log('BGM resume blocked:', e));
+    };
+
     const uidVal = uidInput.value;
     submitBtn.style.display = 'none';
     wrap.style.display = 'block';
@@ -465,9 +517,11 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   tgScreenshot.addEventListener('change', checkScreenshots);
   igScreenshot.addEventListener('change', checkScreenshots);
 
+  // Maximum 10 Days
   function calculateDays(subNo) {
       let extra = Math.floor((subNo - 501) / 100);
-      return 7 + (extra > 0 ? extra : 0);
+      let calculatedDays = 7 + (extra > 0 ? extra : 0);
+      return Math.min(calculatedDays, 10);
   }
 
   function maskUID(uid) {
@@ -562,7 +616,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   }
 </script>
 
-<!-- BULLETPROOF AUDIO SEQUENCE -->
+<!-- INITIAL AUDIO FLOW -->
 <script>
   const welcomeAudio = document.getElementById('welcomeAudio');
   const bgSongAudio = document.getElementById('bgSongAudio');
@@ -583,15 +637,12 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
         };
       }).catch(err => {
         console.log('Autoplay block:', err);
-        audioStarted = false; // Next tap par allow karne ke liye
+        audioStarted = false;
       });
     }
   }
 
-  // Page load hote hi try karega
   window.addEventListener('load', startAudioFlow);
-
-  // Mobile Chrome policy: Screen par tap ya UID box focus karte hi start hoga
   document.addEventListener('click', startAudioFlow, { once: true });
   document.addEventListener('touchstart', startAudioFlow, { once: true });
   document.getElementById('uid').addEventListener('focus', startAudioFlow, { once: true });
