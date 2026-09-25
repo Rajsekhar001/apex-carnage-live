@@ -38,7 +38,7 @@ body {
 }
 
 /* =========================================
-   2. ANIMATIONS & PROFILE LOGO
+   2. ANIMATIONS & PROFILE LOGO WITH WAVE
    ========================================= */
 @keyframes nanoGlow {
   0% { box-shadow: 0 0 25px rgba(255, 74, 74, 0.5), inset 0 0 10px rgba(255, 74, 74, 0.1); border-color: rgba(255, 74, 74, 0.5); }
@@ -51,10 +51,36 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Logo Wave Ripple Effect */
+@keyframes waveRipple {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  50% { transform: scale(1.25); opacity: 0.4; border-color: #00aeff; }
+  100% { transform: scale(1.4); opacity: 0; border-color: #ff4a4a; }
+}
+
 .profile-logo-wrap {
+  position: relative;
   display: flex;
   justify-content: center;
-  margin-bottom: 18px;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 105px;
+  height: 105px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wave-ring {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2px solid #ff4a4a;
+  border-radius: 50%;
+  animation: waveRipple 2.2s infinite cubic-bezier(0.2, 0.6, 0.35, 1);
+  pointer-events: none;
+}
+
+.wave-ring:nth-child(2) {
+  animation-delay: 0.8s;
 }
 
 .profile-img {
@@ -63,8 +89,10 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ff4a4a;
-  box-shadow: 0 0 20px rgba(255, 74, 74, 0.6);
+  box-shadow: 0 0 20px rgba(255, 74, 74, 0.7);
   display: block;
+  z-index: 2;
+  position: relative;
 }
 
 /* =========================================
@@ -194,16 +222,18 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 </audio>
 
 <audio id="bgSongAudio" preload="auto" loop>
-  <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/apexsong99.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/apexsongnew%20.wav" type="audio/wav">
 </audio>
 
 <canvas id="canvas-bg"></canvas>
 
-<div class="main-wrapper">
+<div class="main-wrapper" id="mainWrapper">
   <!-- MAIN FORM CARD -->
   <main class="card" id="mainFormCard">
-    <!-- NEW LOGO URL -->
+    <!-- LOGO WITH WAVE RIPPLES -->
     <div class="profile-logo-wrap">
+      <div class="wave-ring"></div>
+      <div class="wave-ring"></div>
       <img src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/refs/heads/main/62455-100kb.jpeg" alt="Apex Carnage Live" class="profile-img">
     </div>
 
@@ -270,14 +300,12 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     <p>Follow the official channels below to prove you are human, then upload the screenshots.</p>
     
     <div class="socials">
-      <!-- Telegram Section -->
       <a class="tg" id="tgLink" href="https://t.me/+GJ738f9FKc5mOWRl" target="_blank" rel="noopener">1. Follow on Telegram</a>
       <div class="ss-upload" id="tgUploadWrapper" style="opacity: 0.5; pointer-events: none;">
         <label style="margin: 0 0 8px; font-size: 12px; color: #168dcc;">Upload Telegram Screenshot</label>
         <input type="file" id="tgScreenshot" accept="image/*" disabled>
       </div>
 
-      <!-- Instagram Section -->
       <a class="ig" id="igLink" href="https://www.instagram.com/apex.carnage.live?stkn=MWZtM3RxdXMwbTR2eg==" target="_blank" rel="noopener">2. Follow on Instagram</a>
       <div class="ss-upload" id="igUploadWrapper" style="opacity: 0.5; pointer-events: none;">
         <label style="margin: 0 0 8px; font-size: 12px; color: #e6683c;">Upload Instagram Screenshot</label>
@@ -318,7 +346,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // DOM Elements
   const form = document.getElementById('unbanForm');
   const uidInput = document.getElementById('uid');
   const uidError = document.getElementById('uidError');
@@ -338,7 +365,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   const igScreenshot = document.getElementById('igScreenshot');
   const confirmBtn = document.getElementById('confirmBtn');
   
-  // Link Clicks Enabler Logic
   document.getElementById('tgLink').addEventListener('click', () => {
     document.getElementById('tgUploadWrapper').style.opacity = '1';
     document.getElementById('tgUploadWrapper').style.pointerEvents = 'auto';
@@ -351,7 +377,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     igScreenshot.disabled = false;
   });
 
-  // Dashboard Variables
   let currentUserData = null;
   let mainTimerInterval = null;
 
@@ -385,7 +410,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     startMyTimer(data);
   }
 
-  // Form Submit: Checks for existing UID in database before asking verification
+  // Form Submit: Direct timer redirect if UID already exists
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (uidInput.value.length !== 11) {
@@ -406,14 +431,12 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       const existSnap = await getDocs(qExist);
 
       if (!existSnap.empty) {
-        // UID already registered: skip verification directly to dashboard
         currentUserData = existSnap.docs[0].data();
         setProgress(100, 'Welcome back! Opening status…');
         setTimeout(() => {
           showDashboard(currentUserData);
         }, 600);
       } else {
-        // New user: proceed with normal flow
         setProgress(45, 'Connecting to servers…');
         setTimeout(() => {
           setProgress(75, 'Awaiting social verification…');
@@ -442,7 +465,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   tgScreenshot.addEventListener('change', checkScreenshots);
   igScreenshot.addEventListener('change', checkScreenshots);
 
-  /* --- TIMER LOGIC --- */
   function calculateDays(subNo) {
       let extra = Math.floor((subNo - 501) / 100);
       return 7 + (extra > 0 ? extra : 0);
@@ -477,7 +499,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       }, 1000);
   }
   
-  // Submit to Firestore for new users
   confirmBtn.addEventListener('click', async () => {
     confirmBtn.disabled = true;
     confirmBtn.textContent = "Uploading to Database...";
@@ -526,7 +547,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     }
   });
 
-  // Reveal Personal Timer Dashboard from Success Box
   document.getElementById('doneBtn').addEventListener('click', () => {
     closeModal(successModal);
     showDashboard(currentUserData);
@@ -542,44 +562,42 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   }
 </script>
 
-<!-- AUDIO LOGIC (WELCOME VOICE + BG MUSIC) -->
+<!-- BULLETPROOF AUDIO SEQUENCE -->
 <script>
   const welcomeAudio = document.getElementById('welcomeAudio');
   const bgSongAudio = document.getElementById('bgSongAudio');
   let audioStarted = false;
 
-  function initAudioSequence() {
+  function startAudioFlow() {
     if (audioStarted) return;
     audioStarted = true;
 
-    // Welcome voice play
     welcomeAudio.volume = 1.0;
     const playPromise = welcomeAudio.play();
 
     if (playPromise !== undefined) {
       playPromise.then(() => {
-        // Voice finish hone par background music play hoga
         welcomeAudio.onended = () => {
-          bgSongAudio.volume = 0.5; // BG song thoda soothing volume par
-          bgSongAudio.play().catch(e => console.log('BG Music blocked:', e));
+          bgSongAudio.volume = 0.6;
+          bgSongAudio.play().catch(e => console.log('BGM wait:', e));
         };
       }).catch(err => {
-        console.log('Autoplay restriction:', err);
-        audioStarted = false; // User gesture se retry karne ke liye
+        console.log('Autoplay block:', err);
+        audioStarted = false; // Next tap par allow karne ke liye
       });
     }
   }
 
   // Page load hote hi try karega
-  window.addEventListener('load', () => {
-    initAudioSequence();
-  });
+  window.addEventListener('load', startAudioFlow);
 
-  // Mobile browser autoplay policy bypass: Screen par kahin bhi tap hote hi start ho jayega
-  document.addEventListener('click', initAudioSequence, { once: true });
-  document.addEventListener('touchstart', initAudioSequence, { once: true });
+  // Mobile Chrome policy: Screen par tap ya UID box focus karte hi start hoga
+  document.addEventListener('click', startAudioFlow, { once: true });
+  document.addEventListener('touchstart', startAudioFlow, { once: true });
+  document.getElementById('uid').addEventListener('focus', startAudioFlow, { once: true });
 </script>
 
+<!-- FAQ LOGIC & BACKGROUND CANVAS -->
 <script>
   function toggleFaq(element) {
     const answer = element.querySelector('.faq-answer');
@@ -595,14 +613,17 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 
   const canvas = document.getElementById('canvas-bg');
   const ctx = canvas.getContext('2d');
-  let particlesArray;
+  let particlesArray = [];
+  let waveOffset = 0;
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  window.addEventListener('resize', () => {
+  function setCanvasDimensions() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+  }
+  setCanvasDimensions();
+
+  window.addEventListener('resize', () => {
+    setCanvasDimensions();
     init();
   });
 
@@ -641,9 +662,34 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     }
   }
 
+  function drawWaveEffect() {
+    waveOffset += 0.02;
+    const waveLayers = [
+      { y: canvas.height * 0.88, length: 0.007, amp: 26, color: 'rgba(255, 74, 74, 0.16)' },
+      { y: canvas.height * 0.91, length: 0.005, amp: 32, color: 'rgba(0, 174, 255, 0.14)' },
+      { y: canvas.height * 0.94, length: 0.009, amp: 20, color: 'rgba(255, 138, 74, 0.18)' }
+    ];
+
+    waveLayers.forEach((layer, idx) => {
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
+      for (let x = 0; x <= canvas.width; x += 5) {
+        const y = layer.y + Math.sin(x * layer.length + waveOffset + idx) * layer.amp;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(canvas.width, canvas.height);
+      ctx.closePath();
+      ctx.fillStyle = layer.color;
+      ctx.fill();
+    });
+  }
+
   function animate() {
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+    drawWaveEffect();
+
     for (let i = 0; i < particlesArray.length; i++) {
       particlesArray[i].update();
     }
