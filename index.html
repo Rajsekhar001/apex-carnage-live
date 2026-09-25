@@ -147,7 +147,7 @@ button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; co
 .socials { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
 .socials a { text-decoration: none; color: #fff; padding: 15px; border-radius: 14px; font-weight: 700; display: block; font-size: 15px; transition: transform 0.2s ease; cursor: pointer; }
 .socials a:hover { transform: scale(1.02); }
-.tg { background: linear-gradient(135deg, #168dcc, #28a5e8); box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2); }
+.tg { background: linear-gradient(135deg, #168dcc, #28a5e8); box-shadow: 0 8px 16px rgba(22, 141, 204, 0.2); }
 .ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2); }
 
 .ss-upload { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.15); margin-top: -5px; padding: 10px; border-radius: 12px; margin-bottom: 5px; transition: opacity 0.3s ease; }
@@ -188,14 +188,23 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 </head>
 <body>
 
+<!-- AUDIO PLAYERS -->
+<audio id="welcomeAudio" preload="auto">
+  <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/Wellcome.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="bgSongAudio" preload="auto" loop>
+  <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/apexsong99.wav" type="audio/wav">
+</audio>
+
 <canvas id="canvas-bg"></canvas>
 
 <div class="main-wrapper">
   <!-- MAIN FORM CARD -->
   <main class="card" id="mainFormCard">
-    <!-- PROFILE IMAGE -->
+    <!-- NEW LOGO URL -->
     <div class="profile-logo-wrap">
-      <img src="https://raw.githubusercontent.com/Rajsekhar001/apex.tcp.bot/refs/heads/main/62455-100kb.jpeg" alt="Apex Carnage Live" class="profile-img">
+      <img src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/refs/heads/main/62455-100kb.jpeg" alt="Apex Carnage Live" class="profile-img">
     </div>
 
     <div class="logo">Apex Carnage Live</div>
@@ -413,7 +422,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       }
     } catch (err) {
       console.error("Database check error:", err);
-      // Fallback to normal flow if query fails
       setProgress(45, 'Connecting to servers…');
       setTimeout(() => {
         setProgress(75, 'Awaiting social verification…');
@@ -532,6 +540,44 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     bg.style.opacity = '0';
     setTimeout(() => { bg.style.display = 'none'; }, 300);
   }
+</script>
+
+<!-- AUDIO LOGIC (WELCOME VOICE + BG MUSIC) -->
+<script>
+  const welcomeAudio = document.getElementById('welcomeAudio');
+  const bgSongAudio = document.getElementById('bgSongAudio');
+  let audioStarted = false;
+
+  function initAudioSequence() {
+    if (audioStarted) return;
+    audioStarted = true;
+
+    // Welcome voice play
+    welcomeAudio.volume = 1.0;
+    const playPromise = welcomeAudio.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        // Voice finish hone par background music play hoga
+        welcomeAudio.onended = () => {
+          bgSongAudio.volume = 0.5; // BG song thoda soothing volume par
+          bgSongAudio.play().catch(e => console.log('BG Music blocked:', e));
+        };
+      }).catch(err => {
+        console.log('Autoplay restriction:', err);
+        audioStarted = false; // User gesture se retry karne ke liye
+      });
+    }
+  }
+
+  // Page load hote hi try karega
+  window.addEventListener('load', () => {
+    initAudioSequence();
+  });
+
+  // Mobile browser autoplay policy bypass: Screen par kahin bhi tap hote hi start ho jayega
+  document.addEventListener('click', initAudioSequence, { once: true });
+  document.addEventListener('touchstart', initAudioSequence, { once: true });
 </script>
 
 <script>
