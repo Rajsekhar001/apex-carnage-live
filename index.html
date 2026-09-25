@@ -38,7 +38,7 @@ body {
 }
 
 /* =========================================
-   2. ANIMATIONS
+   2. ANIMATIONS & PROFILE LOGO
    ========================================= */
 @keyframes nanoGlow {
   0% { box-shadow: 0 0 25px rgba(255, 74, 74, 0.5), inset 0 0 10px rgba(255, 74, 74, 0.1); border-color: rgba(255, 74, 74, 0.5); }
@@ -49,6 +49,22 @@ body {
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.profile-img {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ff4a4a;
+  box-shadow: 0 0 20px rgba(255, 74, 74, 0.6);
+  display: block;
 }
 
 /* =========================================
@@ -131,7 +147,7 @@ button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; co
 .socials { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
 .socials a { text-decoration: none; color: #fff; padding: 15px; border-radius: 14px; font-weight: 700; display: block; font-size: 15px; transition: transform 0.2s ease; cursor: pointer; }
 .socials a:hover { transform: scale(1.02); }
-.tg { background: linear-gradient(135deg, #168dcc, #28a5e8); box-shadow: 0 8px 16px rgba(22, 141, 204, 0.2); }
+.tg { background: linear-gradient(135deg, #168dcc, #28a5e8); box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2); }
 .ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2); }
 
 .ss-upload { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.15); margin-top: -5px; padding: 10px; border-radius: 12px; margin-bottom: 5px; transition: opacity 0.3s ease; }
@@ -177,6 +193,11 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 <div class="main-wrapper">
   <!-- MAIN FORM CARD -->
   <main class="card" id="mainFormCard">
+    <!-- PROFILE IMAGE -->
+    <div class="profile-logo-wrap">
+      <img src="https://raw.githubusercontent.com/Rajsekhar001/apex.tcp.bot/refs/heads/main/62455-100kb.jpeg" alt="Apex Carnage Live" class="profile-img">
+    </div>
+
     <div class="logo">Apex Carnage Live</div>
     <h1>Free Fire <span>ID Unban</span></h1>
     <div class="step-one">STEP 1</div>
@@ -261,7 +282,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 
 <!-- SUCCESS MESSAGE MODAL -->
 <div class="modal-bg" id="successModalBg">
-  <div class="modal" id="successBox" style="border: 2px solid rgba(34, 197, 94, 0.4); box-shadow: 0 20px 60px rgba(34, 197, 94, 0.25);">
+  <div class="modal" id="successBox" style="border: 2px solid rgba(34, 197, 94, 0.4); box-shadow: 0 20px 60px rgba(34, 197, 94, 0.25); border-radius: 24px; padding: 30px; text-align: center;">
     <p style="color: #94a3b8; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 15px;">Verification Complete</p>
     <div style="font-size: 55px; margin-bottom: 10px;">✅</div>
     <h2 style="color: #22c55e;">Request Received</h2>
@@ -345,7 +366,18 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     label.textContent = text;
   }
 
-  form.addEventListener('submit', (e) => {
+  function showDashboard(data) {
+    wrap.style.display = 'none';
+    document.getElementById('mainFormCard').style.display = 'none';
+    document.getElementById('faqSection').style.display = 'none';
+    document.getElementById('dashboardContainer').style.display = 'block';
+    
+    document.getElementById('myUid').innerText = maskUID(data.UID);
+    startMyTimer(data);
+  }
+
+  // Form Submit: Checks for existing UID in database before asking verification
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (uidInput.value.length !== 11) {
       uidInput.classList.add('input-error');
@@ -353,15 +385,41 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       return;
     }
     
+    const uidVal = uidInput.value;
     submitBtn.style.display = 'none';
     wrap.style.display = 'block';
     
-    setProgress(15, 'Encrypting data…');
-    setTimeout(() => setProgress(45, 'Connecting to servers…'), 800);
-    setTimeout(() => {
-      setProgress(75, 'Awaiting social verification…');
-      openModal(modal, modalBox);
-    }, 1800);
+    setProgress(20, 'Checking database record…');
+
+    try {
+      const unbanRef = collection(db, "unban");
+      const qExist = query(unbanRef, where("UID", "==", uidVal));
+      const existSnap = await getDocs(qExist);
+
+      if (!existSnap.empty) {
+        // UID already registered: skip verification directly to dashboard
+        currentUserData = existSnap.docs[0].data();
+        setProgress(100, 'Welcome back! Opening status…');
+        setTimeout(() => {
+          showDashboard(currentUserData);
+        }, 600);
+      } else {
+        // New user: proceed with normal flow
+        setProgress(45, 'Connecting to servers…');
+        setTimeout(() => {
+          setProgress(75, 'Awaiting social verification…');
+          openModal(modal, modalBox);
+        }, 1000);
+      }
+    } catch (err) {
+      console.error("Database check error:", err);
+      // Fallback to normal flow if query fails
+      setProgress(45, 'Connecting to servers…');
+      setTimeout(() => {
+        setProgress(75, 'Awaiting social verification…');
+        openModal(modal, modalBox);
+      }, 1000);
+    }
   });
 
   function checkScreenshots() {
@@ -388,8 +446,9 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 
   function startMyTimer(data) {
       const myLiveTimer = document.getElementById('myLiveTimer');
-      const totalDays = calculateDays(data.subNo);
-      const unbanDate = data.timestampMs + (totalDays * 24 * 60 * 60 * 1000);
+      const totalDays = calculateDays(data.subNo || 501);
+      const startTime = data.timestampMs || new Date().getTime();
+      const unbanDate = startTime + (totalDays * 24 * 60 * 60 * 1000);
 
       if(mainTimerInterval) clearInterval(mainTimerInterval);
 
@@ -410,7 +469,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       }, 1000);
   }
   
-  // Submit to Firestore
+  // Submit to Firestore for new users
   confirmBtn.addEventListener('click', async () => {
     confirmBtn.disabled = true;
     confirmBtn.textContent = "Uploading to Database...";
@@ -459,16 +518,10 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     }
   });
 
-  // Reveal Personal Timer Dashboard
+  // Reveal Personal Timer Dashboard from Success Box
   document.getElementById('doneBtn').addEventListener('click', () => {
     closeModal(successModal);
-    
-    document.getElementById('mainFormCard').style.display = 'none';
-    document.getElementById('faqSection').style.display = 'none';
-    document.getElementById('dashboardContainer').style.display = 'block';
-    
-    document.getElementById('myUid').innerText = maskUID(currentUserData.UID);
-    startMyTimer(currentUserData);
+    showDashboard(currentUserData);
   });
 
   function openModal(bg, box) {
