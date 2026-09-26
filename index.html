@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Apex Carnage Live — Free Fire ID Unban</title>
+
+<!-- CLIENT-SIDE OCR ENGINE (NO BACKEND REQUIRED) -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
 <style>
 /* =========================================
    1. GLOBAL STYLES & RESET
@@ -51,7 +55,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Logo Wave Ripple Effect */
 @keyframes waveRipple {
   0% { transform: scale(0.9); opacity: 0.9; }
   50% { transform: scale(1.25); opacity: 0.4; border-color: #00aeff; }
@@ -179,6 +182,16 @@ button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; co
 .ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2); }
 
 .ss-upload { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.15); margin-top: -5px; padding: 10px; border-radius: 12px; margin-bottom: 5px; transition: opacity 0.3s ease; }
+
+.verify-status {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 12px;
+  min-height: 20px;
+}
+.verify-status.scanning { color: #66fcf1; }
+.verify-status.failed { color: #ff4a4a; }
+.verify-status.passed { color: #22c55e; }
 
 /* =========================================
    6. FAQ SECTION & FOOTER
@@ -316,11 +329,12 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 
       <a class="ig" id="igLink" href="https://www.instagram.com/apex.carnage.live?stkn=MWZtM3RxdXMwbTR2eg==" target="_blank" rel="noopener">2. Follow on Instagram</a>
       <div class="ss-upload" id="igUploadWrapper" style="opacity: 0.5; pointer-events: none;">
-        <label style="margin: 0 0 8px; font-size: 12px; color: #e6683c;">Upload Instagram Screenshot</label>
+        <label style="margin: 0 0 8px; font-size: 12px; color: #e6683c;">Upload Instagram Screenshot (Must show "Following")</label>
         <input type="file" id="igScreenshot" accept="image/*" disabled>
       </div>
     </div>
     
+    <div id="verifyStatusText" class="verify-status"></div>
     <button id="confirmBtn" disabled>I've followed — Continue</button>
   </div>
 </div>
@@ -331,7 +345,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     <p style="color: #94a3b8; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 15px;">Verification Complete</p>
     <div style="font-size: 55px; margin-bottom: 10px;">✅</div>
     <h2 style="color: #22c55e;">Request Received</h2>
-    <p style="color: #e2e8f0;">Thanks for joining Apex Carnage Unban Official!<br><br>Your data has been securely saved to the database. You will receive an update soon.</p>
+    <p style="color: #e2e8f0;">Thanks for joining Apex Carnage Unban Official!<br><br>Your data has been securely verified and saved. You will receive an update soon.</p>
     <button id="doneBtn" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">Done</button>
   </div>
 </div>
@@ -372,6 +386,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   const tgScreenshot = document.getElementById('tgScreenshot');
   const igScreenshot = document.getElementById('igScreenshot');
   const confirmBtn = document.getElementById('confirmBtn');
+  const verifyStatusText = document.getElementById('verifyStatusText');
 
   // AUDIO REFERENCES
   const bgSongAudio = document.getElementById('bgSongAudio');
@@ -379,7 +394,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   const endAudio = document.getElementById('endAudio');
   const welcomeAudio = document.getElementById('welcomeAudio');
 
-  // Helper to safely stop other sounds
   function silenceAllExcept(keepAudio) {
     [welcomeAudio, bgSongAudio, errorAudio, endAudio].forEach(audio => {
       if (audio !== keepAudio && !audio.paused) {
@@ -437,19 +451,14 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // 1. INVALID UID: PLAY ERROR SMS & COMPLETELY PAUSE BGM
     if (uidInput.value.length !== 11) {
       uidInput.classList.add('input-error');
       uidError.style.display = 'block';
 
-      // Silence everything else completely
       silenceAllExcept(errorAudio);
-
-      // Play Error SMS
       errorAudio.currentTime = 0;
       errorAudio.play().catch(e => console.log('Error audio blocked:', e));
 
-      // Error SMS bolna khatam hone ke baad 2 second wait karke gaana fir shuru se chalega
       errorAudio.onended = () => {
         setTimeout(() => {
           bgSongAudio.currentTime = 0;
@@ -460,12 +469,10 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       return;
     }
     
-    // 2. VALID UID: STOP BGM, PLAY END SMS
     silenceAllExcept(endAudio);
     endAudio.currentTime = 0;
     endAudio.play().catch(e => console.log('End audio blocked:', e));
 
-    // End voice khatam hote hi BGM resume
     endAudio.onended = () => {
       bgSongAudio.volume = 0.6;
       bgSongAudio.play().catch(e => console.log('BGM resume blocked:', e));
@@ -505,19 +512,25 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     }
   });
 
+  // SCREENSHOT SELECTION STATE HANDLER
   function checkScreenshots() {
     if (tgScreenshot.files.length > 0 && igScreenshot.files.length > 0) {
       confirmBtn.disabled = false;
-      confirmBtn.textContent = "Verify & Submit";
+      confirmBtn.textContent = "I've followed — Continue";
+      verifyStatusText.textContent = "";
+      verifyStatusText.className = "verify-status";
+    } else if (tgScreenshot.files.length > 0 && igScreenshot.files.length === 0) {
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = "Upload Instagram screenshot";
     } else {
       confirmBtn.disabled = true;
-      confirmBtn.textContent = "I've followed — Continue";
+      confirmBtn.textContent = "Upload both screenshots";
     }
   }
+
   tgScreenshot.addEventListener('change', checkScreenshots);
   igScreenshot.addEventListener('change', checkScreenshots);
 
-  // Maximum 10 Days
   function calculateDays(subNo) {
       let extra = Math.floor((subNo - 501) / 100);
       let calculatedDays = 7 + (extra > 0 ? extra : 0);
@@ -552,13 +565,70 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
           }
       }, 1000);
   }
-  
-  confirmBtn.addEventListener('click', async () => {
+
+  // SIRF INSTAGRAM SCREENSHOT RESET HOGA (Telegram safe rahega)
+  function resetInstagramVerification(errorReason) {
+    verifyStatusText.className = "verify-status failed";
+    verifyStatusText.textContent = errorReason;
+    
+    // Telegram intact rahega, sirf Instagram reset hoga
+    igScreenshot.value = '';
+    
     confirmBtn.disabled = true;
-    confirmBtn.textContent = "Uploading to Database...";
-    const uidVal = uidInput.value;
+    confirmBtn.textContent = "Re-upload Instagram screenshot";
+  }
+  
+  // =========================================================================
+  // CLIENT-SIDE OCR ENGINE
+  // =========================================================================
+  confirmBtn.addEventListener('click', async () => {
+    const igFile = igScreenshot.files[0];
+    if (!igFile) {
+      alert("Please upload the Instagram screenshot first.");
+      return;
+    }
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Scanning screenshot locally...";
+    verifyStatusText.className = "verify-status scanning";
+    verifyStatusText.textContent = "Scanning screenshot locally...";
 
     try {
+      const result = await Tesseract.recognize(
+        igFile,
+        'eng',
+        {
+          logger: (m) => {
+            if (m.status === 'recognizingtext') {
+              verifyStatusText.textContent = `Scanning screenshot... ${Math.round(m.progress * 100)}%`;
+            }
+          }
+        }
+      );
+
+      const ocrText = (result.data.text || "").toLowerCase();
+
+      const isFollowing = ocrText.includes("following");
+      const isProfileMatch = ocrText.includes("apex.carnage.live") || ocrText.includes("rajsekhar");
+
+      // Failure 1: 'Following' status missing
+      if (!isFollowing) {
+        resetInstagramVerification("Verification Failed: 'Following' not found. Please upload correct Instagram screenshot.");
+        return;
+      }
+
+      // Failure 2: Profile mismatch
+      if (!isProfileMatch) {
+        resetInstagramVerification("Verification Failed: Profile name not matched. Follow @apex.carnage.live");
+        return;
+      }
+
+      // Verification Success: Proceed
+      verifyStatusText.className = "verify-status passed";
+      verifyStatusText.textContent = "Verified! Saving record...";
+      confirmBtn.textContent = "Uploading to Database...";
+
+      const uidVal = uidInput.value;
       const unbanRef = collection(db, "unban");
       const qExist = query(unbanRef, where("UID", "==", uidVal));
       const existSnap = await getDocs(qExist);
@@ -578,8 +648,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
           const newData = {
             UID: uidVal,
             BanDate: document.getElementById('banDate').value,
-            TelegramJoinScreenshot: tgScreenshot.files[0] ? tgScreenshot.files[0].name : "No file",
-            InstagramSubscribeScreenshot: igScreenshot.files[0] ? igScreenshot.files[0].name : "No file",
+            VerifiedFollow: true,
             Timestamp: serverTimestamp(),
             timestampMs: nowMs,
             subNo: newSubNo
@@ -594,10 +663,8 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       setTimeout(() => openModal(successModal, successBox), 800);
 
     } catch (error) {
-      console.error("Error adding document: ", error);
-      alert("Database error! Check console.");
-      confirmBtn.disabled = false;
-      confirmBtn.textContent = "Verify & Submit";
+      console.error("Verification error: ", error);
+      resetInstagramVerification("Error reading image. Please re-upload a clear Instagram screenshot.");
     }
   });
 
