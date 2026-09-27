@@ -42,6 +42,222 @@ body {
 }
 
 /* =========================================
+   INTRO / LANDING OVERLAY (NEW)
+   ========================================= */
+#intro-landing-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s;
+  padding: 20px;
+}
+
+#intro-landing-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.brand-intro-box {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: all 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: top, left, transform;
+}
+
+.brand-intro-box.docked {
+  top: 25px;
+  left: 20px;
+  transform: translate(0, 0) scale(0.68);
+  transform-origin: top left;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.brand-text {
+  font-size: clamp(24px, 6vw, 40px);
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.brand-text .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.brand-text .char.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.brand-text .live-word {
+  color: #ff3333;
+  margin-left: 10px;
+}
+
+.blue-tick-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: 10px;
+  background: #00a8ff;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  opacity: 0;
+  transform: scale(0.5);
+  box-shadow: 0 0 16px rgba(0, 168, 255, 0.85);
+  transition: all 0.3s ease;
+}
+
+.blue-tick-badge.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.brand-underline {
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #ff3333, #00a8ff);
+  margin-top: 4px;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(255, 51, 51, 0.8);
+  transition: width 0.4s ease;
+}
+
+.brand-underline.visible {
+  width: 100%;
+}
+
+.intro-action-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  max-width: 480px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.intro-action-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-disclaimer-box {
+  width: 100%;
+  background: rgba(16, 18, 27, 0.75);
+  border: 1px dashed rgba(255, 74, 74, 0.4);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(255, 74, 74, 0.1);
+}
+
+.intro-disclaimer-title {
+  color: #ff4a4a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.intro-disclaimer-text {
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.intro-small-hint {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.intro-main-label {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.intro-arrow {
+  color: #ff3333;
+  font-size: 20px;
+  margin-bottom: 20px;
+  animation: bounceArrow 1.5s infinite;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.intro-glowing-btn {
+  background: linear-gradient(135deg, #0088ff 0%, #00c6ff 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 16px 36px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 35px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 0 25px rgba(0, 168, 255, 0.7), inset 0 0 12px rgba(255, 255, 255, 0.35);
+  transition: all 0.3s ease;
+  width: auto;
+  margin-top: 0;
+}
+
+.intro-glowing-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 38px rgba(0, 198, 255, 0.95), inset 0 0 16px rgba(255, 255, 255, 0.5);
+}
+
+.intro-glowing-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #ffffff;
+}
+
+/* =========================================
    2. ANIMATIONS & PROFILE LOGO WITH WAVE
    ========================================= */
 @keyframes nanoGlow {
@@ -228,6 +444,37 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 </style>
 </head>
 <body>
+
+<!-- TARGET ANIMATED INTRO OVERLAY -->
+<div id="intro-landing-overlay">
+  <div class="brand-intro-box" id="brandIntroBox">
+    <div class="brand-row">
+      <div class="brand-text" id="animatedBrandText">
+        <!-- Generated letter-by-letter dynamically -->
+      </div>
+      <div class="blue-tick-badge" id="blueTickBadge">✓</div>
+    </div>
+    <div class="brand-underline" id="brandUnderline"></div>
+  </div>
+
+  <div class="intro-action-container" id="introActionContainer">
+    <!-- DISCLAIMER BOX (ABOVE "CLICK TO OPEN") -->
+    <div class="intro-disclaimer-box">
+      <div class="intro-disclaimer-title">Disclaimer</div>
+      <p class="intro-disclaimer-text">
+        This website and associated content are created strictly for educational purposes and fair use, exploring gaming technology and cybersecurity concepts. We do not engage in or promote scams, phishing, or unauthorized third-party support services. All information is provided for research and awareness.
+      </p>
+    </div>
+
+    <div class="intro-small-hint">CLICK TO OPEN</div>
+    <div class="intro-main-label">UNBAN YOUR ID WEBSITE</div>
+    <div class="intro-arrow">↓</div>
+    <button class="intro-glowing-btn" id="openMainSiteBtn">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      OPEN UNBAN WEBSITE
+    </button>
+  </div>
+</div>
 
 <!-- AUDIO PLAYERS -->
 <audio id="welcomeAudio" preload="auto">
@@ -681,6 +928,61 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     bg.style.opacity = '0';
     setTimeout(() => { bg.style.display = 'none'; }, 300);
   }
+</script>
+
+<!-- INTRO ANIMATION CONTROLLER -->
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const brandTextEl = document.getElementById('animatedBrandText');
+    const blueTick = document.getElementById('blueTickBadge');
+    const brandUnderline = document.getElementById('brandUnderline');
+    const brandIntroBox = document.getElementById('brandIntroBox');
+    const introActions = document.getElementById('introActionContainer');
+    const introOverlay = document.getElementById('intro-landing-overlay');
+    const openBtn = document.getElementById('openMainSiteBtn');
+
+    const whitePart = "APEX CARNAGE ";
+    const redPart = "LIVE";
+
+    let html = "";
+    for (let char of whitePart) {
+      html += `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`;
+    }
+    html += `<span class="live-word">`;
+    for (let char of redPart) {
+      html += `<span class="char">${char}</span>`;
+    }
+    html += `</span>`;
+    brandTextEl.innerHTML = html;
+
+    const chars = brandTextEl.querySelectorAll('.char');
+
+    chars.forEach((c, index) => {
+      setTimeout(() => {
+        c.classList.add('visible');
+      }, index * 60 + 200);
+    });
+
+    const letterDuration = chars.length * 60 + 350;
+
+    setTimeout(() => {
+      blueTick.classList.add('visible');
+      brandUnderline.classList.add('visible');
+    }, letterDuration);
+
+    setTimeout(() => {
+      brandIntroBox.classList.add('docked');
+    }, letterDuration + 550);
+
+    setTimeout(() => {
+      introActions.classList.add('visible');
+    }, letterDuration + 900);
+
+    openBtn.addEventListener('click', () => {
+      introOverlay.classList.add('fade-out');
+      startAudioFlow();
+    });
+  });
 </script>
 
 <!-- INITIAL AUDIO FLOW -->
