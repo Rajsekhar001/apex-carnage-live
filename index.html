@@ -512,8 +512,8 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 
     <form id="unbanForm">
       <label for="uid">Free Fire UID</label>
-      <input id="uid" name="uid" type="text" inputmode="numeric" maxlength="11" placeholder="Enter exactly 11 digit UID" required>
-      <div id="uidError" class="error-msg">UID must be exactly 11 digits.</div>
+      <input id="uid" name="uid" type="text" inputmode="numeric" maxlength="12" placeholder="Enter 8 to 12 digit UID" required>
+      <div id="uidError" class="error-msg">UID must be between 8 and 12 digits.</div>
 
       <label for="banDate">Account banned date</label>
       <input id="banDate" name="banDate" type="date" required>
@@ -665,11 +665,11 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   let mainTimerInterval = null;
 
   uidInput.addEventListener('input', () => {
-    const regex = /^\d{0,11}$/;
+    const regex = /^\d{0,12}$/;
     if (!regex.test(uidInput.value)) {
       uidInput.value = uidInput.value.replace(/\D/g, ''); 
     }
-    if (uidInput.value.length === 11) {
+    if (uidInput.value.length >= 8 && uidInput.value.length <= 12) {
       uidInput.classList.add('input-success');
       uidInput.classList.remove('input-error');
       uidError.style.display = 'none';
@@ -698,7 +698,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (uidInput.value.length !== 11) {
+    if (uidInput.value.length < 8 || uidInput.value.length > 12) {
       uidInput.classList.add('input-error');
       uidError.style.display = 'block';
 
