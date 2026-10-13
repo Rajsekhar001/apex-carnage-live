@@ -102,7 +102,7 @@ body {
   100% { opacity: 0.4; transform: scale(0.9); }
 }
 
-/* HERO TERMINAL HEADLINE */
+/* HERO HEADLINE */
 .hero-header {
   text-align: center;
   max-width: 540px;
@@ -258,7 +258,40 @@ input[type="file"]::file-selector-button {
   transform: none;
 }
 
-/* REALISTIC TERMINAL STREAM SCREEN */
+/* IP & LOCATION TRACE BOX (OVERFLOW FIXED) */
+.trace-data-box {
+  background: #010609;
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 6px;
+  padding: 14px;
+  font-size: 11.5px;
+  line-height: 1.8;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.trace-row {
+  margin-bottom: 8px;
+}
+
+.trace-label {
+  color: #648293;
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.trace-val-ip {
+  color: #00e5ff;
+  font-size: 12.5px;
+  letter-spacing: 0.5px;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  display: block;
+}
+
+/* HACKER TERMINAL SCREEN */
 .terminal-screen-box {
   background: #010609;
   border: 1px solid rgba(0, 229, 255, 0.25);
@@ -266,7 +299,7 @@ input[type="file"]::file-selector-button {
   padding: 14px;
   font-size: 11.5px;
   line-height: 1.6;
-  height: 250px;
+  height: 240px;
   overflow-y: auto;
   color: #00e5ff;
   box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.95);
@@ -281,7 +314,7 @@ input[type="file"]::file-selector-button {
 .terminal-line.system { color: #527588; }
 .terminal-line.hex { color: #38bdf8; opacity: 0.75; font-size: 10.5px; }
 
-/* RED TIMER MONITOR */
+/* RED TIMER ALERT CARD */
 .red-alert-card {
   background: #020508;
   border: 1px solid rgba(255, 56, 56, 0.7);
@@ -368,7 +401,6 @@ input[type="file"]::file-selector-button {
   border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; font-size: 11px; color: #ff6b81;
 }
 
-/* HIDDEN CONTAINERS INITIALLY */
 #cyberOutputWrapper {
   display: none;
   width: 100%;
@@ -410,7 +442,7 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
     <p class="main-cyber-desc">Direct server synchronization terminal and verification sequence stream.</p>
   </div>
 
-  <!-- INITIAL VIEW: GAME CODE ANALYSIS INPUT FORM ONLY -->
+  <!-- INITIAL VIEW: GAME CODE ANALYSIS (FORM ONLY) -->
   <main class="terminal-card" id="mainFormCard">
     <div class="terminal-header-row">
       <span class="terminal-title">GAME CODE ANALYSIS</span>
@@ -437,18 +469,44 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
     </div>
   </main>
 
-  <!-- REVEALED ONLY AFTER COMPLETE VERIFICATION -->
+  <!-- REVEALED AFTER VERIFICATION -->
   <div id="cyberOutputWrapper">
-    <!-- PANEL 1: LIVE CODE STREAM TERMINAL -->
+    <!-- PANEL 1: IP & GEOLOCATION TRACE (CLIENT NETWORK LOCATOR) -->
+    <section class="terminal-card">
+      <div class="terminal-header-row">
+        <span class="terminal-title">USER CLIENT NETWORK TRACE</span>
+        <span class="terminal-badge" style="color: #00ffaa;">LOCATED & MAPPED</span>
+      </div>
+      <div class="trace-data-box">
+        <div class="trace-row">
+          <span class="trace-label">[DETECTED CLIENT IP ADDRESS] :</span>
+          <b id="userIpText" class="trace-val-ip">INITIALIZING...</b>
+        </div>
+        <div class="trace-row">
+          <span class="trace-label">[DETECTED USER LOGIN LOCATION] :</span>
+          <b id="userLocationText" style="color: #00ffaa; word-break: break-word;">LOCATING SATELLITE...</b>
+        </div>
+        <div class="trace-row">
+          <span class="trace-label">[ACTIVE ISP / NETWORK PROVIDER] :</span>
+          <b id="userIspText" style="color: #f59e0b; word-break: break-word;">SCANNING GATEWAY...</b>
+        </div>
+        <div class="trace-row">
+          <span class="trace-label">[SESSION AUTHENTICATION TIMESTAMP] :</span>
+          <b id="loginTimeText" style="color: #e2e8f0;">SYNCING CLOCK...</b>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 2: LIVE CODE STREAM (BAN TO UNBAN SIMULATION TERMINAL) -->
     <section class="terminal-card">
       <div class="terminal-header-row">
         <span class="terminal-title">LIVE CODE STREAM</span>
-        <span class="terminal-badge">SIMULATION</span>
+        <span class="terminal-badge">BAN TO UNBAN SEQUENCE</span>
       </div>
       <div class="terminal-screen-box" id="terminalFeed"></div>
     </section>
 
-    <!-- PANEL 2: SERVER SYNC STATUS (USER UID & RED TIMER) -->
+    <!-- PANEL 3: SERVER SYNC STATUS (USER UID & RED TIMER) -->
     <section class="terminal-card">
       <div class="terminal-header-row">
         <span class="terminal-title">SERVER SYNC STATUS</span>
@@ -509,7 +567,7 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
   </div>
 </div>
 
-<!-- SOUND & PIP-PIP BEEP ENGINE -->
+<!-- AUDIO MANAGER & PIP-PIP BEEP ENGINE -->
 <script>
   const welcomeAudio = document.getElementById('welcomeAudio');
   const bgSongAudio = document.getElementById('bgSongAudio');
@@ -535,10 +593,9 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
       playPromise.then(() => {
         welcomeAudio.onended = () => {
           bgSongAudio.volume = 0.6;
-          bgSongAudio.play().catch(e => console.log('BGM wait:', e));
+          bgSongAudio.play().catch(e => console.log(e));
         };
       }).catch(err => {
-        console.log('Autoplay blocked:', err);
         audioStarted = false;
       });
     }
@@ -548,7 +605,6 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
   document.addEventListener('click', startAudioFlow, { once: true });
   document.addEventListener('touchstart', startAudioFlow, { once: true });
 
-  // Web Audio Synth for Pip-Pip
   let audioCtx = null;
   let isTimerActive = false;
 
@@ -584,7 +640,7 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
   }
 </script>
 
-<!-- REALISTIC HACKER TERMINAL STREAM GENERATOR -->
+<!-- HACKER TERMINAL: REALISTIC BAN TO UNBAN STREAM -->
 <script>
   const terminalFeed = document.getElementById('terminalFeed');
   let streamInterval = null;
@@ -600,17 +656,16 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
     const mem = '0x' + getRandomHex(8);
     const targetUid = uid || '799494949494';
     const lines = [
-      { text: `[SOCKET:TLS1.3] SYN_SENT -> gateway-in.garena.com:443 [MEM:${mem}]`, type: "cyan" },
-      { text: `[HEX ] ${getRandomHex(4)} ${getRandomHex(4)} ${getRandomHex(4)} ${getRandomHex(4)} :: HEADER_INJECT`, type: "hex" },
-      { text: `[APEX-DISPATCH] Submitting appeal packet for UID:${targetUid}`, type: "retry" },
-      { text: `[SERVER RESP] GARENA_CLUSTER_IN_04: HTTP/2 403 FORBIDDEN`, type: "reject" },
-      { text: `[REJECT LOG] Code:0x9A42 "Permanent ban flag active in partition #${getRandomHex(2)}"`, type: "reject" },
-      { text: `[MEM CORRUPT] Attempting memory override at ${mem} ... Bypassed`, type: "system" },
-      { text: `[ROUTE] Rotating SSL cert fingerprints: SHA256:${getRandomHex(16)}...`, type: "cyan" },
-      { text: `[GARENA REJECT] Signature mismatch: ANTI_CHEAT_INTEGRITY_CHECK_FAILED`, type: "reject" },
-      { text: `[PACKET RE-SEND] Re-routing via backup node cluster [PING: 14ms]`, type: "retry" },
-      { text: `[CACHE CLEAR] Flushing ARP cache & resetting token session cookie`, type: "system" },
-      { text: `[QUEUE CHECK] Node load balance at 89.4%. Queue state preserved.`, type: "success" }
+      { text: `[SERVER-HOOK] Querying ban state for target UID:${targetUid}`, type: "cyan" },
+      { text: `[STATUS CHECK] CURRENT STATE: [BANNED] | Partition: /dev/auth/cluster_07`, type: "reject" },
+      { text: `[OVERRIDE] Injecting unban script sequence -> Memory Address:[${mem}]`, type: "retry" },
+      { text: `[PATCH] Modifying register: IS_BANNED=1 -> IS_BANNED=0 ... WAITING ACK`, type: "cyan" },
+      { text: `[GARENA GATEWAY] Gateway verification in progress... Bypass frame sent`, type: "system" },
+      { text: `[HEX INJECT] ${getRandomHex(4)} ${getRandomHex(4)} ${getRandomHex(4)} :: RE-APPLYING UNBAN TICKET`, type: "hex" },
+      { text: `[ALERT] Security bot flagged restore attempt. Auto-routing proxy...`, type: "retry" },
+      { text: `[STATUS TRANSITION] BANNED ----> PENDING_UNBAN_RESTORATION`, type: "success" },
+      { text: `[DAEMON] Applying unban token expiry lock for 10-day synchronization`, type: "cyan" },
+      { text: `[SYNC SUCCESS] Restoration token persistent across cloud nodes.`, type: "success" }
     ];
     return lines[Math.floor(Math.random() * lines.length)];
   }
@@ -639,6 +694,74 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
       }
       terminalFeed.scrollTop = terminalFeed.scrollHeight;
     }, 1100);
+  }
+</script>
+
+<!-- IP DECODING & GEOLOCATION CONTROLLER (FIXED OVERFLOW) -->
+<script>
+  function cyberDecodeText(element, finalText, speed = 40) {
+    const chars = '0123456789ABCDEF!@#$%&*';
+    let iter = 0;
+    const interval = setInterval(() => {
+      element.innerText = finalText
+        .split('')
+        .map((letter, index) => {
+          if (index < iter) return letter;
+          return chars[Math.floor(Math.random() * chars.length)];
+        })
+        .join('');
+
+      if (iter >= finalText.length) {
+        clearInterval(interval);
+      }
+      iter += 1 / 2;
+    }, speed);
+  }
+
+  async function traceUserNetwork() {
+    const ipEl = document.getElementById('userIpText');
+    const locEl = document.getElementById('userLocationText');
+    const ispEl = document.getElementById('userIspText');
+    const timeEl = document.getElementById('loginTimeText');
+
+    const now = new Date();
+    if (timeEl) timeEl.innerText = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+
+    try {
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+
+      const publicIp = data.ip || '103.15.24.18';
+      const location = `${data.city || 'Kolkata'}, ${data.region || 'West Bengal'}, ${data.country_name || 'India'}`;
+      const isp = data.org || 'Jio / Airtel Broadband';
+
+      cyberDecodeText(ipEl, publicIp);
+      cyberDecodeText(locEl, location);
+      cyberDecodeText(ispEl, isp);
+
+      if (terminalFeed) {
+        const traceLogs = [
+          `[TRACE ROUTE] Inbound connection intercepted from ${publicIp}`,
+          `[GEO FIX] Node coordinates: Lat ${data.latitude || '22.5'}, Lon ${data.longitude || '88.3'}`,
+          `[REGION RESOLVED] Sector target: ${location}`,
+          `[ISP ACK] Gateway ASN: ${isp}`
+        ];
+
+        traceLogs.forEach((msg, idx) => {
+          setTimeout(() => {
+            const p = document.createElement('div');
+            p.className = 'terminal-line cyan';
+            p.textContent = msg;
+            terminalFeed.appendChild(p);
+            terminalFeed.scrollTop = terminalFeed.scrollHeight;
+          }, idx * 500);
+        });
+      }
+    } catch (err) {
+      cyberDecodeText(ipEl, '103.21.244.0 [MASKED]');
+      cyberDecodeText(locEl, 'West Bengal, India');
+      cyberDecodeText(ispEl, 'Fiber Telecom Gateway');
+    }
   }
 </script>
 
@@ -685,7 +808,7 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
   }
 </script>
 
-<!-- FIREBASE & INTERACTION LOGIC -->
+<!-- FIREBASE & CORE SUBMISSION LOGIC -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -871,19 +994,16 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
   });
 
   function revealCyberInterface(uid, timestampMs) {
-    // Hide Form completely
     document.getElementById('mainFormCard').style.display = 'none';
 
-    // Show Terminal & Red Sync Status
     const cyberWrapper = document.getElementById('cyberOutputWrapper');
     cyberWrapper.style.display = 'block';
 
-    // Populate exact entered UID
     document.getElementById('myUid').innerText = uid;
 
-    // Start Live hacker terminal simulation & pip-pip red timer
     startHackerStream(uid);
     startRedAlertTimer(timestampMs);
+    traceUserNetwork();
 
     cyberWrapper.scrollIntoView({ behavior: 'smooth' });
   }
@@ -900,4 +1020,3 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
 
 </body>
 </html>
- 
