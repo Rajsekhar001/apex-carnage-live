@@ -3,1163 +3,689 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apex Carnage Live — Free Fire ID Unban</title>
+<title>APEX AI — Cyber Interface</title>
 
 <!-- CLIENT-SIDE OCR ENGINE -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-/* =========================================
-   1. GLOBAL STYLES & RESET
-   ========================================= */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   min-height: 100vh;
-  font-family: 'Plus Jakarta Sans', Arial, sans-serif; 
-  color: #e2e8f0;
-  background-color: #050507;
+  font-family: 'Consolas', 'Courier New', monospace; 
+  color: #a7f3d0;
+  background-color: #030a0e;
   overflow-x: hidden;
+  position: relative;
 }
 
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #050507; }
-::-webkit-scrollbar-thumb { background: #ff4a4a; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #ff8a4a; }
-
-#canvas-bg {
+#grid-bg {
   position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
+  inset: 0;
   z-index: -1;
-  background: 
-    radial-gradient(circle at 15% 0%, rgba(255, 64, 64, 0.15), transparent 35%),
-    radial-gradient(circle at 85% 100%, rgba(0, 174, 255, 0.12), transparent 35%);
+  background-color: #02080d;
+  background-image: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
+
+#grid-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 15%, rgba(0, 255, 200, 0.08) 0%, rgba(2, 8, 13, 0.95) 80%);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #02080d; }
+::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 4px; }
 
 .main-wrapper {
   display: flex; flex-direction: column; align-items: center; 
-  padding: 40px 24px; min-height: 100vh; z-index: 1;
+  padding: 20px 16px 40px; min-height: 100vh; z-index: 1;
 }
 
-/* NAV & TOP PROOF BUTTON */
-.top-action-bar {
-  width: min(520px, 100%);
+/* TOP STATUS BAR */
+.cyber-top-bar {
+  width: min(540px, 100%);
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 15px;
-  z-index: 5;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: rgba(4, 19, 27, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.08);
 }
 
-.proof-toggle-btn {
-  background: rgba(16, 18, 27, 0.85);
-  border: 1px solid rgba(255, 215, 0, 0.4);
-  color: #ffd700;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
+.brand-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+.brand-title span {
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+}
+
+.system-status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
-  transition: all 0.2s;
-  width: auto;
-  margin-top: 0;
-}
-.proof-toggle-btn:hover {
-  transform: translateY(-2px);
-  background: rgba(255, 215, 0, 0.1);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.35);
-}
-
-/* LIVE POPUP NOTIFICATION */
-.live-unban-popup {
-  position: fixed;
-  top: 25px;
-  left: 50%;
-  transform: translate(-50%, -150%);
-  z-index: 9999999;
-  background: rgba(16, 18, 27, 0.95);
-  border: 1px solid rgba(34, 197, 94, 0.5);
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(34, 197, 94, 0.3);
-  border-radius: 16px;
-  padding: 14px 18px;
-  display: flex;
-  flex-direction: column;
   gap: 8px;
-  width: min(90%, 350px);
-  backdrop-filter: blur(14px);
-  opacity: 0;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
-  pointer-events: none;
-}
-
-.live-unban-popup.show {
-  transform: translate(-50%, 0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.popup-top-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.popup-icon-wrap {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid #22c55e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.popup-details {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.popup-badge {
+  padding: 6px 14px;
+  border: 1px solid rgba(0, 255, 170, 0.4);
+  border-radius: 6px;
+  background: rgba(0, 255, 170, 0.06);
+  color: #00ffaa;
   font-size: 11px;
   font-weight: 800;
-  color: #22c55e;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
-.popup-badge .pulse-dot {
+.status-dot {
   width: 7px;
   height: 7px;
-  background-color: #22c55e;
+  background-color: #00ffaa;
   border-radius: 50%;
-  animation: pulseGreen 1.5s infinite;
+  box-shadow: 0 0 8px #00ffaa;
+  animation: pulseNeon 1.5s infinite;
 }
 
-@keyframes pulseGreen {
-  0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-  100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+@keyframes pulseNeon {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 12px #00ffaa; }
+  100% { opacity: 0.4; transform: scale(0.9); }
 }
 
-.popup-user-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-top: 1px;
-}
-
-.popup-uid-text {
-  font-size: 13px;
-  font-family: monospace;
-  color: #4ade80;
-  font-weight: bold;
-}
-
-.popup-bar-track {
-  width: 100%;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 99px;
-  overflow: hidden;
-  margin-top: 2px;
-}
-
-.popup-bar-fill {
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(90deg, #22c55e, #10b981);
-  transition: width 5s linear;
-}
-
-/* CARD & PROFILE */
-@keyframes nanoGlow {
-  0% { box-shadow: 0 0 25px rgba(255, 74, 74, 0.5), inset 0 0 10px rgba(255, 74, 74, 0.1); border-color: rgba(255, 74, 74, 0.5); }
-  50% { box-shadow: 0 0 35px rgba(0, 174, 255, 0.5), inset 0 0 15px rgba(0, 174, 255, 0.2); border-color: rgba(0, 174, 255, 0.6); }
-  100% { box-shadow: 0 0 25px rgba(138, 43, 226, 0.5), inset 0 0 10px rgba(138, 43, 226, 0.1); border-color: rgba(138, 43, 226, 0.5); }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes waveRipple {
-  0% { transform: scale(0.9); opacity: 0.9; }
-  50% { transform: scale(1.25); opacity: 0.4; border-color: #00aeff; }
-  100% { transform: scale(1.4); opacity: 0; border-color: #ff4a4a; }
-}
-
-.profile-logo-wrap {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 105px;
-  height: 105px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.wave-ring {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border: 2px solid #ff4a4a;
-  border-radius: 50%;
-  animation: waveRipple 2.2s infinite cubic-bezier(0.2, 0.6, 0.35, 1);
-  pointer-events: none;
-}
-
-.wave-ring:nth-child(2) {
-  animation-delay: 0.8s;
-}
-
-.profile-img {
-  width: 95px;
-  height: 95px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ff4a4a;
-  box-shadow: 0 0 20px rgba(255, 74, 74, 0.7);
-  display: block;
-  z-index: 2;
-  position: relative;
-}
-
-.card {
-  width: min(520px, 100%); padding: 35px;
-  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
-  background: rgba(16, 18, 27, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  animation: nanoGlow 4s infinite alternate ease-in-out, fadeInUp 0.8s ease-out;
-  margin-bottom: 40px;
-}
-
-.logo {
-  font-weight: 800; letter-spacing: 3px; color: #ff4a4a;
-  font-size: 12px; text-transform: uppercase; margin-bottom: 5px; display: block;
-}
-
-h1 { font-size: clamp(32px, 8vw, 48px); font-weight: 800; line-height: 1.1; margin: 10px 0 5px; color: #ffffff; }
-h1 span { background: linear-gradient(90deg, #ff4a4a, #ff8a4a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-.step-one { font-weight: 800; font-size: 14px; color: #ff4a4a; letter-spacing: 2px; margin-bottom: 12px; text-transform: uppercase; }
-.subtitle { color: #94a3b8; line-height: 1.6; margin-bottom: 28px; font-size: 15px; font-weight: 400; }
-
-label { display: block; font-size: 13px; font-weight: 700; color: #cbd5e1; margin: 16px 0 8px; letter-spacing: 0.5px; text-align: left; }
-
-input {
-  width: 100%; padding: 16px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.4); color: #fff; outline: none; font-size: 15px; transition: all 0.3s ease;
-}
-input:focus { border-color: #ff4a4a; background: rgba(255, 74, 74, 0.03); box-shadow: 0 0 0 4px rgba(255, 74, 74, 0.1); }
-
-.error-msg { color: #ff4a4a; font-size: 12px; margin-top: 5px; display: none; font-weight: 600; }
-.input-error { border-color: #ff4a4a !important; }
-.input-success { border-color: #22c55e !important; }
-
-input[type="file"] { padding: 10px; }
-input[type="file"]::file-selector-button {
-  background: linear-gradient(90deg, #ff4a4a, #ff8a4a); border: none; padding: 10px 18px;
-  border-radius: 10px; color: #fff; font-weight: 800; cursor: pointer; margin-right: 15px; transition: all 0.3s ease;
-}
-input[type="file"]:disabled::file-selector-button {
-  background: #334155; cursor: not-allowed; color: #94a3b8;
-}
-
-button {
-  width: 100%; margin-top: 28px; padding: 16px; border: 0; border-radius: 14px;
-  background: linear-gradient(135deg, #ff3333 0%, #ff6b3d 100%);
-  color: #fff; font-weight: 700; cursor: pointer; font-size: 16px; letter-spacing: 0.5px;
-  box-shadow: 0 12px 24px rgba(255, 51, 51, 0.25); transition: all 0.3s ease;
-}
-button:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(255, 51, 51, 0.4); }
-button:disabled { background: #334155; box-shadow: none; cursor: not-allowed; color: #94a3b8; transform: none; }
-
-.progress-wrap { display: none; margin-top: 25px; }
-.progress-top { display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; margin-bottom: 9px; font-weight: 600; }
-.bar { height: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
-.fill { height: 100%; width: 0; background: linear-gradient(90deg, #ff3333, #ff9a3d); transition: width 0.6s ease; box-shadow: 0 0 10px rgba(255, 51, 51, 0.5); }
-
-.modal-bg {
-  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); 
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  align-items: center; justify-content: center; padding: 20px; z-index: 100; opacity: 0; transition: opacity 0.3s ease;
-}
-.modal {
-  width: min(430px, 100%); background: #0f111a; border: 1px solid rgba(255, 255, 255, 0.08); 
-  border-radius: 24px; padding: 30px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8); text-align: center;
-  transform: scale(0.9); transition: transform 0.3s ease;
-}
-.modal.show { transform: scale(1); }
-.modal h2 { font-size: 24px; margin-bottom: 12px; font-weight: 800; color: #fff; }
-.modal p { color: #94a3b8; line-height: 1.6; font-size: 14px; margin-bottom: 24px; }
-
-.socials { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
-
-.social-btn {
-  text-decoration: none; color: #fff; padding: 15px; border-radius: 14px;
-  font-weight: 700; display: block; font-size: 15px; transition: transform 0.2s ease, opacity 0.3s; cursor: pointer; text-align: center;
-}
-.social-btn:hover { transform: scale(1.02); }
-.tg-btn {
-  background: linear-gradient(135deg, #168dcc, #28a5e8);
-  box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2);
-}
-.ig-btn {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  box-shadow: 0 8px 16px rgba(220, 39, 67, 0.2);
-}
-
-.ss-upload {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px dashed rgba(255, 255, 255, 0.15);
-  margin-top: -5px; padding: 12px; border-radius: 14px; margin-bottom: 5px;
-  transition: opacity 0.3s ease;
-}
-
-.unfollow-warning-box {
-  background: rgba(255, 68, 68, 0.08);
-  border: 1px dashed rgba(255, 68, 68, 0.5);
-  border-radius: 12px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
+/* HERO TERMINAL HEADLINE */
+.hero-header {
   text-align: center;
-  box-shadow: 0 0 15px rgba(255, 68, 68, 0.1);
+  max-width: 540px;
+  margin-bottom: 24px;
 }
-.warning-badge {
-  color: #ff4444;
+
+.sub-glow-badge {
+  color: #00e5ff;
   font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-.warning-text {
-  font-size: 12px;
-  color: #fca5a5;
-  line-height: 1.45;
-  font-weight: 600;
-}
-.warning-text b {
-  color: #ffd700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
-}
-
-.locked-step {
-  opacity: 0.35;
-  pointer-events: none;
-  filter: grayscale(1);
-}
-
-.verify-status { font-size: 13px; font-weight: 600; margin-top: 12px; min-height: 20px; }
-.verify-status.scanning { color: #66fcf1; }
-.verify-status.failed { color: #ff4a4a; }
-.verify-status.passed { color: #22c55e; }
-
-.faq-section { width: min(520px, 100%); margin-bottom: 40px; animation: fadeInUp 1s ease-out; }
-.faq-section h3 { color: #fff; font-size: 20px; margin-bottom: 15px; font-weight: 700; text-align: center; }
-.faq-item {
-  background: rgba(16, 18, 27, 0.6); border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 12px; margin-bottom: 10px; padding: 15px; cursor: pointer; transition: all 0.3s;
-}
-.faq-item:hover { background: rgba(255, 255, 255, 0.05); }
-.faq-question { font-size: 14px; font-weight: 700; color: #e2e8f0; display: flex; justify-content: space-between; }
-.faq-answer { font-size: 13px; color: #94a3b8; margin-top: 10px; display: none; line-height: 1.5; }
-
-footer { text-align: center; color: #64748b; font-size: 12px; padding-bottom: 20px; }
-footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
-
-/* DASHBOARD */
-.dashboard-container {
-  display: none; width: min(550px, 100%); 
-  animation: fadeInUp 0.8s ease-out;
-}
-.dash-card {
-  background: rgba(16, 18, 27, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 30px;
-  box-shadow: 0 0 25px rgba(0, 174, 255, 0.2); text-align: center; margin-bottom: 30px;
-}
-.live-timer-header {
-  background: rgba(0, 0, 0, 0.4); padding: 25px 20px; border-radius: 14px;
-  border: 1px dashed #eccc68;
-}
-
-.live-recent-box {
-  margin-top: 20px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-.live-recent-title {
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #22c55e;
+  letter-spacing: 2.5px;
   font-weight: 800;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.main-cyber-title {
+  font-size: clamp(34px, 8vw, 44px);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 6px;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
   margin-bottom: 10px;
 }
-.live-recent-item {
+
+.main-cyber-desc {
+  font-size: 12px;
+  color: #648293;
+  line-height: 1.6;
+  letter-spacing: 0.6px;
+}
+
+/* TERMINAL PANELS */
+.terminal-card {
+  width: min(540px, 100%);
+  background: rgba(4, 18, 25, 0.88);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(0, 229, 255, 0.03);
+  margin-bottom: 22px;
+}
+
+.terminal-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px dashed rgba(0, 229, 255, 0.2);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+.terminal-title {
   font-size: 13px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
-  margin-bottom: 6px;
-}
-
-/* =========================================
-   LIVE UNBAN PROOF / LEADERBOARD MODAL
-   ========================================= */
-.proof-modal-card {
-  width: min(480px, 100%);
-  background: #0f111a;
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 215, 0, 0.15);
-  border-radius: 28px;
-  padding: 24px 18px;
-  max-height: 90vh;
-  overflow-y: auto;
-  text-align: center;
-  position: relative;
-}
-
-.proof-modal-header {
-  margin-bottom: 20px;
-}
-.proof-modal-header h2 {
-  font-size: 22px;
-  color: #ffd700;
-  font-weight: 900;
-  letter-spacing: 1px;
-}
-.proof-stats-sub {
-  font-size: 13px;
-  color: #94a3b8;
-  margin-top: 4px;
-}
-.proof-stats-sub strong {
-  color: #22c55e;
-  font-family: monospace;
-  font-size: 15px;
-}
-
-.podium-container {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 10px;
-  margin: 30px 0 25px;
-  padding: 0 5px;
-}
-
-.podium-slot {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 16px 8px 12px;
-  position: relative;
-  transition: transform 0.2s;
-}
-
-.podium-slot.rank-1 {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 75, 75, 0.2), rgba(255, 255, 255, 0.04));
-  border: 1px solid rgba(255, 75, 75, 0.5);
-  transform: translateY(-12px);
-}
-.podium-slot.rank-2 { border-color: rgba(255, 138, 74, 0.35); }
-.podium-slot.rank-3 { border-color: rgba(255, 215, 0, 0.35); }
-
-.podium-avatar-wrap {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: #1e2230;
-  border: 2px solid #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  margin-bottom: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-  position: relative;
-}
-.podium-slot.rank-1 .podium-avatar-wrap {
-  width: 64px;
-  height: 64px;
-  border-color: #ff4757;
-  box-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
-}
-.crown-icon {
-  position: absolute;
-  top: -16px;
-  font-size: 20px;
-}
-
-.podium-rank-num {
-  font-size: 22px;
-  font-weight: 900;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.rank-1 .podium-rank-num { color: #ff4757; font-size: 28px; }
-.rank-2 .podium-rank-num { color: #ff8a4a; }
-.rank-3 .podium-rank-num { color: #ffd700; }
-
-.podium-uid-tag {
-  font-family: monospace;
-  font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 1.5px;
   color: #ffffff;
-  margin-bottom: 4px;
+  text-transform: uppercase;
 }
-.podium-badge-status {
+
+.terminal-badge {
   font-size: 10px;
   font-weight: 800;
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
+  letter-spacing: 1px;
+  color: #00e5ff;
+  text-transform: uppercase;
 }
 
-.proof-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+/* FORM STYLING */
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #79a6be;
+  letter-spacing: 1px;
+  margin: 12px 0 6px;
+  text-transform: uppercase;
 }
-.proof-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  padding: 10px 14px;
+
+input {
+  width: 100%;
+  padding: 13px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  background: rgba(2, 10, 16, 0.85);
+  color: #00ffc4;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  transition: all 0.25s ease;
 }
-.proof-row-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+
+input:focus {
+  border-color: #00ffaa;
+  box-shadow: 0 0 12px rgba(0, 255, 170, 0.35);
+  background: rgba(2, 12, 18, 0.95);
 }
-.proof-rank-badge {
-  font-size: 13px;
-  font-weight: 900;
-  color: #94a3b8;
-  min-width: 18px;
-}
-.proof-avatar-mini {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #1a1e2b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-.proof-uid {
-  font-family: monospace;
-  font-size: 13px;
-  color: #e2e8f0;
+
+.error-msg {
+  color: #ff4757;
+  font-size: 11px;
+  margin-top: 5px;
+  display: none;
   font-weight: 700;
 }
-.proof-status {
-  font-size: 11px;
+
+.input-error { border-color: #ff4757 !important; }
+.input-success { border-color: #00ffaa !important; }
+
+input[type="file"] { padding: 8px; }
+input[type="file"]::file-selector-button {
+  background: rgba(0, 229, 255, 0.15);
+  border: 1px solid #00e5ff;
+  padding: 8px 14px;
+  border-radius: 4px;
+  color: #00e5ff;
   font-weight: 800;
-  color: #22c55e;
-  background: rgba(34, 197, 94, 0.15);
-  padding: 3px 8px;
-  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 12px;
+  font-family: inherit;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 
-.proof-close-btn {
-  background: linear-gradient(135deg, #0088ff, #00c6ff);
-  color: #fff;
-  padding: 12px 28px;
-  border: none;
-  border-radius: 12px;
+.cyber-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: 1px solid #00ffaa;
+  border-radius: 6px;
+  background: rgba(0, 255, 170, 0.12);
+  color: #00ffaa;
   font-weight: 800;
   cursor: pointer;
   font-size: 13px;
-  width: auto;
-  margin-top: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: inherit;
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.2);
+  transition: all 0.25s ease;
+}
+.cyber-btn:hover {
+  background: #00ffaa;
+  color: #02080d;
+  box-shadow: 0 0 25px rgba(0, 255, 170, 0.6);
+  transform: translateY(-2px);
+}
+.cyber-btn:disabled {
+  border-color: #334e5a;
+  background: #112028;
+  color: #4b6775;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
-/* =========================================
-   INTEGRATED LIVE CHAT & COMMENTS STREAM
-   ========================================= */
-.live-comments-container {
-  margin-top: 24px;
-  background: #090e17;
-  border: 1px solid rgba(0, 198, 255, 0.2);
-  border-radius: 18px;
-  padding: 16px 14px;
-  text-align: left;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+/* REALISTIC TERMINAL STREAM SCREEN */
+.terminal-screen-box {
+  background: #010609;
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 6px;
+  padding: 14px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  height: 250px;
+  overflow-y: auto;
+  color: #00e5ff;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.95);
+  scroll-behavior: smooth;
 }
 
-.chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+.terminal-line { margin-bottom: 4px; word-break: break-all; }
+.terminal-line.cyan { color: #00e5ff; }
+.terminal-line.reject { color: #ff3333; font-weight: bold; text-shadow: 0 0 6px rgba(255, 51, 51, 0.5); }
+.terminal-line.retry { color: #f59e0b; }
+.terminal-line.success { color: #00ffaa; font-weight: bold; }
+.terminal-line.system { color: #527588; }
+.terminal-line.hex { color: #38bdf8; opacity: 0.75; font-size: 10.5px; }
+
+/* RED TIMER MONITOR */
+.red-alert-card {
+  background: #020508;
+  border: 1px solid rgba(255, 56, 56, 0.7);
+  box-shadow: 0 0 25px rgba(255, 56, 56, 0.3), inset 0 0 20px rgba(255, 56, 56, 0.1);
+  border-radius: 8px;
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
 }
 
-.chat-live-badge {
-  color: #ff3b30;
+.red-alert-header {
+  color: #ff6b6b;
   font-size: 11px;
+  letter-spacing: 2px;
   font-weight: 800;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.chat-pulse-dot {
-  width: 7px;
-  height: 7px;
-  background: #ff3b30;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #ff3b30;
-  animation: pulseGreen 1.4s infinite;
-}
-
-.chat-watchers {
-  font-size: 11px;
-  color: #94a3b8;
-  font-family: monospace;
-}
-
-.chat-stream-box {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 250px;
-  overflow: hidden;
-}
-
-.chat-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  animation: fadeInUp 0.3s ease-out forwards;
-}
-
-.chat-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  text-transform: uppercase;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 800;
-  color: #fff;
-  flex-shrink: 0;
-  text-transform: uppercase;
+  gap: 8px;
 }
 
-.chat-content {
-  flex: 1;
-  min-width: 0;
+.pip-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ff3838;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff3838;
+  animation: pipBlink 1s infinite alternate;
 }
 
-.chat-user-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 2px;
+@keyframes pipBlink {
+  0% { transform: scale(0.8); opacity: 0.3; }
+  100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 16px #ff3838; }
 }
 
-.chat-username {
-  font-size: 11px;
-  font-weight: 700;
-  color: #cbd5e1;
-}
-
-.chat-time {
-  font-size: 9px;
-  color: #64748b;
-}
-
-.chat-text {
-  font-size: 12px;
-  line-height: 1.4;
-  word-break: break-word;
-  color: #e2e8f0;
-}
-
-.chat-text.unban-proof {
-  color: #22c55e;
-  font-weight: 700;
-}
-
-.chat-text.city-shoutout {
-  color: #00d2ff;
-  font-weight: 700;
-}
-
-.chat-text.unban-req {
-  color: #fbbf24;
-  font-weight: 600;
-}
-
-.chat-footer-note {
-  text-align: center;
-  font-size: 9.5px;
-  color: #475569;
+.pip-live-timer {
+  font-size: clamp(26px, 6.5vw, 36px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #ff3838;
+  text-shadow: 0 0 15px rgba(255, 56, 56, 0.9), 0 0 35px rgba(255, 56, 56, 0.5);
   margin-top: 10px;
-  letter-spacing: 0.5px;
+  font-family: 'Consolas', monospace;
 }
+
+/* PROGRESS */
+.progress-wrap { display: none; margin-top: 18px; }
+.progress-top { display: flex; justify-content: space-between; font-size: 11px; color: #79a6be; margin-bottom: 6px; }
+.bar { height: 8px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 4px; overflow: hidden; }
+.fill { height: 100%; width: 0; background: linear-gradient(90deg, #00e5ff, #00ffaa); transition: width 0.4s ease; box-shadow: 0 0 10px #00ffaa; }
+
+/* MODALS */
+.modal-bg {
+  display: none; position: fixed; inset: 0; background: rgba(0, 5, 8, 0.9);
+  backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; z-index: 9999; opacity: 0; transition: opacity 0.3s;
+}
+.modal {
+  width: min(440px, 100%); background: #030e16; border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 10px; padding: 24px; box-shadow: 0 0 35px rgba(0, 229, 255, 0.2); text-align: center;
+  transform: scale(0.9); transition: transform 0.3s;
+}
+.modal.show { transform: scale(1); }
+.modal h2 { font-size: 18px; letter-spacing: 1.5px; color: #ffffff; margin-bottom: 8px; text-transform: uppercase; }
+.modal p { color: #79a6be; font-size: 12px; line-height: 1.5; margin-bottom: 16px; }
+
+.socials { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+.social-btn {
+  text-decoration: none; color: #00e5ff; padding: 12px; border-radius: 6px;
+  font-weight: 700; font-size: 12px; letter-spacing: 1px; border: 1px solid rgba(0, 229, 255, 0.35);
+  background: rgba(0, 229, 255, 0.08); transition: all 0.2s; text-transform: uppercase;
+}
+.social-btn:hover { background: rgba(0, 229, 255, 0.2); color: #fff; }
+
+.locked-step { opacity: 0.35; pointer-events: none; filter: grayscale(1); }
+.verify-status { font-size: 11px; font-weight: 700; margin-top: 10px; min-height: 18px; }
+.verify-status.scanning { color: #00e5ff; }
+.verify-status.failed { color: #ff4757; }
+.verify-status.passed { color: #00ffaa; }
+
+.unfollow-warning-box {
+  background: rgba(255, 71, 87, 0.08); border: 1px dashed rgba(255, 71, 87, 0.4);
+  border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; font-size: 11px; color: #ff6b81;
+}
+
+/* HIDDEN CONTAINERS INITIALLY */
+#cyberOutputWrapper {
+  display: none;
+  width: 100%;
+}
+
+footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; letter-spacing: 1px; }
 </style>
 </head>
 <body>
 
-<!-- DYNAMIC REAL-TIME TRIGGERED UNBAN POPUP -->
-<div class="live-unban-popup" id="liveUnbanPopup">
-  <div class="popup-top-row">
-    <div class="popup-icon-wrap">🔓</div>
-    <div class="popup-details">
-      <div class="popup-badge">
-        <span class="pulse-dot"></span> LIVE UNBAN COMPLETED
-      </div>
-      <div class="popup-user-title" id="popupUserTitle">Unban Now: 636th User</div>
-      <div class="popup-uid-text" id="popupUidText">UID: 9549208842</div>
-    </div>
-  </div>
-  <div class="popup-bar-track">
-    <div class="popup-bar-fill" id="popupBarFill"></div>
-  </div>
-</div>
+<div id="grid-bg"></div>
 
-<!-- AUDIO PLAYERS -->
+<!-- AUDIOS -->
 <audio id="welcomeAudio" preload="auto">
   <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/Wellcome.mp3" type="audio/mpeg">
 </audio>
-
 <audio id="bgSongAudio" preload="auto" loop>
   <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/apexsongnew%20.wav" type="audio/wav">
 </audio>
-
 <audio id="errorAudio" preload="auto">
   <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/errorsms.mp3" type="audio/mpeg">
 </audio>
-
 <audio id="endAudio" preload="auto">
   <source src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/main/endsms.mp3" type="audio/mpeg">
 </audio>
 
-<canvas id="canvas-bg"></canvas>
+<div class="main-wrapper">
+  
+  <header class="cyber-top-bar">
+    <div class="brand-title">APEX <span>AI</span></div>
+    <div class="system-status-pill">
+      <span class="status-dot"></span> SYSTEM ONLINE
+    </div>
+  </header>
 
-<div class="main-wrapper" id="mainWrapper">
-  <!-- TOP PROOF BAR -->
-  <div class="top-action-bar">
-    <button class="proof-toggle-btn" id="openProofBtn">
-      <span>🏆</span> Live Unban Proofs
-    </button>
+  <div class="hero-header">
+    <div class="sub-glow-badge">ADVANCED CYBER ANALYSIS INTERFACE</div>
+    <h1 class="main-cyber-title">APEX AI</h1>
+    <p class="main-cyber-desc">Direct server synchronization terminal and verification sequence stream.</p>
   </div>
 
-  <!-- MAIN FORM CARD -->
-  <main class="card" id="mainFormCard">
-    <div class="profile-logo-wrap">
-      <div class="wave-ring"></div>
-      <div class="wave-ring"></div>
-      <img src="https://raw.githubusercontent.com/Rajsekhar001/PR-BOT-/refs/heads/main/62455-100kb.jpeg" alt="Apex Carnage Live" class="profile-img">
+  <!-- INITIAL VIEW: GAME CODE ANALYSIS INPUT FORM ONLY -->
+  <main class="terminal-card" id="mainFormCard">
+    <div class="terminal-header-row">
+      <span class="terminal-title">GAME CODE ANALYSIS</span>
+      <span class="terminal-badge">ENTRY PROTOCOL</span>
     </div>
-
-    <div class="logo">Apex Carnage Live</div>
-    <h1>Free Fire <span>ID Unban</span></h1>
-    <div class="step-one">STEP 1</div>
-    <p class="subtitle">Due to high server traffic, your account's <b>unban process</b> is currently in progress. Please fill details correctly.</p>
 
     <form id="unbanForm">
-      <label for="uid">Free Fire UID</label>
-      <input id="uid" name="uid" type="text" inputmode="numeric" maxlength="12" placeholder="Enter 8 to 12 digit UID" required>
-      <div id="uidError" class="error-msg">UID must be between 8 and 12 digits.</div>
+      <label for="uid">Target Free Fire UID</label>
+      <input id="uid" name="uid" type="text" inputmode="numeric" maxlength="12" placeholder="Input 8 to 12 digit UID" required>
+      <div id="uidError" class="error-msg">[ERROR] Invalid UID sequence length.</div>
 
-      <label for="banDate">Account banned date</label>
+      <label for="banDate">Registry Restriction Date</label>
       <input id="banDate" name="banDate" type="date" required>
 
-      <label for="banScreenshot">Upload banned ID screenshot (Mockup)</label>
+      <label for="banScreenshot">Mockup Protocol Verification (Upload)</label>
       <input id="banScreenshot" name="banScreenshot" type="file" accept="image/*" required>
 
-      <button type="submit" id="submitBtn">Submit Request</button>
+      <button type="submit" id="submitBtn" class="cyber-btn">Initialize Execution</button>
     </form>
 
-    <section class="progress-wrap" id="progressWrap">
-      <div class="progress-top"><span id="progressLabel">Initializing…</span><b id="percent">0%</b></div>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-top"><span id="progressLabel">Connecting to gateway...</span><b id="percent">0%</b></div>
       <div class="bar"><div class="fill" id="fill"></div></div>
-      <div class="status">Please keep this page open.</div>
-    </section>
+    </div>
   </main>
 
-  <div class="faq-section" id="faqSection">
-    <h3>Frequently Asked Questions</h3>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">How long does the unban take? <span>+</span></div>
-      <div class="faq-answer">Usually, it takes about 3 to 7 working days for the system to process the verification and appeal to Garena servers.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">Is my account safe? <span>+</span></div>
-      <div class="faq-answer">Yes! We never ask for your password. The entire process is done via your UID and standard community verification.</div>
-    </div>
-  </div>
-
-  <!-- DASHBOARD -->
-  <div class="dashboard-container" id="dashboardContainer">
-    <div class="dash-card">
-      <h2 style="color: #fff; margin-bottom: 25px;">Live Unban Database</h2>
-      
-      <div class="live-timer-header">
-          <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 16px;">Your ban UID: <br><strong id="myUid" style="color: #4ade80; font-family: monospace; font-size: 24px; display: inline-block; margin-top: 5px;"></strong></p>
-          <div id="myLiveTimer" style="color: #eccc68; font-size: 26px; font-weight: bold; letter-spacing: 1px;">10 Days 00 Hrs 00 Min 00 Sec</div>
+  <!-- REVEALED ONLY AFTER COMPLETE VERIFICATION -->
+  <div id="cyberOutputWrapper">
+    <!-- PANEL 1: LIVE CODE STREAM TERMINAL -->
+    <section class="terminal-card">
+      <div class="terminal-header-row">
+        <span class="terminal-title">LIVE CODE STREAM</span>
+        <span class="terminal-badge">SIMULATION</span>
       </div>
+      <div class="terminal-screen-box" id="terminalFeed"></div>
+    </section>
 
-      <!-- RECENT LIVE CONVERSION LIST -->
-      <div class="live-recent-box">
-        <div class="live-recent-title">
-          <span>⚡</span> Live Unban Feed Status
-        </div>
-        <div class="live-recent-item">
-          <span id="feedUserTag" style="color: #fff; font-weight: 700;">636th User</span>
-          <span id="feedUidTag" style="color: #4ade80; font-family: monospace; font-weight: bold;">9549208842</span>
-          <span style="color: #22c55e; font-weight: 800; font-size: 11px; background: rgba(34,197,94,0.15); padding: 3px 8px; border-radius: 6px;">UNBANNED</span>
-        </div>
+    <!-- PANEL 2: SERVER SYNC STATUS (USER UID & RED TIMER) -->
+    <section class="terminal-card">
+      <div class="terminal-header-row">
+        <span class="terminal-title">SERVER SYNC STATUS</span>
+        <span class="terminal-badge" style="color:#ff3838;">ACTIVE ALERT</span>
       </div>
-    </div>
+      <div class="red-alert-card">
+        <p style="color: #79a6be; font-size: 11px; margin-bottom: 6px; letter-spacing: 1.5px;">REGISTERED TARGET UID</p>
+        <div id="myUid" style="color: #00ffc4; font-size: 26px; font-weight: bold; letter-spacing: 2px; margin-bottom: 16px;"></div>
+
+        <div class="red-alert-header">
+          <span class="pip-pulse-dot"></span>
+          <span>RESTORATION SEQUENCE COUNTDOWN</span>
+          <span class="pip-pulse-dot"></span>
+        </div>
+        <div class="pip-live-timer" id="myLiveTimer">10D 00H 00M 00S</div>
+      </div>
+    </section>
   </div>
 
   <footer>
-    <p>&copy; 2026 Apex Carnage Live. All Rights Reserved.</p>
-    <p style="margin-top: 5px;">Secured by Firebase • <a href="#" onclick="alert('Privacy Policy: We do not share your data with 3rd parties.')">Privacy Policy</a></p>
+    <p>&copy; 2026 APEX AI CYBER SYSTEMS • ALL PROTOCOLS VERIFIED</p>
   </footer>
-</div>
-
-<!-- LIVE UNBAN PROOF MODAL (LEADERBOARD) -->
-<div class="modal-bg" id="proofModalBg">
-  <div class="proof-modal-card" id="proofModalCard">
-    <div class="proof-modal-header">
-      <h2>🏆 Live Unban Leaderboard</h2>
-      <div class="proof-stats-sub">
-        Total Accounts Restored: <strong id="totalUnbanCounter">3,001</strong>
-      </div>
-    </div>
-
-    <!-- TOP 3 PODIUM -->
-    <div class="podium-container">
-      <div class="podium-slot rank-2">
-        <div class="podium-avatar-wrap">🥈</div>
-        <div class="podium-rank-num">2</div>
-        <div class="podium-uid-tag" id="podiumUid2">7862******</div>
-        <div class="podium-badge-status">UNBANNED</div>
-      </div>
-
-      <div class="podium-slot rank-1">
-        <div class="crown-icon">👑</div>
-        <div class="podium-avatar-wrap">🥇</div>
-        <div class="podium-rank-num">1</div>
-        <div class="podium-uid-tag" id="podiumUid1">5427******</div>
-        <div class="podium-badge-status">UNBANNED</div>
-      </div>
-
-      <div class="podium-slot rank-3">
-        <div class="podium-avatar-wrap">🥉</div>
-        <div class="podium-rank-num">3</div>
-        <div class="podium-uid-tag" id="podiumUid3">9549******</div>
-        <div class="podium-badge-status">UNBANNED</div>
-      </div>
-    </div>
-
-    <!-- RANK 4 TO 10 LIST -->
-    <div class="proof-list" id="proofRowList"></div>
-
-    <!-- DYNAMIC LIVE COMMENTS -->
-    <div class="live-comments-container">
-      <div class="chat-header">
-        <div class="chat-live-badge">
-          <span class="chat-pulse-dot"></span> LIVE COMMENTS
-        </div>
-        <div class="chat-watchers" id="chatWatchers">1,482 watching</div>
-      </div>
-
-      <div class="chat-stream-box" id="commentsStream"></div>
-      <div class="chat-footer-note">▼ auto-scrolling live community feed</div>
-    </div>
-
-    <button class="proof-close-btn" id="closeProofBtn">Close Proof List</button>
-  </div>
 </div>
 
 <!-- STEP 2 MODAL -->
 <div class="modal-bg" id="modalBg">
   <div class="modal" id="modalBox">
-    <h2>Step 2: Community Verification</h2>
-    <p>Complete the steps in order: Visit Telegram first, then follow Instagram to unlock screenshot upload.</p>
+    <h2>COMMUNITY GATEWAY</h2>
+    <p>Complete authentication sequence via official communication nodes.</p>
     
     <div class="socials">
-      <a class="social-btn tg-btn" id="tgLink" href="https://t.me/+GJ738f9FKc5mOWRl" target="_blank" rel="noopener">
-        1. Visit Telegram Channel
+      <a class="social-btn" id="tgLink" href="https://t.me/+GJ738f9FKc5mOWRl" target="_blank" rel="noopener">
+        [1] ACCESS TELEGRAM NODE
       </a>
 
-      <a class="social-btn ig-btn locked-step" id="igLink" href="https://www.instagram.com/apex.carnage.live?stkn=MWZtM3RxdXMwbTR2eg==" target="_blank" rel="noopener">
-        2. Follow on Instagram (@apex.carnage.live)
+      <a class="social-btn locked-step" id="igLink" href="https://www.instagram.com/apex.carnage.live?stkn=MWZtM3RxdXMwbTR2eg==" target="_blank" rel="noopener">
+        [2] VERIFY INSTAGRAM NODE (@apex.carnage.live)
       </a>
 
-      <div class="ss-upload locked-step" id="igUploadWrapper">
+      <div class="locked-step" id="igUploadWrapper">
         <div class="unfollow-warning-box">
-          <div class="warning-badge">⚠️ STRICT WARNING / DISCLAIMER</div>
-          <div class="warning-text">
-            Agar aapne <b>APEX.CARNAGE.LIVE</b> ko unfollow ya unsubscribe kiya, toh aapka Free Fire ID unban process <b>turant cancel aur permanent block</b> kar diya jayega!
-          </div>
+          <b>CRITICAL WARNING:</b> Unfollowing will abort and blacklist the UID synchronization sequence.
         </div>
         <input type="file" id="igScreenshot" accept="image/*" disabled>
       </div>
     </div>
     
     <div id="verifyStatusText" class="verify-status"></div>
-    <button id="confirmBtn" disabled>Verify Screenshot</button>
+    <button id="confirmBtn" class="cyber-btn" disabled>Scan & Authenticate</button>
   </div>
 </div>
 
 <div class="modal-bg" id="successModalBg">
-  <div class="modal" id="successBox" style="border: 2px solid rgba(34, 197, 94, 0.4); box-shadow: 0 20px 60px rgba(34, 197, 94, 0.25); border-radius: 24px; padding: 30px; text-align: center;">
-    <p style="color: #94a3b8; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 15px;">Verification Complete</p>
-    <div style="font-size: 55px; margin-bottom: 10px;">✅</div>
-    <h2 style="color: #22c55e;">Request Received</h2>
-    <p style="color: #e2e8f0;">Thanks for joining Apex Carnage Unban Official!<br><br>Your data has been securely verified and saved. You will receive an update soon.</p>
-    <button id="doneBtn" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">Done</button>
+  <div class="modal" id="successBox" style="border-color: #00ffaa;">
+    <h2 style="color: #00ffaa;">TRANSMISSION RECEIVED</h2>
+    <p>Authentication token generated. Process queued for live node verification.</p>
+    <button id="doneBtn" class="cyber-btn">Proceed To Monitor</button>
   </div>
 </div>
 
-<!-- LEADERBOARD LOGIC: REAL-TIME MONOTONIC COUNTER (STARTS 3,001+) -->
+<!-- SOUND & PIP-PIP BEEP ENGINE -->
 <script>
-  const proofModal = document.getElementById('proofModalBg');
-  const proofBox = document.getElementById('proofModalCard');
-  const openProofBtn = document.getElementById('openProofBtn');
-  const closeProofBtn = document.getElementById('closeProofBtn');
+  const welcomeAudio = document.getElementById('welcomeAudio');
+  const bgSongAudio = document.getElementById('bgSongAudio');
+  const errorAudio = document.getElementById('errorAudio');
+  const endAudio = document.getElementById('endAudio');
+  let audioStarted = false;
 
-  function openProofModal() {
-    proofModal.style.display = 'flex';
-    setTimeout(() => {
-      proofModal.style.opacity = '1';
-      proofBox.classList.add('show');
-    }, 10);
+  function silenceAllExcept(keepAudio) {
+    [welcomeAudio, bgSongAudio, errorAudio, endAudio].forEach(audio => {
+      if (audio !== keepAudio && !audio.paused) {
+        audio.pause();
+      }
+    });
   }
 
-  function closeProofModal() {
-    proofModal.style.opacity = '0';
-    setTimeout(() => {
-      proofModal.style.display = 'none';
-    }, 300);
-  }
+  function startAudioFlow() {
+    if (audioStarted) return;
+    audioStarted = true;
 
-  openProofBtn.addEventListener('click', openProofModal);
-  closeProofBtn.addEventListener('click', closeProofModal);
-
-  const BASE_RESTORED_COUNT = 3001;
-  const RESTORE_INTERVAL_MS = 10 * 1000;
-  const RESTORE_REF_TIME = new Date("2026-10-05T00:00:00Z").getTime();
-
-  function getMonotonicRestoredCount() {
-    const now = Date.now();
-    const elapsed = Math.max(0, now - RESTORE_REF_TIME);
-    const calculated = BASE_RESTORED_COUNT + Math.floor(elapsed / RESTORE_INTERVAL_MS);
-
-    let storedHighest = parseInt(localStorage.getItem('apex_highest_restored_count') || "0");
-    let finalCount = Math.max(calculated, storedHighest);
-
-    if (finalCount <= storedHighest) {
-      finalCount = storedHighest + 1;
-    }
-
-    localStorage.setItem('apex_highest_restored_count', finalCount.toString());
-    return finalCount;
-  }
-
-  let liveRestoredCount = getMonotonicRestoredCount();
-
-  function updateUnbanCounterDisplay() {
-    const counterEl = document.getElementById('totalUnbanCounter');
-    if (counterEl) {
-      counterEl.textContent = liveRestoredCount.toLocaleString('en-IN');
-    }
-  }
-
-  function maskLast6Digits(uid) {
-    const s = String(uid).trim();
-    if (s.length <= 6) return s.slice(0, 2) + "******";
-    return s.slice(0, s.length - 6) + "******";
-  }
-
-  const seedList = [
-    "5427506186", "7862314554", "9549208842", "4549017274", "1215090826",
-    "13152045130", "842966202", "9843876666", "9609289354", "8054622266",
-    "7428784115", "9014294298", "8227418730", "14857960330", "8710233898"
-  ];
-
-  function renderLeaderboard() {
-    updateUnbanCounterDisplay();
-
-    setInterval(() => {
-      liveRestoredCount += 1;
-      localStorage.setItem('apex_highest_restored_count', liveRestoredCount.toString());
-      updateUnbanCounterDisplay();
-    }, RESTORE_INTERVAL_MS);
-
-    document.getElementById('podiumUid1').textContent = maskLast6Digits(seedList[0]);
-    document.getElementById('podiumUid2').textContent = maskLast6Digits(seedList[1]);
-    document.getElementById('podiumUid3').textContent = maskLast6Digits(seedList[2]);
-
-    const listContainer = document.getElementById('proofRowList');
-    listContainer.innerHTML = "";
-
-    const avatarIcons = ["👤", "🎯", "⚡", "🔥", "🛡️", "⚔", "👾"];
-
-    for (let i = 3; i < 10; i++) {
-      const rawUid = seedList[i] || ("9" + Math.floor(100000000 + Math.random() * 900000000));
-      const masked = maskLast6Digits(rawUid);
-      const icon = avatarIcons[i - 3] || "👤";
-
-      const row = document.createElement('div');
-      row.className = 'proof-row';
-      row.innerHTML = `
-        <div class="proof-row-left">
-          <div class="proof-rank-badge">${i + 1}</div>
-          <div class="proof-avatar-mini">${icon}</div>
-          <div class="proof-uid">${masked}</div>
-        </div>
-        <div class="proof-status">UNBANNED</div>
-      `;
-      listContainer.appendChild(row);
-    }
-  }
-
-  window.addEventListener('DOMContentLoaded', renderLeaderboard);
-</script>
-
-<!-- ALWAYS INCREMENTING USER COUNT (START 636, NEVER DECREASES) -->
-<script>
-  const unbanUidList = [
-    "9549208842", "5427506186", "7862314554", "4549017274", "1215090826",
-    "13152045130", "842966202", "9843876666", "9609289354", "8054622266",
-    "7428784115", "9014294298", "8227418730", "14857960330", "8710233898",
-    "2571925898", "4515101962", "13306053658", "6729104821", "8821940173",
-    "9102847192", "3849102847", "5519204817", "7291048201", "1049281749"
-  ];
-
-  function getOrdinal(n) {
-    const s = ["th", "st", "nd", "rd"];
-    const v = n % 100;
-    return n + (s[(v - 20) % 10] || s[v] || s[0]);
-  }
-
-  const BASE_START_COUNT = 636;
-  const UNBAN_INTERVAL_MS = 6 * 60 * 1000;
-  const REFERENCE_TIME = new Date("2026-10-05T00:00:00Z").getTime();
-
-  function getMonotonicUserCount() {
-    const now = Date.now();
-    const elapsed = Math.max(0, now - REFERENCE_TIME);
-    const calculatedCount = BASE_START_COUNT + Math.floor(elapsed / UNBAN_INTERVAL_MS);
-
-    let storedMax = parseInt(localStorage.getItem('apex_highest_unban_count') || "0");
-    let finalCount = Math.max(calculatedCount, storedMax);
-    
-    if (finalCount <= storedMax) {
-      finalCount = storedMax + 1;
-    }
-    
-    localStorage.setItem('apex_highest_unban_count', finalCount.toString());
-    return finalCount;
-  }
-
-  function triggerLiveUnbanEvent() {
-    const currentCount = getMonotonicUserCount();
-    const uidIndex = (currentCount - BASE_START_COUNT) % unbanUidList.length;
-    const currentUid = unbanUidList[uidIndex].trim();
-    const userTitle = `Unban Now: ${getOrdinal(currentCount)} User`;
-    const fullUidText = `UID: ${currentUid}`;
-
-    const feedUser = document.getElementById('feedUserTag');
-    const feedUid = document.getElementById('feedUidTag');
-    if (feedUser && feedUid) {
-      feedUser.textContent = `${getOrdinal(currentCount)} User`;
-      feedUid.textContent = currentUid;
-
-      feedUser.parentElement.style.transition = 'background 0.3s ease';
-      feedUser.parentElement.style.background = 'rgba(34, 197, 94, 0.25)';
-      setTimeout(() => {
-        feedUser.parentElement.style.background = 'rgba(255, 255, 255, 0.02)';
-      }, 700);
-    }
-
-    const popupEl = document.getElementById('liveUnbanPopup');
-    const titleEl = document.getElementById('popupUserTitle');
-    const uidEl = document.getElementById('popupUidText');
-    const fillEl = document.getElementById('popupBarFill');
-
-    if (popupEl && titleEl && uidEl && fillEl) {
-      titleEl.textContent = userTitle;
-      uidEl.textContent = fullUidText;
-
-      fillEl.style.transition = 'none';
-      fillEl.style.width = '100%';
-
-      popupEl.classList.add('show');
-
-      setTimeout(() => {
-        fillEl.style.transition = 'width 5s linear';
-        fillEl.style.width = '0%';
-      }, 50);
-
-      setTimeout(() => {
-        popupEl.classList.remove('show');
-      }, 5200);
-    }
-  }
-
-  let popupCooldown = false;
-  window.addEventListener('DOMContentLoaded', () => {
-    const uidField = document.getElementById('uid');
-    if (uidField) {
-      uidField.addEventListener('input', () => {
-        if (uidField.value.trim().length >= 4 && !popupCooldown) {
-          popupCooldown = true;
-          triggerLiveUnbanEvent();
-          setTimeout(() => {
-            popupCooldown = false;
-          }, 25000);
-        }
+    welcomeAudio.volume = 1.0;
+    const playPromise = welcomeAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        welcomeAudio.onended = () => {
+          bgSongAudio.volume = 0.6;
+          bgSongAudio.play().catch(e => console.log('BGM wait:', e));
+        };
+      }).catch(err => {
+        console.log('Autoplay blocked:', err);
+        audioStarted = false;
       });
     }
-  });
+  }
+
+  window.addEventListener('load', startAudioFlow);
+  document.addEventListener('click', startAudioFlow, { once: true });
+  document.addEventListener('touchstart', startAudioFlow, { once: true });
+
+  // Web Audio Synth for Pip-Pip
+  let audioCtx = null;
+  let isTimerActive = false;
+
+  function playPipPipSound() {
+    if (!isTimerActive) return;
+    try {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      function beep(freq, delay, dur) {
+        setTimeout(() => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + dur);
+        }, delay);
+      }
+
+      beep(1050, 0, 0.06);
+      beep(1350, 90, 0.06);
+    } catch (e) {}
+  }
 </script>
 
-<!-- FIREBASE SDK INTEGRATION -->
+<!-- REALISTIC HACKER TERMINAL STREAM GENERATOR -->
+<script>
+  const terminalFeed = document.getElementById('terminalFeed');
+  let streamInterval = null;
+
+  function getRandomHex(len) {
+    let out = '';
+    const chars = '0123456789ABCDEF';
+    for(let i=0; i<len; i++) out += chars[Math.floor(Math.random()*chars.length)];
+    return out;
+  }
+
+  function generateHackerLine(uid) {
+    const mem = '0x' + getRandomHex(8);
+    const targetUid = uid || '799494949494';
+    const lines = [
+      { text: `[SOCKET:TLS1.3] SYN_SENT -> gateway-in.garena.com:443 [MEM:${mem}]`, type: "cyan" },
+      { text: `[HEX ] ${getRandomHex(4)} ${getRandomHex(4)} ${getRandomHex(4)} ${getRandomHex(4)} :: HEADER_INJECT`, type: "hex" },
+      { text: `[APEX-DISPATCH] Submitting appeal packet for UID:${targetUid}`, type: "retry" },
+      { text: `[SERVER RESP] GARENA_CLUSTER_IN_04: HTTP/2 403 FORBIDDEN`, type: "reject" },
+      { text: `[REJECT LOG] Code:0x9A42 "Permanent ban flag active in partition #${getRandomHex(2)}"`, type: "reject" },
+      { text: `[MEM CORRUPT] Attempting memory override at ${mem} ... Bypassed`, type: "system" },
+      { text: `[ROUTE] Rotating SSL cert fingerprints: SHA256:${getRandomHex(16)}...`, type: "cyan" },
+      { text: `[GARENA REJECT] Signature mismatch: ANTI_CHEAT_INTEGRITY_CHECK_FAILED`, type: "reject" },
+      { text: `[PACKET RE-SEND] Re-routing via backup node cluster [PING: 14ms]`, type: "retry" },
+      { text: `[CACHE CLEAR] Flushing ARP cache & resetting token session cookie`, type: "system" },
+      { text: `[QUEUE CHECK] Node load balance at 89.4%. Queue state preserved.`, type: "success" }
+    ];
+    return lines[Math.floor(Math.random() * lines.length)];
+  }
+
+  function startHackerStream(uid) {
+    if (streamInterval) clearInterval(streamInterval);
+    terminalFeed.innerHTML = '';
+
+    for (let i = 0; i < 4; i++) {
+      const item = generateHackerLine(uid);
+      const p = document.createElement('div');
+      p.className = `terminal-line ${item.type}`;
+      p.textContent = item.text;
+      terminalFeed.appendChild(p);
+    }
+
+    streamInterval = setInterval(() => {
+      const item = generateHackerLine(uid);
+      const p = document.createElement('div');
+      p.className = `terminal-line ${item.type}`;
+      p.textContent = item.text;
+      terminalFeed.appendChild(p);
+
+      if (terminalFeed.children.length > 40) {
+        terminalFeed.removeChild(terminalFeed.firstElementChild);
+      }
+      terminalFeed.scrollTop = terminalFeed.scrollHeight;
+    }, 1100);
+  }
+</script>
+
+<!-- PIP-PIP TIMER CONTROLLER -->
+<script>
+  let timerInterval = null;
+
+  function startRedAlertTimer(storedMs) {
+    const myLiveTimer = document.getElementById('myLiveTimer');
+    const tenDaysMs = 10 * 24 * 60 * 60 * 1000;
+    const startTime = storedMs || Date.now();
+    const targetTime = startTime + tenDaysMs;
+    isTimerActive = true;
+
+    if (timerInterval) clearInterval(timerInterval);
+
+    function update() {
+      const now = Date.now();
+      const diff = targetTime - now;
+
+      if (diff <= 0) {
+        myLiveTimer.innerHTML = "STATUS: SEQUENCE RESOLVED";
+        isTimerActive = false;
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const dStr = d < 10 ? '0' + d : d;
+      const hStr = h < 10 ? '0' + h : h;
+      const mStr = m < 10 ? '0' + m : m;
+      const sStr = s < 10 ? '0' + s : s;
+
+      myLiveTimer.innerHTML = `${dStr}D ${hStr}H ${mStr}M ${sStr}S`;
+
+      playPipPipSound();
+    }
+
+    update();
+    timerInterval = setInterval(update, 1000);
+  }
+</script>
+
+<!-- FIREBASE & INTERACTION LOGIC -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -1181,12 +707,11 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   const uidInput = document.getElementById('uid');
   const uidError = document.getElementById('uidError');
   const submitBtn = document.getElementById('submitBtn');
-  
   const wrap = document.getElementById('progressWrap');
   const fill = document.getElementById('fill');
   const percent = document.getElementById('percent');
   const label = document.getElementById('progressLabel');
-  
+
   const modal = document.getElementById('modalBg');
   const modalBox = document.getElementById('modalBox');
   const successModal = document.getElementById('successModalBg');
@@ -1199,40 +724,28 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   const confirmBtn = document.getElementById('confirmBtn');
   const verifyStatusText = document.getElementById('verifyStatusText');
 
-  const bgSongAudio = document.getElementById('bgSongAudio');
-  const errorAudio = document.getElementById('errorAudio');
-  const endAudio = document.getElementById('endAudio');
-  const welcomeAudio = document.getElementById('welcomeAudio');
+  let activeUserUID = null;
+  let activeTimestamp = null;
 
-  function silenceAllExcept(keepAudio) {
-    [welcomeAudio, bgSongAudio, errorAudio, endAudio].forEach(audio => {
-      if (audio !== keepAudio && !audio.paused) {
-        audio.pause();
-      }
-    });
+  function setProgress(value, text) {
+    fill.style.width = value + '%';
+    percent.textContent = value + '%';
+    label.textContent = text;
   }
-
-  let currentUserData = null;
-  let mainTimerInterval = null;
 
   tgLink.addEventListener('click', () => {
     igLink.classList.remove('locked-step');
-    verifyStatusText.className = "verify-status";
-    verifyStatusText.textContent = "Step 1 Done! Now follow on Instagram.";
+    verifyStatusText.textContent = "Node 1 passed. Awaiting Node 2.";
   });
 
   igLink.addEventListener('click', () => {
     igUploadWrapper.classList.remove('locked-step');
     igScreenshot.disabled = false;
-    verifyStatusText.className = "verify-status";
-    verifyStatusText.textContent = "Step 2 Done! Upload Instagram screenshot now.";
+    verifyStatusText.textContent = "Upload screenshot proof to initiate OCR.";
   });
 
   uidInput.addEventListener('input', () => {
-    const regex = /^\d{0,12}$/;
-    if (!regex.test(uidInput.value)) {
-      uidInput.value = uidInput.value.replace(/\D/g, ''); 
-    }
+    uidInput.value = uidInput.value.replace(/\D/g, '');
     if (uidInput.value.length >= 8 && uidInput.value.length <= 12) {
       uidInput.classList.add('input-success');
       uidInput.classList.remove('input-error');
@@ -1241,22 +754,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
       uidInput.classList.remove('input-success');
     }
   });
-
-  function setProgress(value, text) {
-    fill.style.width = value + '%';
-    percent.textContent = value + '%';
-    label.textContent = text;
-  }
-
-  function showDashboard(data) {
-    wrap.style.display = 'none';
-    document.getElementById('mainFormCard').style.display = 'none';
-    document.getElementById('faqSection').style.display = 'none';
-    document.getElementById('dashboardContainer').style.display = 'block';
-    
-    document.getElementById('myUid').innerText = data.uid || data.UID;
-    startMy10DayTimer(data);
-  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1267,219 +764,129 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
 
       silenceAllExcept(errorAudio);
       errorAudio.currentTime = 0;
-      errorAudio.play().catch(e => console.log('Error audio blocked:', e));
+      errorAudio.play().catch(e => console.log(e));
 
       errorAudio.onended = () => {
         setTimeout(() => {
           bgSongAudio.currentTime = 0;
           bgSongAudio.volume = 0.6;
-          bgSongAudio.play().catch(e => console.log('BGM resume blocked:', e));
-        }, 2000);
+          bgSongAudio.play().catch(e => console.log(e));
+        }, 1500);
       };
       return;
     }
-    
+
     silenceAllExcept(endAudio);
     endAudio.currentTime = 0;
-    endAudio.play().catch(e => console.log('End audio blocked:', e));
+    endAudio.play().catch(e => console.log(e));
 
     endAudio.onended = () => {
       bgSongAudio.volume = 0.6;
-      bgSongAudio.play().catch(e => console.log('BGM resume blocked:', e));
+      bgSongAudio.play().catch(e => console.log(e));
     };
 
-    const uidVal = uidInput.value;
+    activeUserUID = uidInput.value.trim();
     submitBtn.style.display = 'none';
     wrap.style.display = 'block';
-    
-    setProgress(20, 'Checking database record…');
+
+    setProgress(40, 'Querying registry cluster...');
 
     try {
       const userRef = collection(db, "user");
-      const qExist = query(userRef, where("uid", "==", uidVal));
+      const qExist = query(userRef, where("uid", "==", activeUserUID));
       const existSnap = await getDocs(qExist);
 
       if (!existSnap.empty) {
-        currentUserData = existSnap.docs[0].data();
-        setProgress(100, 'Welcome back! Opening status…');
+        const data = existSnap.docs[0].data();
+        setProgress(100, 'UID record mapped. Initializing monitor...');
         setTimeout(() => {
-          showDashboard(currentUserData);
-        }, 600);
+          revealCyberInterface(data.uid, data.timestampMs);
+        }, 500);
       } else {
-        setProgress(45, 'Connecting to servers…');
+        setProgress(70, 'Gateway access locked. Social validation required.');
         setTimeout(() => {
-          setProgress(75, 'Awaiting social verification…');
           openModal(modal, modalBox);
-        }, 1000);
+        }, 800);
       }
     } catch (err) {
-      console.error("Database check error:", err);
-      setProgress(45, 'Connecting to servers…');
-      setTimeout(() => {
-        setProgress(75, 'Awaiting social verification…');
-        openModal(modal, modalBox);
-      }, 1000);
+      setTimeout(() => openModal(modal, modalBox), 800);
     }
   });
 
   igScreenshot.addEventListener('change', () => {
-    if (igScreenshot.files.length > 0) {
-      confirmBtn.disabled = false;
-      confirmBtn.textContent = "Verify Screenshot";
-      verifyStatusText.textContent = "";
-      verifyStatusText.className = "verify-status";
-    } else {
-      confirmBtn.disabled = true;
-      confirmBtn.textContent = "Upload Instagram screenshot";
-    }
+    confirmBtn.disabled = !igScreenshot.files.length;
   });
-
-  function startMy10DayTimer(data) {
-    const myLiveTimer = document.getElementById('myLiveTimer');
-    const nowMs = new Date().getTime();
-    const tenDaysMs = 10 * 24 * 60 * 60 * 1000;
-    const startTime = (data && data.timestampMs) ? data.timestampMs : nowMs;
-    const targetUnbanDate = startTime + tenDaysMs;
-
-    if (mainTimerInterval) clearInterval(mainTimerInterval);
-
-    function updateLiveClock() {
-      const current = new Date().getTime();
-      const distance = targetUnbanDate - current;
-
-      if (distance <= 0) {
-        clearInterval(mainTimerInterval);
-        myLiveTimer.innerHTML = "STATUS: UNBANNED! ✅";
-        myLiveTimer.style.color = "#22c55e";
-        return;
-      }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      const dStr = days < 10 ? '0' + days : days;
-      const hStr = hours < 10 ? '0' + hours : hours;
-      const mStr = minutes < 10 ? '0' + minutes : minutes;
-      const sStr = seconds < 10 ? '0' + seconds : seconds;
-
-      myLiveTimer.innerHTML = `${dStr} Days ${hStr} Hrs ${mStr} Min ${sStr} Sec`;
-    }
-
-    updateLiveClock();
-    mainTimerInterval = setInterval(updateLiveClock, 1000);
-  }
 
   confirmBtn.addEventListener('click', async () => {
     const file = igScreenshot.files[0];
-    if (!file) {
-      alert("Please choose your Instagram screenshot first.");
-      return;
-    }
+    if (!file) return;
 
     confirmBtn.disabled = true;
-    confirmBtn.textContent = "Scanning screenshot locally...";
     verifyStatusText.className = "verify-status scanning";
-    verifyStatusText.textContent = "Scanning screenshot for Following status & Name...";
+    verifyStatusText.textContent = "Executing OCR scanning...";
 
     try {
-      const result = await Tesseract.recognize(
-        file,
-        'eng',
-        {
-          logger: (m) => {
-            if (m.status === 'recognizingtext') {
-              verifyStatusText.textContent = `Scanning screenshot... ${Math.round(m.progress * 100)}%`;
-            }
-          }
-        }
-      );
-
+      const result = await Tesseract.recognize(file, 'eng');
       const ocrText = (result.data.text || "").toLowerCase().replace(/\s+/g, '');
 
       const hasFollowing = ocrText.includes("following") || ocrText.includes("followin");
       const hasUsername = ocrText.includes("apex.carnage.live") || ocrText.includes("apexcarnage") || ocrText.includes("rajsekhar");
 
-      if (!hasFollowing) {
+      if (!hasFollowing || !hasUsername) {
         verifyStatusText.className = "verify-status failed";
-        verifyStatusText.textContent = "Verification Failed: 'Following' button not found on screenshot!";
-        igScreenshot.value = '';
-        confirmBtn.disabled = true;
-        confirmBtn.textContent = "Re-upload screenshot";
+        verifyStatusText.textContent = "Validation Failed: Following status or profile mismatch.";
+        confirmBtn.disabled = false;
         return;
       }
-
-      if (!hasUsername) {
-        verifyStatusText.className = "verify-status failed";
-        verifyStatusText.textContent = "Verification Failed: Profile name not matched. Follow @apex.carnage.live";
-        igScreenshot.value = '';
-        confirmBtn.disabled = true;
-        confirmBtn.textContent = "Re-upload screenshot";
-        return;
-      }
-
-      igScreenshot.value = '';
-      const mockupInput = document.getElementById('banScreenshot');
-      if (mockupInput) mockupInput.value = '';
 
       verifyStatusText.className = "verify-status passed";
-      verifyStatusText.textContent = "Verified! Opening status...";
-      confirmBtn.textContent = "Verified Successfully!";
+      verifyStatusText.textContent = "Authentication passed!";
 
-      const uidVal = uidInput.value.trim() || "1234567890";
-      const nowMs = new Date().getTime();
-      
-      currentUserData = {
-        uid: uidVal,
-        banDate: document.getElementById('banDate').value || new Date().toISOString().split('T')[0],
-        verifiedFollow: true,
-        timestampMs: nowMs,
-        subNo: 501
-      };
+      activeTimestamp = Date.now();
 
-      (async () => {
-        try {
-          const userRef = collection(db, "user");
-          await addDoc(userRef, {
-            uid: uidVal,
-            banDate: currentUserData.banDate,
-            verifiedFollow: true,
-            timestamp: serverTimestamp(),
-            timestampMs: nowMs,
-            subNo: currentUserData.subNo
-          });
-        } catch (dbErr) {
-          console.warn("Silent sync complete without image:", dbErr);
-        }
-      })();
+      try {
+        await addDoc(collection(db, "user"), {
+          uid: activeUserUID,
+          banDate: document.getElementById('banDate').value || new Date().toISOString().split('T')[0],
+          verifiedFollow: true,
+          timestamp: serverTimestamp(),
+          timestampMs: activeTimestamp
+        });
+      } catch (dbErr) {
+        console.warn(dbErr);
+      }
 
-      modal.style.opacity = '0';
-      setTimeout(() => {
-        modal.style.display = 'none';
-        setProgress(100, 'Verification Confirmed!');
-        
-        successModal.style.display = 'flex';
-        setTimeout(() => {
-          successModal.style.opacity = '1';
-          successBox.classList.add('show');
-        }, 50);
-      }, 300);
-
+      closeModal(modal);
+      openModal(successModal, successBox);
     } catch (err) {
-      console.error("OCR error:", err);
       verifyStatusText.className = "verify-status failed";
-      verifyStatusText.textContent = "Could not scan clearly. Please upload a clear Instagram screenshot.";
-      igScreenshot.value = '';
-      confirmBtn.disabled = true;
-      confirmBtn.textContent = "Re-upload screenshot";
+      verifyStatusText.textContent = "Scan error. Please re-upload clean screenshot.";
+      confirmBtn.disabled = false;
     }
   });
 
   document.getElementById('doneBtn').addEventListener('click', () => {
     closeModal(successModal);
-    showDashboard(currentUserData);
+    revealCyberInterface(activeUserUID, activeTimestamp);
   });
+
+  function revealCyberInterface(uid, timestampMs) {
+    // Hide Form completely
+    document.getElementById('mainFormCard').style.display = 'none';
+
+    // Show Terminal & Red Sync Status
+    const cyberWrapper = document.getElementById('cyberOutputWrapper');
+    cyberWrapper.style.display = 'block';
+
+    // Populate exact entered UID
+    document.getElementById('myUid').innerText = uid;
+
+    // Start Live hacker terminal simulation & pip-pip red timer
+    startHackerStream(uid);
+    startRedAlertTimer(timestampMs);
+
+    cyberWrapper.scrollIntoView({ behavior: 'smooth' });
+  }
 
   function openModal(bg, box) {
     bg.style.display = 'flex';
@@ -1491,276 +898,6 @@ footer a { color: #ff4a4a; text-decoration: none; font-weight: bold; }
   }
 </script>
 
-<!-- AUDIO FLOW -->
-<script>
-  const welcomeAudio = document.getElementById('welcomeAudio');
-  const bgSongAudio = document.getElementById('bgSongAudio');
-  let audioStarted = false;
-
-  function startAudioFlow() {
-    if (audioStarted) return;
-    audioStarted = true;
-
-    welcomeAudio.volume = 1.0;
-    const playPromise = welcomeAudio.play();
-
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        welcomeAudio.onended = () => {
-          bgSongAudio.volume = 0.6;
-          bgSongAudio.play().catch(e => console.log('BGM wait:', e));
-        };
-      }).catch(err => {
-        console.log('Autoplay block:', err);
-        audioStarted = false;
-      });
-    }
-  }
-
-  window.addEventListener('load', startAudioFlow);
-  document.addEventListener('click', startAudioFlow, { once: true });
-  document.addEventListener('touchstart', startAudioFlow, { once: true });
-</script>
-
-<!-- FAQ LOGIC & CANVAS BACKGROUND -->
-<script>
-  function toggleFaq(element) {
-    const answer = element.querySelector('.faq-answer');
-    const symbol = element.querySelector('.faq-question span');
-    if (answer.style.display === 'block') {
-      answer.style.display = 'none';
-      symbol.textContent = '+';
-    } else {
-      answer.style.display = 'block';
-      symbol.textContent = '-';
-    }
-  }
-
-  const canvas = document.getElementById('canvas-bg');
-  const ctx = canvas.getContext('2d');
-  let particlesArray = [];
-  let waveOffset = 0;
-
-  function setCanvasDimensions() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  setCanvasDimensions();
-
-  window.addEventListener('resize', () => {
-    setCanvasDimensions();
-    init();
-  });
-
-  class Particle {
-    constructor(x, y, directionX, directionY, size, color) {
-      this.x = x; this.y = y;
-      this.directionX = directionX; this.directionY = directionY;
-      this.size = size; this.color = color;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-      ctx.fillStyle = this.color;
-      ctx.fill();
-    }
-    update() {
-      if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
-      if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
-      this.x += this.directionX;
-      this.y += this.directionY;
-      this.draw();
-    }
-  }
-
-  function init() {
-    particlesArray = [];
-    let numberOfParticles = (canvas.height * canvas.width) / 12000;
-    for (let i = 0; i < numberOfParticles; i++) {
-      let size = (Math.random() * 2) + 0.5;
-      let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-      let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-      let directionX = (Math.random() * 1) - 0.5;
-      let directionY = (Math.random() * 1) - 0.5;
-      let color = 'rgba(255, 74, 74, 0.4)'; 
-      particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-    }
-  }
-
-  function drawWaveEffect() {
-    waveOffset += 0.02;
-    const waveLayers = [
-      { y: canvas.height * 0.88, length: 0.007, amp: 26, color: 'rgba(255, 74, 74, 0.16)' },
-      { y: canvas.height * 0.91, length: 0.005, amp: 32, color: 'rgba(0, 174, 255, 0.14)' },
-      { y: canvas.height * 0.94, length: 0.009, amp: 20, color: 'rgba(255, 138, 74, 0.18)' }
-    ];
-
-    waveLayers.forEach((layer, idx) => {
-      ctx.beginPath();
-      ctx.moveTo(0, canvas.height);
-      for (let x = 0; x <= canvas.width; x += 5) {
-        const y = layer.y + Math.sin(x * layer.length + waveOffset + idx) * layer.amp;
-        ctx.lineTo(x, y);
-      }
-      ctx.lineTo(canvas.width, canvas.height);
-      ctx.closePath();
-      ctx.fillStyle = layer.color;
-      ctx.fill();
-    });
-  }
-
-  function animate() {
-    requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    drawWaveEffect();
-    for (let i = 0; i < particlesArray.length; i++) {
-      particlesArray[i].update();
-    }
-  }
-  init();
-  animate();
-</script>
-
-<!-- LIVE COMMENTS ENGINE -->
-<script>
-  const customUserList = [
-    "@zoyara._", "@ruhiix", "@mahiraxo", "@inayavibe", "@aaylinn._",
-    "@vianara", "@naylaxoxo", "@ishvii._", "@myravelle", "@aarnavi._",
-    "@zivanyaa", "@riavelle._", "@kiyara.xo", "@avishka._", "@suhana.vx",
-    "@elishaa._", "@navyelle", "@anvixoxo", "@yashvika._", "@aureliya.x",
-    "@mahira.vx", "@zunairaa._", "@vriyah._", "@nishvii", "@aaviyra",
-    "@raynixa", "@ishara._x", "@zyra.vibes", "@nyshika._", "@vihaara.x",
-    "@aryan.vibes", "@rohanxofficial", "@rahul._king", "@arjun.writes", "@adityaxvibes",
-    "@shivam.07", "@krishh._", "@amanxroy", "@dev._singh", "@yashraj.x",
-    "@rajput._boy", "@aaryan.verse", "@rudraxofficial", "@kunal._vibes", "@ansh._01",
-    "@harshxking", "@vivaan._x", "@ayush._roy", "@daksh.vibes", "@rishabh._x",
-    "@veer._singh", "@ishaanxvibe", "@manav._07", "@kabirxofficial", "@samar._verse",
-    "@devraj._x", "@atharv._boy", "@lakshya.vibes", "@raj._aesthetic", "@thearjun._"
-  ];
-
-  const cities = ["Kolkata", "Hyderabad", "Delhi", "Mumbai", "Nagpur", "Patna", "Lucknow", "Jaipur", "Bangalore", "Pune", "Indore", "Ranchi", "Howrah"];
-
-  const cityFormulas = [
-    (c) => `Apex bhai main aapka big fan hu ${c} se ❤️🙏`,
-    (c) => `Big fan from ${c} bro, keep helping us!`,
-    (c) => `bhai ${c} se hu, love your content 🔥`,
-    (c) => `Full support to Apex Carnage from ${c} 💥`,
-    (c) => `Huge fan from ${c} bhai! Free service OP 🙌`,
-    (c) => `Apex bhaii big fan ${c} se hu love you ❤`
-  ];
-
-  const unbanSuccessChats = [
-    "Bhai sach me unban ho gaya!! Love you apex ❤🔥",
-    "Thank you apex bhai mera unban ho gaya finally 😭🙏",
-    "ID login ho gayi bhai unban successful ⚡⚡",
-    "unban ho gaya bhai thanks a lot @apex.carnage.live",
-    "Mera account back aa gaya!! unban done 👍",
-    "5 min me unban ho gaya solid service!",
-    "unban successful bro thank you Apex bhai",
-    "Id unban ho gayi, thank you apex bhai 🔥",
-    "Thanks a lot bro sab kuch free me ho gaya ❤️",
-    "Aise hi help karte rehna bhai, unban done ho gaya mera!"
-  ];
-
-  const unbanRequests = [
-    "bhai mera bhi unban kar do please 🥺",
-    "apex bhai mera भी unban kar do UID check karo",
-    "bhai please mera id bhi kar do unban",
-    "mera bhi unban kar do bhai bhot din se suspended hai",
-    "bhai id unban kar do yaar, bhot pareshaan hu"
-  ];
-
-  const organicChannelChats = [
-    "nice bro keep it up",
-    "kaam kar raha hai genuine site",
-    "thanks bhai aise hi videos banate jaana",
-    "sabka help karte rehna bhai best ho aap",
-    "free me itna accha kaam koi nahi karta ❤️",
-    "working hai 100% genuine service",
-    "bhot sahi bhai great work!"
-  ];
-
-  const stream = document.getElementById('commentsStream');
-  let commentCounter = 0;
-  let userIndex = 0;
-
-  function pick(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
-
-  function getAvatarColor() {
-    const palette = ["#e11d48", "#2563eb", "#7c3aed", "#059669", "#d97706", "#dc2626", "#0891b2"];
-    return pick(palette);
-  }
-
-  function getNextCustomUser() {
-    const handle = customUserList[userIndex];
-    userIndex = (userIndex + 1) % customUserList.length;
-    const cleanLetter = handle.replace(/[@._]/g, '')[0] || 'A';
-    return {
-      name: handle,
-      initial: cleanLetter.toUpperCase()
-    };
-  }
-
-  function injectComment() {
-    commentCounter++;
-    const user = getNextCustomUser();
-    let textStr = "";
-    let styleClass = "";
-
-    if (commentCounter % 6 === 0) {
-      const city = pick(cities);
-      const formula = pick(cityFormulas);
-      textStr = formula(city);
-      styleClass = "city-shoutout";
-    } else {
-      const r = Math.random();
-      if (r < 0.52) {
-        textStr = pick(unbanSuccessChats);
-        styleClass = "unban-proof";
-      } else if (r < 0.78) {
-        textStr = pick(unbanRequests);
-        styleClass = "unban-req";
-      } else {
-        textStr = pick(organicChannelChats);
-        styleClass = "";
-      }
-    }
-
-    const item = document.createElement('div');
-    item.className = 'chat-item';
-    item.innerHTML = `
-      <div class="chat-avatar" style="background-color: ${getAvatarColor()}">${user.initial}</div>
-      <div class="chat-content">
-        <div class="chat-user-row">
-          <span class="chat-username">${user.name}</span>
-          <span class="chat-time">just now</span>
-        </div>
-        <div class="chat-text ${styleClass}">${textStr}</div>
-      </div>
-    `;
-
-    stream.appendChild(item);
-
-    if (stream.children.length > 5) {
-      stream.removeChild(stream.firstElementChild);
-    }
-
-    const wEl = document.getElementById('chatWatchers');
-    if (wEl) {
-      let cnt = parseInt(wEl.innerText.replace(/[^0-9]/g, ''));
-      cnt += Math.floor(Math.random() * 7) - 3;
-      wEl.innerText = `${cnt.toLocaleString()} watching`;
-    }
-
-    const nextInterval = Math.floor(Math.random() * 1800) + 1600;
-    setTimeout(injectComment, nextInterval);
-  }
-
-  for (let i = 0; i < 3; i++) {
-    injectComment();
-  }
-</script>
 </body>
 </html>
+ 
