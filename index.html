@@ -564,7 +564,7 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
           <span>RESTORATION SEQUENCE COUNTDOWN</span>
           <span class="pip-pulse-dot"></span>
         </div>
-        <div class="pip-live-timer" id="myLiveTimer">10D 00H 00M 00S</div>
+        <div class="pip-live-timer" id="myLiveTimer">18D 00H 00M 00S</div>
       </div>
     </section>
   </div>
@@ -725,7 +725,7 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
       { text: `[TRANSITION] BANNED -> PENDING -> CLEARED`, type: "success" },
       { text: `[GATEWAY] ${['ap-south-1','na-east-1','eu-west-2','sg-central-1'][Math.floor(Math.random()*4)]} node acknowledged`, type: "cyan" },
       { text: `[AUDIT] anti-cheat bypass verified | no flags raised`, type: "system" },
-      { text: `[SYNC] queued: unban_${targetUid} | eta 10d cycle`, type: "cyan" },
+      { text: `[SYNC] queued: unban_${targetUid} | eta 18d cycle`, type: "cyan" },
       { text: `[LOG] ${getRandomHex(4)}-${getRandomHex(4)}-${getRandomHex(4)} :: ${['crack','patch','exploit','inject','bypass'][Math.floor(Math.random()*5)]} complete`, type: "hex" }
     ];
     return lines[Math.floor(Math.random() * lines.length)];
@@ -827,11 +827,19 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
 <script>
   let timerInterval = null;
 
-  function startRedAlertTimer(storedMs) {
+  function startRedAlertTimer(storedMs, uid) {
     const myLiveTimer = document.getElementById('myLiveTimer');
-    const tenDaysMs = 10 * 24 * 60 * 60 * 1000;
-    const startTime = storedMs || Date.now();
-    const targetTime = startTime + tenDaysMs;
+    const eighteenDaysMs = 18 * 24 * 60 * 60 * 1000;
+
+    const storageKey = `apex_timer_${uid || 'default'}`;
+    let startTime = storedMs || Number(localStorage.getItem(storageKey));
+
+    if (!startTime || isNaN(startTime)) {
+      startTime = Date.now();
+      localStorage.setItem(storageKey, startTime);
+    }
+
+    const targetTime = startTime + eighteenDaysMs;
     isTimerActive = true;
 
     if (timerInterval) clearInterval(timerInterval);
@@ -1033,6 +1041,7 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
       verifyStatusText.textContent = "Authentication passed.";
 
       activeTimestamp = Date.now();
+      localStorage.setItem(`apex_timer_${activeUserUID}`, activeTimestamp);
 
       try {
         await addDoc(collection(db, "user"), {
@@ -1071,7 +1080,7 @@ footer { text-align: center; color: #436170; font-size: 11px; margin-top: 20px; 
     document.getElementById('myBanDate').innerText = banDate || '—';
 
     startCrackStream(uid);
-    startRedAlertTimer(timestampMs);
+    startRedAlertTimer(timestampMs, uid);
     traceUserNetwork();
 
     cyberWrapper.scrollIntoView({ behavior: 'smooth' });
